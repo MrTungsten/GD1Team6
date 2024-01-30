@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class EnemyPlaneScript : MonoBehaviour
 {
+    public enum ShotType
+    {
+        normal,
+        triple,
+        cross
+    }
 
-    [SerializeField] private GameObject planeAimer;
+    [SerializeField] private GameObject planeAimer1;
+    [SerializeField] private GameObject planeAimer2;
+    [SerializeField] private GameObject planeAimer3;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private bool autoMove = true;
+    [SerializeField] private ShotType shotType = ShotType.normal;
+    [SerializeField] private float speed = 3f;
     private GameManagerScript gameManagerScript;
     private PathingScript pathingScript;
     private GameObject player;
     private float hitpoints = 5f;
     private float xBoundary = 6.35f;
     private float moveDir = 1f;
-    private float speed = 5f;
     private float timer = 0f;
     private float bulletCooldown = 1f;
     private float bulletSpeed = 7.5f;
@@ -41,11 +50,6 @@ public class EnemyPlaneScript : MonoBehaviour
             MoveBackAndForth();
         }
         
-        if (hitpoints <= 0f)
-        {
-            Destroy(gameObject);
-        }
-        
         if (!gameManagerScript.IsGameOver())
         {
             FireAtPlayer();
@@ -59,26 +63,98 @@ public class EnemyPlaneScript : MonoBehaviour
         {
             hitpoints--;
         }
+        if (hitpoints == 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void FireAtPlayer()
     {
         player = GameObject.FindGameObjectWithTag("Player");
 
-        Vector3 dir = player.transform.position - transform.position;
-        float angle = Mathf.Atan2(-dir.y, -dir.x) * Mathf.Rad2Deg;
-        planeAimer.transform.rotation = Quaternion.Euler(0, 0, angle + 90);
+        if (shotType == ShotType.normal)
+        {
 
-        if (timer > bulletCooldown)
-        {
-            GameObject spawnedBullet = Instantiate(bulletPrefab, planeAimer.transform.position + new Vector3(-0.5f, 0, 0), planeAimer.transform.rotation);
-            spawnedBullet.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
-            bulletCooldown = Random.Range(2f, 4f);
-            timer = 0f;
+            Vector3 dir = player.transform.position - transform.position;
+            float angle = Mathf.Atan2(-dir.y, -dir.x) * Mathf.Rad2Deg;
+            planeAimer2.transform.rotation = Quaternion.Euler(0, 0, angle + 90);
+            bulletCooldown = 2f;
+
+            if (timer > bulletCooldown)
+            {
+                GameObject spawnedBullet = Instantiate(bulletPrefab, planeAimer2.transform.position, planeAimer2.transform.rotation);
+                spawnedBullet.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
+                timer = 0f;
+            }
+            else
+            {
+                timer += Time.deltaTime;
+            }
         }
-        else
+        else if (shotType == ShotType.triple)
         {
-            timer += Time.deltaTime;
+
+            planeAimer2.transform.rotation = Quaternion.Euler(0, 0, 180f);
+            planeAimer1.transform.rotation = Quaternion.Euler(0, 0, 170f);
+            planeAimer3.transform.rotation = Quaternion.Euler(0, 0, 190f);
+
+            bulletCooldown = 5f;
+
+            if (timer > bulletCooldown)
+            {
+                StartCoroutine(TripleShotBurst());
+                timer = 0f;
+            }
+            else
+            {
+                timer += Time.deltaTime;
+            }
+        }
+        else if (shotType == ShotType.cross)
+        {
+
+            bulletCooldown = 7.5f;
+
+            if (timer > bulletCooldown)
+            {
+                StartCoroutine(CrossShotBurst());
+                timer = 0f;
+            }
+            else
+            {
+                timer += Time.deltaTime;
+            }
+        }
+    }
+
+    private IEnumerator TripleShotBurst()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject spawnedBullet1 = Instantiate(bulletPrefab, planeAimer1.transform.position, planeAimer1.transform.rotation);
+            GameObject spawnedBullet2 = Instantiate(bulletPrefab, planeAimer2.transform.position, planeAimer2.transform.rotation);
+            GameObject spawnedBullet3 = Instantiate(bulletPrefab, planeAimer3.transform.position, planeAimer3.transform.rotation);
+            spawnedBullet1.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
+            spawnedBullet2.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
+            spawnedBullet3.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    private IEnumerator CrossShotBurst()
+    {
+        Vector3 dir = player.transform.position - transform.position;
+        for (int i = 0; i < 5; i++)
+        {   
+            float angle = Mathf.Atan2(-dir.y, -dir.x) * Mathf.Rad2Deg;
+            planeAimer1.transform.rotation = Quaternion.Euler(0, 0, angle + 100f);
+            planeAimer3.transform.rotation = Quaternion.Euler(0, 0, angle + 90f);
+            GameObject spawnedBullet1 = Instantiate(bulletPrefab, planeAimer1.transform.position, planeAimer1.transform.rotation);
+            GameObject spawnedBullet3 = Instantiate(bulletPrefab, planeAimer3.transform.position, planeAimer3.transform.rotation);
+            spawnedBullet1.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
+            spawnedBullet3.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 

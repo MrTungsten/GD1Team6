@@ -10,7 +10,7 @@ public class GameManagerScript : MonoBehaviour
 
     private void Update()
     {
-        if (GameObject.FindGameObjectWithTag("EnemyTank") == null && !isGameOver)
+        if (GameObject.FindGameObjectWithTag("EnemyPlane") == null && GameObject.FindGameObjectWithTag("EnemyTank") == null && !isGameOver)
         {
             Debug.Log("The player has won!");
             isGameOver = true;

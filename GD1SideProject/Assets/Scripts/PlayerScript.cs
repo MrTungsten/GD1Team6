@@ -61,7 +61,7 @@ public class PlayerScript : MonoBehaviour
 
         if (timer >= bulletCooldown)
         {
-            if (Input.GetKey(KeyCode.J))
+            if (Input.GetKey(KeyCode.Space))
             {
                 Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(-0.15f, 0, 0), transform.rotation);
                 Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(0.15f, 0, 0), transform.rotation);
@@ -95,7 +95,7 @@ public class PlayerScript : MonoBehaviour
     private IEnumerator HitImmunity()
     {
         hasImmunity = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         hasImmunity = false;
     }
 }
