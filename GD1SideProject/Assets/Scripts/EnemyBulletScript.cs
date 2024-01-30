@@ -7,7 +7,8 @@ public class EnemyBulletScript : MonoBehaviour
 
     [SerializeField] private bool autoMove = true;
     private float bulletSpeed;
-    private float yBulletBoundary = 10f;
+    private float xBulletBoundary = 25f;
+    private float yBulletBoundary = 25f;
 
     private void Update()
     {
@@ -16,7 +17,12 @@ public class EnemyBulletScript : MonoBehaviour
             transform.position += transform.up * bulletSpeed * Time.deltaTime;
         }
 
-        if (transform.position.y < -yBulletBoundary)
+        if (transform.position.x < -xBulletBoundary || transform.position.x > xBulletBoundary)
+        {
+            Destroy(gameObject);
+        }
+
+        if (transform.position.y < -yBulletBoundary || transform.position.y > yBulletBoundary)
         {
             Destroy(gameObject);
         }

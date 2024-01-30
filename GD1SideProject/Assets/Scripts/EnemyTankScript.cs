@@ -28,11 +28,6 @@ public class EnemyTankScript : MonoBehaviour
 
     private void Update()
     {
-        if (hitpoints <= 0f)
-        {
-            Destroy(gameObject);
-        }
-
         if (!gameManagerScript.IsGameOver())
         {
             FireAtPlayer();
@@ -44,6 +39,10 @@ public class EnemyTankScript : MonoBehaviour
         if (objectName == "Bullet")
         {
             hitpoints--;
+        }
+        if (hitpoints == 0)
+        {
+            Destroy(gameObject);
         }
     }
 

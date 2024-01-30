@@ -16,10 +16,10 @@ public class PathingScript : MonoBehaviour
     [SerializeField] private Transform startingWaypoint;
     [SerializeField] private Transform endWaypoint;
     [SerializeField] private PathingType pathType = PathingType.normal;
-    private float pathingSpeed = 5f;
     private Transform[] totalPathArr;
     private Transform[] pathArr;
     private int waypointsIndex = 0;
+    private float pathingSpeed = 5f;
     private float rotationSpeed = 150f;
     private float timer = 0f;
     private float delayedTimer = 5.6f;

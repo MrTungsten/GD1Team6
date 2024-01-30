@@ -10,7 +10,7 @@ public class SinusoidalPathScript : MonoBehaviour
 
     private void Update()
     {
-        float sinCalcs = Mathf.Sin(7 * Time.time * frequency) + Mathf.Cos(4 * Time.time * frequency);
+        float sinCalcs = Mathf.Sin(2 * Time.time * frequency);
         transform.position += transform.right * sinCalcs * magnitude * Time.deltaTime;
     }
 

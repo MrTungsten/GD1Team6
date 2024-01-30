@@ -92,6 +92,7 @@ public class EnemyPlaneScript : MonoBehaviour
                 timer += Time.deltaTime;
             }
         }
+
         else if (shotType == ShotType.triple)
         {
 

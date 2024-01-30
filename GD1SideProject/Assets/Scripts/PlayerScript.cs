@@ -81,21 +81,24 @@ public class PlayerScript : MonoBehaviour
         {
             hitpoints--;
             Debug.Log("Player has been hit! Hitpoints left: " + hitpoints);
+
             Destroy(collision.gameObject);
+
             if (hitpoints == 0)
             {
                 Debug.Log("Player has lost!");
                 gameManagerScript.GameOver();
                 Destroy(gameObject);
             }
-            StartCoroutine(HitImmunity());
+
+            StartCoroutine(HitImmunity(0.1f));
         }
     }
 
-    private IEnumerator HitImmunity()
+    private IEnumerator HitImmunity(float immunityTime)
     {
         hasImmunity = true;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(immunityTime);
         hasImmunity = false;
     }
 }

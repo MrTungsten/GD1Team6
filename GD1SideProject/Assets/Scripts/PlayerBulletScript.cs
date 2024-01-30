@@ -23,13 +23,19 @@ public class PlayerBulletScript : MonoBehaviour
         if (collision.gameObject.CompareTag("EnemyPlane"))
         {
             collision.gameObject.GetComponent<EnemyPlaneScript>().HitByObject("Bullet");
+            Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag("EnemyTank"))
         {
             collision.gameObject.GetComponent<EnemyTankScript>().HitByObject("Bullet");
+            Destroy(gameObject);
+        }
+        else if (collision.gameObject.CompareTag("EnemyTurret"))
+        {
+            collision.gameObject.GetComponent<EnemyTurretScript>().HitByObject("Bullet");
+            Destroy(gameObject);
         }
 
-        Destroy(gameObject);
     }
 
 }

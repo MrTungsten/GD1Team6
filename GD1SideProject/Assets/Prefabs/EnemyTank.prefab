@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5157884598615533864}
   - component: {fileID: 9134299012777916940}
   - component: {fileID: 2897009032214817067}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EnemyTank
   m_TagString: EnemyTank
   m_Icon: {fileID: 0}
@@ -138,6 +138,7 @@ MonoBehaviour:
   path: {fileID: 0}
   startingWaypoint: {fileID: 0}
   endWaypoint: {fileID: 0}
+  pathType: 0
 --- !u!1 &7057526990654558878
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1715648589227538174}
   - component: {fileID: 7309875325866907421}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EnemyTankVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +232,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6694767965431176742}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EnemyTankAimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

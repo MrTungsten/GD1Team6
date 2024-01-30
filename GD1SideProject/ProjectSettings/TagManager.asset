@@ -6,6 +6,8 @@ TagManager:
   tags:
   - EnemyPlane
   - EnemyTank
+  - EnemyBullet
+  - EnemyTurret
   layers:
   - Default
   - TransparentFX
