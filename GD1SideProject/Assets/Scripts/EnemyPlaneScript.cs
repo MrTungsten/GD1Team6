@@ -38,8 +38,11 @@ public class EnemyPlaneScript : MonoBehaviour
         gameManagerScript = GameObject.FindAnyObjectByType<GameManagerScript>();
 
         pathingScript = this.GetComponent<PathingScript>();
-        pathingScript.SetPathingSpeed(speed);
-        pathingScript.SetRotationSpeed(0);
+        if (pathingScript != null)
+        {
+            pathingScript.SetPathingSpeed(speed);
+            pathingScript.SetRotationSpeed(0);
+        }
     }
 
     private void Update()

@@ -20,10 +20,13 @@ public class EnemyTankScript : MonoBehaviour
     private void Start()
     {
         gameManagerScript = GameObject.FindAnyObjectByType<GameManagerScript>();
-        
+
         pathingScript = this.GetComponent<PathingScript>();
-        pathingScript.SetPathingSpeed(speed);
-        pathingScript.SetRotationSpeed(rotationSpeed);
+        if (pathingScript != null)
+        {
+            pathingScript.SetPathingSpeed(speed);
+            pathingScript.SetRotationSpeed(rotationSpeed);
+        }
     }
 
     private void Update()

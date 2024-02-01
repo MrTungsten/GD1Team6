@@ -213,7 +213,7 @@ Transform:
   - {fileID: 53255683815295303}
   - {fileID: 3912504843147567465}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &8805053812276523975
 Rigidbody2D:
@@ -295,4 +295,4 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1105445300606073453, guid: 736e791af79da5a4e9a4c09c93b5b3db, type: 3}
   autoMove: 1
   shotType: 0
-  speed: 3
+  speed: 5

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8522762119758566206}
   - component: {fileID: 5157884598615533864}
   - component: {fileID: 9134299012777916940}
-  - component: {fileID: 2897009032214817067}
   m_Layer: 7
   m_Name: EnemyTank
   m_TagString: EnemyTank
@@ -35,7 +34,7 @@ Transform:
   - {fileID: 1715648589227538174}
   - {fileID: 6694767965431176742}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &8522762119758566206
 Rigidbody2D:
@@ -79,7 +78,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -123,22 +122,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tankAimer: {fileID: 7292192300649703800}
   bulletPrefab: {fileID: 1105445300606073453, guid: 736e791af79da5a4e9a4c09c93b5b3db, type: 3}
---- !u!114 &2897009032214817067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1723887033758311591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8328855deefe37441a4e63b363be0016, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: {fileID: 0}
-  startingWaypoint: {fileID: 0}
-  endWaypoint: {fileID: 0}
-  pathType: 0
 --- !u!1 &7057526990654558878
 GameObject:
   m_ObjectHideFlags: 0

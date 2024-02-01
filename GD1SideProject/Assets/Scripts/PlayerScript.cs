@@ -20,19 +20,19 @@ public class PlayerScript : MonoBehaviour
     {
         Vector2 inputVector = new Vector2 (0, 0);
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             inputVector.y = 1f;
         }
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.DownArrow))
         {
             inputVector.y = -1f;
         }
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             inputVector.x = -1f;
         }
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             inputVector.x = 1f;
         }
@@ -61,7 +61,7 @@ public class PlayerScript : MonoBehaviour
 
         if (timer >= bulletCooldown)
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKey(KeyCode.LeftControl))
             {
                 Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(-0.15f, 0, 0), transform.rotation);
                 Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(0.15f, 0, 0), transform.rotation);
