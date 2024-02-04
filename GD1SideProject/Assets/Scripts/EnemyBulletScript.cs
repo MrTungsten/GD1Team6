@@ -7,8 +7,8 @@ public class EnemyBulletScript : MonoBehaviour
 
     [SerializeField] private bool autoMove = true;
     private float bulletSpeed;
-    private float xBulletBoundary = 25f;
-    private float yBulletBoundary = 25f;
+    private float xBulletBoundary = 15f;
+    private float yBulletBoundary = 15f;
 
     private void Update()
     {
@@ -31,6 +31,14 @@ public class EnemyBulletScript : MonoBehaviour
     public void SetSpeed(float speed)
     {
         bulletSpeed = speed;
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+        }
     }
 
 }

@@ -39,13 +39,17 @@ public class EnemyTurretScript : MonoBehaviour
         }
     }
 
-    public void HitByObject(string objectName)
+    public void HitByObject(string objectName, int damageDone)
     {
         if (objectName == "Bullet")
         {
-            hitpoints--;
+            hitpoints -= damageDone;
         }
-        if (hitpoints == 0)
+        if (objectName == "Explosion")
+        {
+            hitpoints -= damageDone;
+        }
+        if (hitpoints <= 0)
         {
             Destroy(gameObject);
         }

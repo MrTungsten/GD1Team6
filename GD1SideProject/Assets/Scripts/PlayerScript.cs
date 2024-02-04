@@ -8,6 +8,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameManagerScript gameManagerScript;
     [SerializeField] private GameObject playerBulletSpawner;
+    [SerializeField] private GameObject bombPrefab;
     private float moveSpeed = 8f;
     private float xBoundary = 6.35f;
     private float yBoundary = 6.7f;
@@ -15,6 +16,7 @@ public class PlayerScript : MonoBehaviour
     private float bulletCooldown = .3f;
     private float hitpoints = 5f;
     private bool hasImmunity = false;
+    private int bombCount = 3;
 
     private void Update()
     {
@@ -73,6 +75,15 @@ public class PlayerScript : MonoBehaviour
             timer += Time.deltaTime;
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            if (bombCount > 0)
+            {
+                Instantiate(bombPrefab, transform.position, transform.rotation);
+                bombCount--;
+            }
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -81,8 +92,6 @@ public class PlayerScript : MonoBehaviour
         {
             hitpoints--;
             Debug.Log("Player has been hit! Hitpoints left: " + hitpoints);
-
-            Destroy(collision.gameObject);
 
             if (hitpoints == 0)
             {

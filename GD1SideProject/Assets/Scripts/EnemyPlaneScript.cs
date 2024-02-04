@@ -18,10 +18,10 @@ public class EnemyPlaneScript : MonoBehaviour
     [SerializeField] private bool autoMove = true;
     [SerializeField] private ShotType shotType = ShotType.normal;
     [SerializeField] private float speed = 3f;
+    [SerializeField] private float hitpoints = 5f;
     private GameManagerScript gameManagerScript;
     private PathingScript pathingScript;
     private GameObject player;
-    private float hitpoints = 5f;
     private float xBoundary = 6.35f;
     private float moveDir = 1f;
     private float timer = 0f;
@@ -60,13 +60,17 @@ public class EnemyPlaneScript : MonoBehaviour
 
     }
 
-    public void HitByObject(string objectName)
+    public void HitByObject(string objectName, int damageDone)
     {
         if (objectName == "Bullet")
         {
-            hitpoints--;
+            hitpoints -= damageDone;
         }
-        if (hitpoints == 0)
+        if (objectName == "Explosion")
+        {
+            hitpoints -= damageDone;
+        }
+        if (hitpoints <= 0)
         {
             Destroy(gameObject);
         }
