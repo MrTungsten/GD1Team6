@@ -11,7 +11,7 @@ public class BombPowerScript : MonoBehaviour
     private CircleCollider2D explosionCircleCollider;
     private float launchForce = 8.5f;
     private float payloadLifetime = 2.5f;
-    private float explosionLifetime = 4.5f;
+    private float explosionLifetime = 3f;
     private float expansionSize = 10f;
     private float timer = 0f;
     private float explosionCheckTime = 1f;
@@ -72,15 +72,15 @@ public class BombPowerScript : MonoBehaviour
                     {
                         if (results[i].gameObject.CompareTag("EnemyPlane"))
                         {
-                            results[i].gameObject.GetComponent<EnemyPlaneScript>().HitByObject("Explosion", 5);
+                            results[i].gameObject.GetComponent<EnemyPlaneScript>().HitByObject(5);
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTank"))
                         {
-                            results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject("Explosion", 5);
+                            results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject(5);
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTurret"))
                         {
-                            results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject("Explosion", 5);
+                            results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(5);
                         }
                     }
                 }

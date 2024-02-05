@@ -22,17 +22,17 @@ public class PlayerBulletScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("EnemyPlane"))
         {
-            collision.gameObject.GetComponent<EnemyPlaneScript>().HitByObject("Bullet", 1);
+            collision.gameObject.GetComponent<EnemyPlaneScript>().HitByObject(1);
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag("EnemyTank"))
         {
-            collision.gameObject.GetComponent<EnemyTankScript>().HitByObject("Bullet", 1);
+            collision.gameObject.GetComponent<EnemyTankScript>().HitByObject(1);
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag("EnemyTurret"))
         {
-            collision.gameObject.GetComponent<EnemyTurretScript>().HitByObject("Bullet", 1);
+            collision.gameObject.GetComponent<EnemyTurretScript>().HitByObject(1);
             Destroy(gameObject);
         }
     }

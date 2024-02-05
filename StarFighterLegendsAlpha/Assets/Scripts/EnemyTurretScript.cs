@@ -7,6 +7,7 @@ public class EnemyTurretScript : MonoBehaviour
 
     [SerializeField] private GameObject bullets;
     [SerializeField] private GameObject[] spawners;
+    private PowerupSpawnerScript powerupSpawnerScript;
     private float bulletSpeed = 5f;
     private float rotateSpeed = 100f;
     private float rotateAmount = 0f;
@@ -16,6 +17,8 @@ public class EnemyTurretScript : MonoBehaviour
     private void Start()
     {
         StartCoroutine(TurretHailFire());
+
+        powerupSpawnerScript = GameObject.FindAnyObjectByType<PowerupSpawnerScript>();
     }
 
     private void Update()
@@ -39,18 +42,13 @@ public class EnemyTurretScript : MonoBehaviour
         }
     }
 
-    public void HitByObject(string objectName, int damageDone)
+    public void HitByObject(int damageDone)
     {
-        if (objectName == "Bullet")
-        {
-            hitpoints -= damageDone;
-        }
-        if (objectName == "Explosion")
-        {
-            hitpoints -= damageDone;
-        }
+        hitpoints -= damageDone;
+
         if (hitpoints <= 0)
         {
+            powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
             Destroy(gameObject);
         }
     }

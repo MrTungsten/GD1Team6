@@ -19,6 +19,7 @@ public class EnemyPlaneScript : MonoBehaviour
     [SerializeField] private ShotType shotType = ShotType.normal;
     [SerializeField] private float speed = 3f;
     [SerializeField] private float hitpoints = 5f;
+    private PowerupSpawnerScript powerupSpawnerScript;
     private GameManagerScript gameManagerScript;
     private PathingScript pathingScript;
     private GameObject player;
@@ -36,6 +37,7 @@ public class EnemyPlaneScript : MonoBehaviour
             moveDir = -1f;
 
         gameManagerScript = GameObject.FindAnyObjectByType<GameManagerScript>();
+        powerupSpawnerScript = GameObject.FindAnyObjectByType<PowerupSpawnerScript>();
 
         pathingScript = this.GetComponent<PathingScript>();
         if (pathingScript != null)
@@ -60,18 +62,17 @@ public class EnemyPlaneScript : MonoBehaviour
 
     }
 
-    public void HitByObject(string objectName, int damageDone)
+    public void HitByObject(int damageDone)
     {
-        if (objectName == "Bullet")
-        {
-            hitpoints -= damageDone;
-        }
-        if (objectName == "Explosion")
-        {
-            hitpoints -= damageDone;
-        }
+        hitpoints -= damageDone;
+
         if (hitpoints <= 0)
         {
+            if (Random.Range(1, 5) == 1)
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
+            }
+
             Destroy(gameObject);
         }
     }

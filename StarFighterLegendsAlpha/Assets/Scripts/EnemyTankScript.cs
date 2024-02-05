@@ -7,6 +7,7 @@ public class EnemyTankScript : MonoBehaviour
 
     [SerializeField] private GameObject tankAimer;
     [SerializeField] private GameObject bulletPrefab;
+    private PowerupSpawnerScript powerupSpawnerScript;
     private GameManagerScript gameManagerScript;
     private PathingScript pathingScript;
     private GameObject player;
@@ -27,6 +28,8 @@ public class EnemyTankScript : MonoBehaviour
             pathingScript.SetPathingSpeed(speed);
             pathingScript.SetRotationSpeed(rotationSpeed);
         }
+
+        powerupSpawnerScript = GameObject.FindAnyObjectByType<PowerupSpawnerScript>();
     }
 
     private void Update()
@@ -37,18 +40,13 @@ public class EnemyTankScript : MonoBehaviour
         }
     }
 
-    public void HitByObject(string objectName, int damageDone)
+    public void HitByObject(int damageDone)
     {
-        if (objectName == "Bullet")
-        {
-            hitpoints -= damageDone;
-        }
-        if (objectName == "Explosion")
-        {
-            hitpoints -= damageDone;
-        }
+        hitpoints -= damageDone;
+
         if (hitpoints <= 0)
         {
+            powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
             Destroy(gameObject);
         }
     }
