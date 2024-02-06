@@ -72,15 +72,19 @@ public class BombPowerScript : MonoBehaviour
                     {
                         if (results[i].gameObject.CompareTag("EnemyPlane"))
                         {
-                            results[i].gameObject.GetComponent<EnemyPlaneScript>().HitByObject(5);
+                            results[i].gameObject.GetComponent<EnemyPlaneScript>().HitByObject(2);
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTank"))
                         {
-                            results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject(5);
+                            results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject(3);
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTurret"))
                         {
                             results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(5);
+                        }
+                        else if (results[i].gameObject.CompareTag("EnemyDiver"))
+                        {
+                            results[i].gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(2);
                         }
                     }
                 }

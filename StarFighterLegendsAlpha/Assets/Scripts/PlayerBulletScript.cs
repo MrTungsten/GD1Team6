@@ -35,6 +35,11 @@ public class PlayerBulletScript : MonoBehaviour
             collision.gameObject.GetComponent<EnemyTurretScript>().HitByObject(1);
             Destroy(gameObject);
         }
+        else if (collision.gameObject.CompareTag("EnemyDiver"))
+        {
+            collision.gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(1);
+            Destroy(gameObject);
+        }
     }
 
 }

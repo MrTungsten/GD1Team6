@@ -21,7 +21,7 @@ public class PlayerScript : MonoBehaviour
     private float bombCooldown = 3f;
     private float laserTimer = 8f;
     private float laserCooldown = 8f;
-    private float hitpoints = 5f;
+    private float hitpoints = 10f;
     private bool hasImmunity = false;
     private int bombCount = 5;
     private int laserCount = 1;
@@ -142,15 +142,19 @@ public class PlayerScript : MonoBehaviour
                     {
                         if (results[i].gameObject.CompareTag("EnemyPlane"))
                         {
-                            results[i].gameObject.GetComponent<EnemyPlaneScript>().HitByObject(5);
+                            results[i].gameObject.GetComponent<EnemyPlaneScript>().HitByObject(1);
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTank"))
                         {
-                            results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject(5);
+                            results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject(2);
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTurret"))
                         {
                             results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(10);
+                        }
+                        else if (results[i].gameObject.CompareTag("EnemyTurret"))
+                        {
+                            results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(3);
                         }
                         laserDamageTimer = 0f;
                     }
