@@ -108,9 +108,6 @@ public class PathingScript : MonoBehaviour
         else
         {
             transform.position = Vector2.MoveTowards(transform.position, pathArr[waypointsIndex].position, pathingSpeed * Time.deltaTime);
-            float angle = Mathf.Atan2(pathArr[waypointsIndex].position.y - transform.position.y, pathArr[waypointsIndex].position.x - transform.position.x) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-            transform.rotation = targetRotation;
         }
     }
 

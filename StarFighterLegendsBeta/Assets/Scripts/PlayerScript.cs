@@ -6,11 +6,11 @@ public class PlayerScript : MonoBehaviour
 {
 
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private GameManagerScript gameManagerScript;
     [SerializeField] private GameObject playerBulletSpawner;
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private GameObject laser;
-    Collider2D laserCollider = null;
+    private GameManagerScript gameManagerScript;
+    private Collider2D laserCollider = null;
     private float moveSpeed = 8f;
     private float xBoundary = 6.35f;
     private float yBoundary = 6.7f;
@@ -32,6 +32,7 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
+        gameManagerScript = GetComponent<GameManagerScript>();
         laserCollider = laser.GetComponent<Collider2D>();
         laser.gameObject.SetActive(false);
     }
@@ -176,10 +177,9 @@ public class PlayerScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!hasImmunity && !collision.gameObject.CompareTag("Powerup") && !collision.gameObject.CompareTag("Bomb"))
+        if (!hasImmunity && !collision.gameObject.CompareTag("Powerup") && !collision.gameObject.CompareTag("Bomb") && !gameManagerScript.IsGameOver())
         {
             hitpoints--;
-            Debug.Log("Player has been hit! Hitpoints left: " + hitpoints);
 
             if (hitpoints <= 0)
             {
