@@ -28,6 +28,7 @@ public class EnemyPlaneScript : MonoBehaviour
     private float timer = 0f;
     private float bulletCooldown = 1f;
     private float bulletSpeed = 7.5f;
+    private bool hasSpawnedPowerup = false;
 
     private void Start()
     {
@@ -66,8 +67,10 @@ public class EnemyPlaneScript : MonoBehaviour
     {
         hitpoints -= damageDone;
 
-        if (hitpoints <= 0)
+        if (hitpoints <= 0 && !hasSpawnedPowerup)
         {
+            hasSpawnedPowerup = true;
+
             if (Random.Range(1, 5) == 1)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");

@@ -9,9 +9,9 @@ public class BombPowerScript : MonoBehaviour
     [SerializeField] private GameObject explosionBubble;
     private Rigidbody2D payloadRb;
     private CircleCollider2D explosionCircleCollider;
-    private float launchForce = 8.5f;
+    private float launchForce = 8f;
     private float payloadLifetime = 2.5f;
-    private float explosionLifetime = 3f;
+    private float explosionLifetime = 2f;
     private float expansionSize = 10f;
     private float timer = 0f;
     private float explosionCheckTime = 1f;

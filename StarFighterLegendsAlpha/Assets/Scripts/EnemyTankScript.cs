@@ -17,6 +17,7 @@ public class EnemyTankScript : MonoBehaviour
     private float bulletSpeed = 10f;
     private float speed = 2.5f;
     private float rotationSpeed = 125f;
+    private bool hasSpawnedPowerup = false;
 
     private void Start()
     {
@@ -44,8 +45,9 @@ public class EnemyTankScript : MonoBehaviour
     {
         hitpoints -= damageDone;
 
-        if (hitpoints <= 0)
+        if (hitpoints <= 0 && !hasSpawnedPowerup)
         {
+            hasSpawnedPowerup = true;
             powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
             Destroy(gameObject);
         }

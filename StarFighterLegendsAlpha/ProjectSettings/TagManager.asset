@@ -10,6 +10,7 @@ TagManager:
   - EnemyTurret
   - EnemyDiver
   - Powerup
+  - Bomb
   layers:
   - Default
   - TransparentFX

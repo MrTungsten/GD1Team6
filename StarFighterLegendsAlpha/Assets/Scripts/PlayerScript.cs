@@ -18,9 +18,9 @@ public class PlayerScript : MonoBehaviour
     private float bulletTimer = .3f;
     private float bulletCooldown = .3f;
     private float bombTimer = 3f;
-    private float bombCooldown = 3f;
-    private float laserTimer = 8f;
-    private float laserCooldown = 8f;
+    private float bombCooldown = 0.5f;
+    private float laserTimer = 7f;
+    private float laserCooldown = 7f;
     private float hitpoints = 10f;
     private bool hasImmunity = false;
     private int bombCount = 5;
@@ -150,11 +150,11 @@ public class PlayerScript : MonoBehaviour
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTurret"))
                         {
-                            results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(10);
+                            results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(4);
                         }
-                        else if (results[i].gameObject.CompareTag("EnemyTurret"))
+                        else if (results[i].gameObject.CompareTag("EnemyDiver"))
                         {
-                            results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(3);
+                            results[i].gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(2);
                         }
                         laserDamageTimer = 0f;
                     }
@@ -165,7 +165,7 @@ public class PlayerScript : MonoBehaviour
                 }
                 else
                 {
-                    if (!results[i].gameObject.CompareTag("Powerup"))
+                    if (!results[i].gameObject.CompareTag("Powerup") && !results[i].gameObject.CompareTag("Bomb"))
                     {
                         Destroy(results[i].gameObject);
                     }
@@ -177,12 +177,12 @@ public class PlayerScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!hasImmunity && !collision.gameObject.CompareTag("Powerup"))
+        if (!hasImmunity && !collision.gameObject.CompareTag("Powerup") && !collision.gameObject.CompareTag("Bomb"))
         {
             hitpoints--;
             Debug.Log("Player has been hit! Hitpoints left: " + hitpoints);
 
-            if (hitpoints == 0)
+            if (hitpoints <= 0)
             {
                 Debug.Log("Player has lost!");
                 gameManagerScript.GameOver();

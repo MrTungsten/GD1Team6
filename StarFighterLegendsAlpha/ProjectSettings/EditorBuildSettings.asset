@@ -6,6 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/GameScene.unity
+    path: Assets/Scenes/Lvl1Plane.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Lvl2NewPlane.unity
+    guid: f701460a45e9c5543a30d7e286afacc2
+  - enabled: 1
+    path: Assets/Scenes/Lvl3Tank.unity
+    guid: 32e28f611de1f754a81971494b36bade
+  - enabled: 1
+    path: Assets/Scenes/Lvl4DiverPlane.unity
+    guid: a6bbf3a482e0c5241943011dbcbc3666
+  - enabled: 1
+    path: Assets/Scenes/Lvl5Turret.unity
+    guid: 4497be738975fae43abcf2c3968d3c17
   m_configObjects: {}

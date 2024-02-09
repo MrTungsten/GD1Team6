@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,22 +7,20 @@ public class EnemyDiverPlaneScript : MonoBehaviour
 {
 
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private GameObject waypoint1;
-    [SerializeField] private GameObject waypoint2;
-    [SerializeField] private GameObject waypoint3;
+    [SerializeField] private GameObject[] waypoints;
     private GameObject player;
-    private GameObject[] waypoints = new GameObject[3];
     private GameManagerScript gameManagerScript;
     private PowerupSpawnerScript powerupSpawnerScript;
     private bool isDashing = false;
-    private float dashingPower = 60f;
+    private float dashingPower = 70f;
     private float dashTime = 1.5f;
     private float returnSpeed = 5f;
     private float dashingCooldown = 5f;
     private float timer = 0f;
-    private int waypointCount = 1;
+    private int waypointCount = -1;
     private bool isReturning = false;
-    private int hitpoints = 10;
+    private int hitpoints = 15;
+    private bool hasSpawnedPowerup = false;
 
     private void Start()
     {
@@ -33,10 +30,9 @@ public class EnemyDiverPlaneScript : MonoBehaviour
         powerupSpawnerScript = GameObject.FindAnyObjectByType<PowerupSpawnerScript>();
 
         player = GameObject.FindGameObjectWithTag("Player");
-        waypoints[0] = waypoint1;
-        waypoints[1] = waypoint2;
-        waypoints[2] = waypoint3;
 
+        dashingCooldown = Random.Range(4, 7);
+        
     }
 
     private void Update()
@@ -48,6 +44,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
             {
                 StartCoroutine(Dash());
                 timer = 0f;
+                dashingCooldown = Random.Range(4, 7);
             }
             else
             {
@@ -102,7 +99,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
         rb.velocity = Vector3.zero;
 
         
-        if (waypointCount == 2)
+        if (waypointCount == (waypoints.Length - 1))
         {
             waypointCount = 0;
         }
@@ -120,8 +117,9 @@ public class EnemyDiverPlaneScript : MonoBehaviour
     {
         hitpoints -= damageDone;
 
-        if (hitpoints <= 0)
+        if (hitpoints <= 0 && !hasSpawnedPowerup)
         {
+            hasSpawnedPowerup = true;
             powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
             Destroy(gameObject);
         }

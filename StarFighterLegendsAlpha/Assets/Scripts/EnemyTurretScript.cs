@@ -12,7 +12,8 @@ public class EnemyTurretScript : MonoBehaviour
     private float rotateSpeed = 100f;
     private float rotateAmount = 0f;
     private float rotationMultiplier = 20f;
-    private float hitpoints = 40f;
+    private float hitpoints = 50f;
+    private bool hasSpawnedPowerup = false;
 
     private void Start()
     {
@@ -46,8 +47,9 @@ public class EnemyTurretScript : MonoBehaviour
     {
         hitpoints -= damageDone;
 
-        if (hitpoints <= 0)
+        if (hitpoints <= 0 && !hasSpawnedPowerup)
         {
+            hasSpawnedPowerup = true;
             powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
             Destroy(gameObject);
         }
