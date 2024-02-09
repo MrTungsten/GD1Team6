@@ -286,6 +286,7 @@ MonoBehaviour:
   playerBulletSpawner: {fileID: 6316198312247353781}
   bombPrefab: {fileID: 1437463217693388289, guid: 77af16e1bf1d56b4e98897e41a7f894d, type: 3}
   laser: {fileID: 408565341879932768}
+  laserFire: {fileID: 8300000, guid: 64136f7307f96c0449e036adb42d58ed, type: 3}
 --- !u!1 &6316198312247353781
 GameObject:
   m_ObjectHideFlags: 0

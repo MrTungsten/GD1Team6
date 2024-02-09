@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private GameObject gameOverScreenWin;
     [SerializeField] private GameObject gameOverScreenLoss;
+    [SerializeField] private Button nextLevelButton;
+    [SerializeField] private Button restartButton;
 
     private bool isGameOver = false;
     private bool victory = false;
@@ -50,13 +53,11 @@ public class GameManagerScript : MonoBehaviour
 
         if (victory)
         {
-            Debug.Log("WIN SCRENN");
             GameOverWin();
         }
 
         else
         {
-            Debug.Log("LOSS SCRENN");
             GameOverLoss();
 
         }
@@ -65,11 +66,13 @@ public class GameManagerScript : MonoBehaviour
     private void GameOverWin()
     {
         gameOverScreenWin.SetActive(true);
+        nextLevelButton.Select();
     }
 
     private void GameOverLoss()
     {
         gameOverScreenLoss.SetActive(true);
+        restartButton.Select();
     }
 
     public bool IsGameOver()

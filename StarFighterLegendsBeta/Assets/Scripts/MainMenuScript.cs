@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
 {
@@ -9,12 +10,14 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField] private GameObject title;
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject backgroundImage;
+    [SerializeField] private Button playButton;
 
     private void Start()
     {
         title.SetActive(true);
         mainMenu.SetActive(true);
         backgroundImage.SetActive(true);
+        playButton.Select();
     }
 
     public void PlayGame()

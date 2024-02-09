@@ -155,6 +155,8 @@ MonoBehaviour:
   gameOverScreen: {fileID: 615272456}
   gameOverScreenWin: {fileID: 1849288894}
   gameOverScreenLoss: {fileID: 433260116}
+  nextLevelButton: {fileID: 1281972961}
+  restartButton: {fileID: 1872596042}
 --- !u!4 &97081241
 Transform:
   m_ObjectHideFlags: 0
@@ -335,7 +337,7 @@ GameObject:
   - component: {fileID: 433260117}
   m_Layer: 5
   m_Name: LOSE SCREEN
-  m_TagString: LOSS
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1591,7 +1593,7 @@ GameObject:
   - component: {fileID: 1597583789}
   m_Layer: 5
   m_Name: ButtonTitleScreen
-  m_TagString: TITLESCREEN
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1724,7 +1726,7 @@ GameObject:
   - component: {fileID: 1849288895}
   m_Layer: 5
   m_Name: WIN SCREEN
-  m_TagString: WIN
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

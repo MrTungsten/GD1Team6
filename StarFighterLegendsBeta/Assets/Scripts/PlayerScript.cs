@@ -9,6 +9,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private GameObject playerBulletSpawner;
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private GameObject laser;
+    [SerializeField] private AudioClip laserFire;
     private GameManagerScript gameManagerScript;
     private Collider2D laserCollider = null;
     private float moveSpeed = 8f;
@@ -32,13 +33,14 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
-        gameManagerScript = GetComponent<GameManagerScript>();
+        gameManagerScript = FindAnyObjectByType<GameManagerScript>();
         laserCollider = laser.GetComponent<Collider2D>();
         laser.gameObject.SetActive(false);
     }
 
     private void Update()
     {
+
         Vector2 inputVector = new Vector2 (0, 0);
 
         if (Input.GetKey(KeyCode.UpArrow))
@@ -87,6 +89,7 @@ public class PlayerScript : MonoBehaviour
                 Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(-0.15f, 0, 0), transform.rotation);
                 Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(0.15f, 0, 0), transform.rotation);
                 bulletTimer = 0f;
+                AudioSource.PlayClipAtPoint(laserFire, playerBulletSpawner.transform.position);
             } 
         }
         else
@@ -187,8 +190,6 @@ public class PlayerScript : MonoBehaviour
                 gameManagerScript.GameOver();
                 Destroy(gameObject);
             }
-
-            StartCoroutine(HitImmunity(0.1f));
         }
     }
 
@@ -202,13 +203,6 @@ public class PlayerScript : MonoBehaviour
         {
             laserCount++;
         }
-    }
-
-    private IEnumerator HitImmunity(float immunityTime)
-    {
-        hasImmunity = true;
-        yield return new WaitForSeconds(immunityTime);
-        hasImmunity = false;
     }
 
     private IEnumerator Laser()

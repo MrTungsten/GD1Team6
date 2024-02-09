@@ -1729,7 +1729,7 @@ GameObject:
   - component: {fileID: 807972126}
   m_Layer: 5
   m_Name: LOSE SCREEN
-  m_TagString: LOSS
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2313,10 +2313,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1105445300606073453, guid: c5acb8cafcd3cc24eabd4fe7bc8035a8, type: 3}
-  gameManagerScript: {fileID: 0}
   playerBulletSpawner: {fileID: 684585763}
   bombPrefab: {fileID: 1437463217693388289, guid: 77af16e1bf1d56b4e98897e41a7f894d, type: 3}
   laser: {fileID: 849232712}
+  laserFire: {fileID: 0}
 --- !u!60 &954433025
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -3067,7 +3067,7 @@ GameObject:
   - component: {fileID: 1523890956}
   m_Layer: 5
   m_Name: ButtonTitleScreen
-  m_TagString: TITLESCREEN
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3397,7 +3397,7 @@ GameObject:
   - component: {fileID: 1703409566}
   m_Layer: 5
   m_Name: WIN SCREEN
-  m_TagString: WIN
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3804,6 +3804,8 @@ MonoBehaviour:
   gameOverScreen: {fileID: 197933894}
   gameOverScreenWin: {fileID: 1703409565}
   gameOverScreenLoss: {fileID: 807972125}
+  nextLevelButton: {fileID: 449744673}
+  restartButton: {fileID: 1759163294}
 --- !u!4 &1958646517
 Transform:
   m_ObjectHideFlags: 0
