@@ -17,6 +17,15 @@ public class GameManagerScript : MonoBehaviour
     private bool isGameOver = false;
     private bool victory = false;
 
+    private void Start()
+    {
+        if (SceneUtility.GetScenePathByBuildIndex(2) == SceneManager.GetActiveScene().path)
+        {
+            ScoreManager.Instance.ResetTotalScore();
+            ScoreManager.Instance.UpdateScoreText();
+        }
+    }
+
     private void Update()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("EnemyPlane").ToArray();
@@ -38,11 +47,10 @@ public class GameManagerScript : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKey(KeyCode.Escape))
         {
-            Application.Quit();
+            SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(0));
         }
-
     }
 
     public void GameOver()
@@ -83,10 +91,12 @@ public class GameManagerScript : MonoBehaviour
     public void NextLevel()
     {
         int sceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        if (sceneIndex > 5)
+
+        if (sceneIndex > SceneManager.sceneCountInBuildSettings - 2)
         {
             sceneIndex = 0;
         }
+
         SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(sceneIndex));
     }
 

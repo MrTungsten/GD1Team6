@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4768674925441588915}
   - component: {fileID: 6188940131092648986}
   m_Layer: 0
-  m_Name: LaserPowerupVisual
+  m_Name: ScorePowerupVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a7d7e1aba84679040902e2060baf6016, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8a8c96585e6bf4144b651740905036dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 1181104204982837116}
   - component: {fileID: 4961041231544863035}
   m_Layer: 0
-  m_Name: LaserPowerup
+  m_Name: ScorePowerup
   m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,7 +189,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2, y: 0.6}
+  m_Size: {x: 0.5, y: 0.7}
   m_EdgeRadius: 0
 --- !u!114 &4961041231544863035
 MonoBehaviour:

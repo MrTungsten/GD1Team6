@@ -9,6 +9,7 @@ public class PowerupScript : MonoBehaviour
     {
         bomb,
         laser,
+        score
     }
 
     [SerializeField] PowerupType powerupType = PowerupType.bomb;
@@ -36,6 +37,9 @@ public class PowerupScript : MonoBehaviour
                     break;
                 case PowerupType.laser:
                     collision.gameObject.GetComponent<PlayerScript>().GainedPowerup("Laser");
+                    break;
+                case PowerupType.score:
+                    collision.gameObject.GetComponent<PlayerScript>().GainedPowerup("Score");
                     break;
             }
 

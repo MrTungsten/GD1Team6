@@ -8,6 +8,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private GameObject[] waypoints;
+    [SerializeField] private GameObject enemyDiverVisual;
     private GameObject player;
     private GameManagerScript gameManagerScript;
     private PowerupSpawnerScript powerupSpawnerScript;
@@ -20,6 +21,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
     private int waypointCount = -1;
     private bool isReturning = false;
     private int hitpoints = 15;
+    private float totalHitpoints = 0f;
     private bool hasSpawnedPowerup = false;
 
     private void Start()
@@ -32,6 +34,8 @@ public class EnemyDiverPlaneScript : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
 
         dashingCooldown = Random.Range(4, 7);
+
+        totalHitpoints = hitpoints;
         
     }
 
@@ -117,10 +121,30 @@ public class EnemyDiverPlaneScript : MonoBehaviour
     {
         hitpoints -= damageDone;
 
+        enemyDiverVisual.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, (0.3f) + ((0.7f / totalHitpoints) * hitpoints));
+
+
         if (hitpoints <= 0 && !hasSpawnedPowerup)
         {
             hasSpawnedPowerup = true;
-            powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
+
+            int randomNum = Random.Range(1, 21);
+
+            if (randomNum <= 7)
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
+            }
+            else if (randomNum <= 18)
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
+            }
+            else
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Score");
+            }
+
+            ScoreManager.Instance.IncrementScore(gameObject.tag);
+
             Destroy(gameObject);
         }
     }

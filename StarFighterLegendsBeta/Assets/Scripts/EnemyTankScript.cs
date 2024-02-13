@@ -7,17 +7,20 @@ public class EnemyTankScript : MonoBehaviour
 
     [SerializeField] private GameObject tankAimer;
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private GameObject enemyTankVisual;
     private PowerupSpawnerScript powerupSpawnerScript;
     private GameManagerScript gameManagerScript;
     private PathingScript pathingScript;
     private GameObject player;
     private float hitpoints = 7f;
+    private float totalHitpoints = 0f;
     private float timer = 0f;
     private float bulletCooldown = 3f;
     private float bulletSpeed = 10f;
     private float speed = 2.5f;
     private float rotationSpeed = 125f;
     private bool hasSpawnedPowerup = false;
+    
 
     private void Start()
     {
@@ -31,6 +34,8 @@ public class EnemyTankScript : MonoBehaviour
         }
 
         powerupSpawnerScript = GameObject.FindAnyObjectByType<PowerupSpawnerScript>();
+
+        totalHitpoints = hitpoints;
     }
 
     private void Update()
@@ -45,10 +50,29 @@ public class EnemyTankScript : MonoBehaviour
     {
         hitpoints -= damageDone;
 
+        enemyTankVisual.GetComponent<SpriteRenderer>().color = new Color(0.84f, 0f, 1f, (0.75f) + ((0.25f / totalHitpoints) * hitpoints));
+
         if (hitpoints <= 0 && !hasSpawnedPowerup)
         {
             hasSpawnedPowerup = true;
-            powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
+
+            int randomNum = Random.Range(1, 7);
+
+            if (randomNum <= 4)
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
+            }
+            else if (randomNum >= 5)
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Score");
+            }
+            else
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
+            }
+
+            ScoreManager.Instance.IncrementScore(gameObject.tag);
+
             Destroy(gameObject);
         }
     }

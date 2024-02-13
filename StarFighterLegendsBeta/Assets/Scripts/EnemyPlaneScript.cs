@@ -19,6 +19,7 @@ public class EnemyPlaneScript : MonoBehaviour
     [SerializeField] private ShotType shotType = ShotType.normal;
     [SerializeField] private float speed = 3f;
     [SerializeField] private float hitpoints = 5f;
+    [SerializeField] private GameObject enemyPlaneVisual;
     private PowerupSpawnerScript powerupSpawnerScript;
     private GameManagerScript gameManagerScript;
     private PathingScript pathingScript;
@@ -29,6 +30,7 @@ public class EnemyPlaneScript : MonoBehaviour
     private float bulletCooldown = 1f;
     private float bulletSpeed = 7.5f;
     private bool hasSpawnedPowerup = false;
+    private float totalHitpoints = 0f;
 
     private void Start()
     {
@@ -46,6 +48,8 @@ public class EnemyPlaneScript : MonoBehaviour
             pathingScript.SetPathingSpeed(speed);
             pathingScript.SetRotationSpeed(0);
         }
+
+        totalHitpoints = hitpoints;
     }
 
     private void Update()
@@ -67,14 +71,24 @@ public class EnemyPlaneScript : MonoBehaviour
     {
         hitpoints -= damageDone;
 
+        enemyPlaneVisual.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 1f, (0.75f) + ((0.25f / totalHitpoints) * hitpoints));
+
         if (hitpoints <= 0 && !hasSpawnedPowerup)
         {
             hasSpawnedPowerup = true;
 
-            if (Random.Range(1, 5) == 1)
+            int randomNum = Random.Range(1, 5);
+
+            if (randomNum <= 2)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
             }
+            else if (randomNum == 5)
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Score");
+            }
+
+            ScoreManager.Instance.IncrementScore(gameObject.tag);
 
             Destroy(gameObject);
         }

@@ -196,6 +196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   payload: {fileID: 8962152061548839610}
   explosionBubble: {fileID: 1344635987758805928}
+  explosionSound: {fileID: 8300000, guid: 81a8a06931f9c824bbab2509c6a20d14, type: 3}
 --- !u!1 &8962152061548839610
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class BombPowerScript : MonoBehaviour
 
     [SerializeField] private GameObject payload;
     [SerializeField] private GameObject explosionBubble;
+    [SerializeField] private AudioClip explosionSound;
     private Rigidbody2D payloadRb;
     private CircleCollider2D explosionCircleCollider;
     private float launchForce = 8f;
@@ -14,7 +15,7 @@ public class BombPowerScript : MonoBehaviour
     private float explosionLifetime = 2f;
     private float expansionSize = 10f;
     private float timer = 0f;
-    private float explosionCheckTime = 1f;
+    private float explosionCheckTime = 0.5f;
 
     private void Start()
     {
@@ -42,6 +43,8 @@ public class BombPowerScript : MonoBehaviour
 
         float elapsedTime = 0f;
         float originalRadius = explosionCircleCollider.radius;
+
+        AudioSource.PlayClipAtPoint(explosionSound, transform.position);
 
         while (elapsedTime < (explosionLifetime / 2))
         {
@@ -76,11 +79,11 @@ public class BombPowerScript : MonoBehaviour
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTank"))
                         {
-                            results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject(3);
+                            results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject(5);
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTurret"))
                         {
-                            results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(5);
+                            results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(3);
                         }
                         else if (results[i].gameObject.CompareTag("EnemyDiver"))
                         {

@@ -11,6 +11,7 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject backgroundImage;
     [SerializeField] private Button playButton;
+    private float escapeTimer = 0f;
 
     private void Start()
     {
@@ -18,6 +19,26 @@ public class MainMenuScript : MonoBehaviour
         mainMenu.SetActive(true);
         backgroundImage.SetActive(true);
         playButton.Select();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            if (escapeTimer > 6f)
+            {
+                Application.Quit();
+                Debug.Log("Quit Game");
+            }
+            else
+            {
+                escapeTimer += Time.deltaTime;
+            }
+        }
+        else
+        {
+            escapeTimer = 0f;
+        }
     }
 
     public void PlayGame()

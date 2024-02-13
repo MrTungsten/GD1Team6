@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
@@ -10,6 +11,9 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private GameObject laser;
     [SerializeField] private AudioClip laserFire;
+    [SerializeField] private TextMeshProUGUI bombCountText;
+    [SerializeField] private TextMeshProUGUI laserCountText;
+    [SerializeField] private TextMeshProUGUI hitpointCountText;
     private GameManagerScript gameManagerScript;
     private Collider2D laserCollider = null;
     private float moveSpeed = 8f;
@@ -36,10 +40,16 @@ public class PlayerScript : MonoBehaviour
         gameManagerScript = FindAnyObjectByType<GameManagerScript>();
         laserCollider = laser.GetComponent<Collider2D>();
         laser.gameObject.SetActive(false);
+        hitpointCountText.text = hitpoints + "x";
+        bombCountText.text = bombCount + "x";
+        laserCountText.text = laserCount + "x";
     }
 
     private void Update()
     {
+
+        bombCountText.text = bombCount + "x";
+        laserCountText.text = laserCount + "x";
 
         Vector2 inputVector = new Vector2 (0, 0);
 
@@ -47,14 +57,17 @@ public class PlayerScript : MonoBehaviour
         {
             inputVector.y = 1f;
         }
+
         if (Input.GetKey(KeyCode.DownArrow))
         {
             inputVector.y = -1f;
         }
+
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             inputVector.x = -1f;
         }
+
         if (Input.GetKey(KeyCode.RightArrow))
         {
             inputVector.x = 1f;
@@ -73,6 +86,7 @@ public class PlayerScript : MonoBehaviour
         {
             transform.position = new Vector3(-xBoundary, transform.position.y, 0);
         }
+
         if (transform.position.y > yBoundary)
         {
             transform.position = new Vector3(transform.position.x, yBoundary, 0);
@@ -176,6 +190,7 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -184,13 +199,24 @@ public class PlayerScript : MonoBehaviour
         {
             hitpoints--;
 
+            hitpointCountText.text = hitpoints + "x";
+
             if (hitpoints <= 0)
             {
                 Debug.Log("Player has lost!");
                 gameManagerScript.GameOver();
                 Destroy(gameObject);
             }
+
+            StartCoroutine(HitImmunity(0.5f));
         }
+    }
+
+    public IEnumerator HitImmunity(float immuneTime)
+    {
+        hasImmunity = true;
+        yield return new WaitForSeconds(immuneTime);
+        hasImmunity = false;
     }
 
     public void GainedPowerup(string powerupName)
@@ -202,6 +228,10 @@ public class PlayerScript : MonoBehaviour
         if (powerupName == "Laser")
         {
             laserCount++;
+        }
+        if (powerupName == "Score")
+        {
+            ScoreManager.Instance.ScorePowerup();
         }
     }
 
