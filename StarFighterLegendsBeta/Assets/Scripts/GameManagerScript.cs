@@ -92,7 +92,7 @@ public class GameManagerScript : MonoBehaviour
     {
         int sceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
-        if (sceneIndex > SceneManager.sceneCountInBuildSettings - 2)
+        if (sceneIndex > (SceneManager.sceneCountInBuildSettings - 1))
         {
             sceneIndex = 0;
         }
