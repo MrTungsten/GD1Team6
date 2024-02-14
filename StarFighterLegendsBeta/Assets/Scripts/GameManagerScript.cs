@@ -102,7 +102,8 @@ public class GameManagerScript : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(2));
     }
 
     public void MainMenu()

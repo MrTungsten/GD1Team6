@@ -11,7 +11,7 @@ public class BombPowerScript : MonoBehaviour
     private Rigidbody2D payloadRb;
     private CircleCollider2D explosionCircleCollider;
     private float launchForce = 8f;
-    private float payloadLifetime = 2.5f;
+    private float payloadLifetime = 2;
     private float explosionLifetime = 2f;
     private float expansionSize = 10f;
     private float timer = 0f;

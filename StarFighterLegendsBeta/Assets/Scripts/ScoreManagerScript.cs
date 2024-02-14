@@ -62,8 +62,8 @@ public class ScoreManager : MonoBehaviour
         {
             currentScore += scoreValues[gameObjectType];
             totalScore += scoreValues[gameObjectType];
+            ScoreManager.Instance.CheckAndUpdateHighScore(); // Update the high score
             UpdateScoreText(); // Update the score text
-            CheckAndUpdateHighScore();
         }
         else
         {
@@ -116,7 +116,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     // Method to check and update high score
-    private void CheckAndUpdateHighScore()
+    public void CheckAndUpdateHighScore()
     {
         if (totalScore > highScore)
         {
