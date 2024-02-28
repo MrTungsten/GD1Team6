@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,21 +14,51 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private GameObject gameOverScreenLoss;
     [SerializeField] private Button nextLevelButton;
     [SerializeField] private Button restartButton;
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI totalScoreText;
+    [SerializeField] private TextMeshProUGUI highScoreText;
 
+    private GameObject player;
     private bool isGameOver = false;
     private bool victory = false;
+    private int initialTotalScore = 0;
+    private int initialHighScore = 0;
 
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+
         if (SceneUtility.GetScenePathByBuildIndex(2) == SceneManager.GetActiveScene().path)
         {
             ScoreManager.Instance.ResetTotalScore();
-            ScoreManager.Instance.UpdateScoreText();
+            ScoreManager.Instance.ResetHighScore();
+            ScoreManager.Instance.SetScoreJson();
+
+            PlayerStatsManager.Instance.ResetStats();
         }
+        else
+        {
+            PlayerStatsManager.Instance.AddStats(2, 1, 1);
+        }
+
+        ScoreManager.Instance.ResetCurrentScore();
+        ScoreManager.Instance.GetScoreJson();
+        ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
+
+        PlayerStatsManager.Instance.SetStats();
+
+        initialTotalScore = ScoreManager.Instance.GetTotalScore();
+        initialHighScore = ScoreManager.Instance.GetHighScore();
+
+        levelText.text = string.Format("Level\n{0}/{1}", SceneManager.GetActiveScene().buildIndex - 1, SceneManager.sceneCountInBuildSettings - 3);
     }
 
     private void Update()
     {
+
+        ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
+
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("EnemyPlane").ToArray();
         enemies = enemies.Concat(GameObject.FindGameObjectsWithTag("EnemyTank")).ToArray();
         enemies = enemies.Concat(GameObject.FindGameObjectsWithTag("EnemyTurret")).ToArray();
@@ -45,11 +76,17 @@ public class GameManagerScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Restart();
         }
+
         if (Input.GetKey(KeyCode.Escape))
         {
-            SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(0));
+            MainMenu();
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ScoreManager.Instance.ResetHighScore();
         }
     }
 
@@ -63,11 +100,9 @@ public class GameManagerScript : MonoBehaviour
         {
             GameOverWin();
         }
-
         else
         {
             GameOverLoss();
-
         }
     }
 
@@ -90,20 +125,20 @@ public class GameManagerScript : MonoBehaviour
 
     public void NextLevel()
     {
-        int sceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        PlayerStatsManager.Instance.ChangeStats();
 
-        if (sceneIndex > (SceneManager.sceneCountInBuildSettings - 1))
-        {
-            sceneIndex = 0;
-        }
+        ScoreManager.Instance.SetScoreJson();
+
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
         SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(sceneIndex));
     }
 
     public void Restart()
     {
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(2));
+        ScoreManager.Instance.ResetSceneScore(initialTotalScore, initialHighScore);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void MainMenu()

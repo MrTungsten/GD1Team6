@@ -28,12 +28,15 @@ public class EnemyPlaneScript : MonoBehaviour
     private float moveDir = 1f;
     private float timer = 0f;
     private float bulletCooldown = 1f;
-    private float bulletSpeed = 7.5f;
+    private float bulletSpeed = 4f;
     private bool hasSpawnedPowerup = false;
     private float totalHitpoints = 0f;
 
     private void Start()
     {
+
+        player = GameObject.FindGameObjectWithTag("Player");
+
         if (Random.Range(0, 2) == 0)
             moveDir = 1f;
         else
@@ -77,13 +80,13 @@ public class EnemyPlaneScript : MonoBehaviour
         {
             hasSpawnedPowerup = true;
 
-            int randomNum = Random.Range(1, 5);
+            int randomNum = Random.Range(1, 101);
 
-            if (randomNum <= 2)
+            if (randomNum <= 10)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
             }
-            else if (randomNum == 5)
+            else if (randomNum <= 15)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Score");
             }
@@ -96,8 +99,6 @@ public class EnemyPlaneScript : MonoBehaviour
 
     private void FireAtPlayer()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-
         if (shotType == ShotType.normal)
         {
 

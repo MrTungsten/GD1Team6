@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerBulletScript : MonoBehaviour
 {
 
-    private float bulletSpeed = 15f;
+    private float bulletSpeed = 25f;
     private float yBulletBoundary = 10f;
 
     private void Update()

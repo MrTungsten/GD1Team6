@@ -128,17 +128,13 @@ public class EnemyDiverPlaneScript : MonoBehaviour
         {
             hasSpawnedPowerup = true;
 
-            int randomNum = Random.Range(1, 21);
+            int randomNum = Random.Range(1, 101);
 
-            if (randomNum <= 7)
-            {
-                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
-            }
-            else if (randomNum <= 18)
+            if (randomNum <= 10)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
             }
-            else
+            else if (randomNum <= 30)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Score");
             }

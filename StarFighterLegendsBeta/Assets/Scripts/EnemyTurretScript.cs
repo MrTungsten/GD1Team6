@@ -9,13 +9,15 @@ public class EnemyTurretScript : MonoBehaviour
     [SerializeField] private GameObject[] spawners;
     [SerializeField] private GameObject enemyTurretVisual;
     private PowerupSpawnerScript powerupSpawnerScript;
-    private float bulletSpeed = 5f;
-    private float rotateSpeed = 100f;
+    private float bulletSpeed = 3f;
+    private float rotateSpeed = 125f;
     private float rotateAmount = 0f;
     private float rotationMultiplier = 20f;
     private float hitpoints = 50f;
     private bool hasSpawnedPowerup = false;
     private float totalHitpoints = 0f;
+    private float firingSpeed = 0.3f;
+    private float firingStartDelay = 2f;
 
     private void Start()
     {
@@ -34,7 +36,8 @@ public class EnemyTurretScript : MonoBehaviour
 
     private IEnumerator TurretHailFire()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(firingStartDelay);
+
         while (true)
         {
             for (int i = 0; i < 6; i++)
@@ -43,7 +46,7 @@ public class EnemyTurretScript : MonoBehaviour
                 spawnedBullet.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(firingSpeed);
         }
     }
 
@@ -57,7 +60,18 @@ public class EnemyTurretScript : MonoBehaviour
         if (hitpoints <= 0 && !hasSpawnedPowerup)
         {
             hasSpawnedPowerup = true;
-            powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
+
+            int randomNum = Random.Range(1, 101);
+
+            if (randomNum <= 20)
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
+            }
+            else
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Score");
+            }
+
             ScoreManager.Instance.IncrementScore(gameObject.tag);
             Destroy(gameObject);
         }

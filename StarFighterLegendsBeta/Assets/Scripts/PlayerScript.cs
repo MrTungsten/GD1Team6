@@ -19,37 +19,33 @@ public class PlayerScript : MonoBehaviour
     private float moveSpeed = 8f;
     private float xBoundary = 6.35f;
     private float yBoundary = 6.7f;
-    private float bulletTimer = .3f;
-    private float bulletCooldown = .3f;
+    private float bulletTimer = 0f;
+    private float bulletCooldown = .25f;
     private float bombTimer = 3f;
     private float bombCooldown = 0.5f;
     private float laserTimer = 7f;
     private float laserCooldown = 7f;
-    private float hitpoints = 10f;
+    private float hitpoints;
     private bool hasImmunity = false;
-    private int bombCount = 5;
-    private int laserCount = 1;
+    private int bombCount;
+    private int laserCount;
     private bool isLaserOn = false;
     private float laserLifeTime = 4f;
     private float laserDamageTimer = 0.5f;
     private float laserDamageCooldown = 0.5f;
 
-
     private void Start()
     {
         gameManagerScript = FindAnyObjectByType<GameManagerScript>();
+
         laserCollider = laser.GetComponent<Collider2D>();
         laser.gameObject.SetActive(false);
-        hitpointCountText.text = hitpoints + "x";
-        bombCountText.text = bombCount + "x";
-        laserCountText.text = laserCount + "x";
+
+        bulletTimer = bulletCooldown;
     }
 
     private void Update()
     {
-
-        bombCountText.text = bombCount + "x";
-        laserCountText.text = laserCount + "x";
 
         Vector2 inputVector = new Vector2 (0, 0);
 
@@ -119,6 +115,7 @@ public class PlayerScript : MonoBehaviour
                 {
                     Instantiate(bombPrefab, transform.position, transform.rotation);
                     bombCount--;
+                    UpdateStats();
                     bombTimer = 0f;
                 }
             }
@@ -136,6 +133,7 @@ public class PlayerScript : MonoBehaviour
                 {
                     StartCoroutine(Laser());
                     laserCount--;
+                    UpdateStats();
                     laserTimer = 0f;
                 }
             }
@@ -159,11 +157,11 @@ public class PlayerScript : MonoBehaviour
                     {
                         if (results[i].gameObject.CompareTag("EnemyPlane"))
                         {
-                            results[i].gameObject.GetComponent<EnemyPlaneScript>().HitByObject(1);
+                            results[i].gameObject.GetComponent<EnemyPlaneScript>().HitByObject(2);
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTank"))
                         {
-                            results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject(2);
+                            results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject(3);
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTurret"))
                         {
@@ -171,7 +169,7 @@ public class PlayerScript : MonoBehaviour
                         }
                         else if (results[i].gameObject.CompareTag("EnemyDiver"))
                         {
-                            results[i].gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(2);
+                            results[i].gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(5);
                         }
                         laserDamageTimer = 0f;
                     }
@@ -195,9 +193,21 @@ public class PlayerScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        HitByObject(collision);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        HitByObject(collision);
+    }
+
+    private void HitByObject(Collider2D collision)
+    {
         if (!hasImmunity && !collision.gameObject.CompareTag("Powerup") && !collision.gameObject.CompareTag("Bomb") && !gameManagerScript.IsGameOver())
         {
             hitpoints--;
+
+            UpdateStats();
 
             hitpointCountText.text = hitpoints + "x";
 
@@ -233,6 +243,8 @@ public class PlayerScript : MonoBehaviour
         {
             ScoreManager.Instance.ScorePowerup();
         }
+
+        UpdateStats();
     }
 
     private IEnumerator Laser()
@@ -245,4 +257,25 @@ public class PlayerScript : MonoBehaviour
         laser.gameObject.SetActive(false);
         laserCollider.enabled = false;
     }
+
+    public void SetStats(int _health, int _bombCount, int _laserCount)
+    {
+        hitpoints = _health;
+        bombCount = _bombCount;
+        laserCount = _laserCount;
+        UpdateStats();
+    }
+
+    private void UpdateStats()
+    {
+        hitpointCountText.text = hitpoints + "x";
+        bombCountText.text = bombCount + "x";
+        laserCountText.text = laserCount + "x";
+    }
+
+    public int[] GetStats()
+    {
+        return new int[] { (int)hitpoints, bombCount, laserCount };
+    }
+
 }

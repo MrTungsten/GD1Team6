@@ -16,7 +16,7 @@ public class EnemyTankScript : MonoBehaviour
     private float totalHitpoints = 0f;
     private float timer = 0f;
     private float bulletCooldown = 3f;
-    private float bulletSpeed = 10f;
+    private float bulletSpeed = 5f;
     private float speed = 2.5f;
     private float rotationSpeed = 125f;
     private bool hasSpawnedPowerup = false;
@@ -24,6 +24,8 @@ public class EnemyTankScript : MonoBehaviour
 
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+
         gameManagerScript = GameObject.FindAnyObjectByType<GameManagerScript>();
 
         pathingScript = this.GetComponent<PathingScript>();
@@ -56,19 +58,15 @@ public class EnemyTankScript : MonoBehaviour
         {
             hasSpawnedPowerup = true;
 
-            int randomNum = Random.Range(1, 7);
+            int randomNum = Random.Range(1, 101);
 
-            if (randomNum <= 4)
+            if (randomNum <= 15)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
             }
-            else if (randomNum >= 5)
+            else if (randomNum <= 25)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Score");
-            }
-            else
-            {
-                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
             }
 
             ScoreManager.Instance.IncrementScore(gameObject.tag);
@@ -78,8 +76,6 @@ public class EnemyTankScript : MonoBehaviour
     }
     private void FireAtPlayer()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-
         Vector3 dir = player.transform.position - transform.position;
         float angle = Mathf.Atan2(-dir.y, -dir.x) * Mathf.Rad2Deg;
         tankAimer.transform.rotation = Quaternion.Euler(0, 0, angle + 90);

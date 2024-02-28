@@ -39,18 +39,36 @@ public class MainMenuScript : MonoBehaviour
         {
             escapeTimer = 0f;
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            PlayGame();
+        }
     }
 
     public void PlayGame()
     {
-        SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(SceneManager.GetActiveScene().buildIndex + 1));
+        if (ScoreManager.Instance != null)
+        {
+            Destroy(ScoreManager.Instance.gameObject);
+        }
+
+        if (PlayerStatsManager.Instance != null)
+        {
+            Destroy(PlayerStatsManager.Instance.gameObject);
+        }
+
         title.SetActive(false);
         mainMenu.SetActive(false);
         backgroundImage.SetActive(false);
+
+        SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(SceneManager.GetActiveScene().buildIndex + 1));
     }
 
     public void QuitGame()
     {
+        ScoreManager.Instance.ResetHighScore();
+        ScoreManager.Instance.SetScoreJson();
         Application.Quit();
     }
 }

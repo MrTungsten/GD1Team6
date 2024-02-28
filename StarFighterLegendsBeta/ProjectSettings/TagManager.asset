@@ -57,3 +57,6 @@ TagManager:
   - name: Player
     uniqueID: 3146996509
     locked: 0
+  - name: Powerups
+    uniqueID: 2905210725
+    locked: 0

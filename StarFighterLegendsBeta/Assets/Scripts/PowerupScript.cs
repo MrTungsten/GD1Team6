@@ -13,7 +13,7 @@ public class PowerupScript : MonoBehaviour
     }
 
     [SerializeField] PowerupType powerupType = PowerupType.bomb;
-    private float fallSpeed = 3f;
+    private float fallSpeed = 1f;
     private float yBoundary = -15f;
 
     private void Update()

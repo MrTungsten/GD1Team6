@@ -10,7 +10,7 @@ public class BombPowerScript : MonoBehaviour
     [SerializeField] private AudioClip explosionSound;
     private Rigidbody2D payloadRb;
     private CircleCollider2D explosionCircleCollider;
-    private float launchForce = 8f;
+    private float launchForce = 7.5f;
     private float payloadLifetime = 2;
     private float explosionLifetime = 2f;
     private float expansionSize = 10f;
@@ -38,6 +38,7 @@ public class BombPowerScript : MonoBehaviour
         yield return new WaitForSeconds(payloadLifetime);
         payload.SetActive(false);
 
+        payloadRb.velocity = Vector3.zero;
         explosionBubble.SetActive(true);
         explosionCircleCollider.enabled = true;
 
