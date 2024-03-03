@@ -14,6 +14,8 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bombCountText;
     [SerializeField] private TextMeshProUGUI laserCountText;
     [SerializeField] private TextMeshProUGUI hitpointCountText;
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private GameObject deathExplosion;
     private GameManagerScript gameManagerScript;
     private Collider2D laserCollider = null;
     private float moveSpeed = 8f;
@@ -21,9 +23,9 @@ public class PlayerScript : MonoBehaviour
     private float yBoundary = 6.7f;
     private float bulletTimer = 0f;
     private float bulletCooldown = .25f;
-    private float bombTimer = 3f;
+    private float bombTimer = 0f;
     private float bombCooldown = 0.5f;
-    private float laserTimer = 7f;
+    private float laserTimer = 0f;
     private float laserCooldown = 7f;
     private float hitpoints;
     private bool hasImmunity = false;
@@ -42,6 +44,8 @@ public class PlayerScript : MonoBehaviour
         laser.gameObject.SetActive(false);
 
         bulletTimer = bulletCooldown;
+        bombTimer = bombCooldown;
+        laserTimer = laserCooldown;
     }
 
     private void Update()
@@ -109,7 +113,7 @@ public class PlayerScript : MonoBehaviour
 
         if (bombTimer >= bombCooldown)
         {
-            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            if (Input.GetKeyDown(KeyCode.LeftAlt) && !gameManagerScript.IsGameOver())
             {
                 if (bombCount > 0)
                 {
@@ -127,7 +131,7 @@ public class PlayerScript : MonoBehaviour
 
         if (laserTimer >= laserCooldown)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.LeftShift) && !gameManagerScript.IsGameOver())
             {
                 if (laserCount > 0 && isLaserOn != true)
                 {
@@ -188,7 +192,6 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -214,18 +217,21 @@ public class PlayerScript : MonoBehaviour
             if (hitpoints <= 0)
             {
                 Debug.Log("Player has lost!");
+                Instantiate(deathExplosion, transform.position, transform.rotation);
                 gameManagerScript.GameOver();
-                Destroy(gameObject);
+                Destroy(gameObject, this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
             }
 
-            StartCoroutine(HitImmunity(0.5f));
+            StartCoroutine(HitImmunity(2f));
         }
     }
 
     public IEnumerator HitImmunity(float immuneTime)
     {
         hasImmunity = true;
+        playerAnimator.SetBool("HasImmunity", true);
         yield return new WaitForSeconds(immuneTime);
+        playerAnimator.SetBool("HasImmunity", false);
         hasImmunity = false;
     }
 
@@ -278,4 +284,12 @@ public class PlayerScript : MonoBehaviour
         return new int[] { (int)hitpoints, bombCount, laserCount };
     }
 
+}
+
+public class DestroyOnExit : StateMachineBehaviour
+{
+    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        Destroy(animator.gameObject, stateInfo.length);
+    }
 }

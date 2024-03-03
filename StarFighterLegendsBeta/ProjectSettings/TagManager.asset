@@ -6,7 +6,6 @@ TagManager:
   tags:
   - EnemyPlane
   - EnemyTank
-  - EnemyBullet
   - EnemyTurret
   - EnemyDiver
   - Powerup
