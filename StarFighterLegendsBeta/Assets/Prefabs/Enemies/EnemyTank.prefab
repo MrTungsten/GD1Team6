@@ -123,6 +123,7 @@ MonoBehaviour:
   tankAimer: {fileID: 7292192300649703800}
   bulletPrefab: {fileID: 1105445300606073453, guid: 736e791af79da5a4e9a4c09c93b5b3db, type: 3}
   enemyTankVisual: {fileID: 7057526990654558878}
+  deathExplosion: {fileID: 4491430257218769968, guid: 8108f18ea04e802458681d9949e613bd, type: 3}
 --- !u!1 &7057526990654558878
 GameObject:
   m_ObjectHideFlags: 0

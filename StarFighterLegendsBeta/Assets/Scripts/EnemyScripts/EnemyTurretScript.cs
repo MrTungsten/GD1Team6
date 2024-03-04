@@ -8,6 +8,7 @@ public class EnemyTurretScript : MonoBehaviour
     [SerializeField] private GameObject bullets;
     [SerializeField] private GameObject[] spawners;
     [SerializeField] private GameObject enemyTurretVisual;
+    [SerializeField] private GameObject deathExplosion;
     private PowerupSpawnerScript powerupSpawnerScript;
     private float bulletSpeed = 2.5f;
     private float rotateSpeed = 125f;
@@ -15,7 +16,6 @@ public class EnemyTurretScript : MonoBehaviour
     private float rotationMultiplier = 20f;
     private float hitpoints = 50f;
     private bool hasSpawnedPowerup = false;
-    private float totalHitpoints = 0f;
     private float firingSpeed = 0.3f;
     private float firingStartDelay = 2f;
 
@@ -24,8 +24,6 @@ public class EnemyTurretScript : MonoBehaviour
         StartCoroutine(TurretHailFire());
 
         powerupSpawnerScript = GameObject.FindAnyObjectByType<PowerupSpawnerScript>();
-
-        totalHitpoints = hitpoints;
     }
 
     private void Update()
@@ -50,16 +48,28 @@ public class EnemyTurretScript : MonoBehaviour
         }
     }
 
+    private IEnumerator HitEffect()
+    {
+        enemyTurretVisual.GetComponent<SpriteRenderer>().color = Color.red;
+        foreach (Transform child in enemyTurretVisual.transform)
+        {
+            child.GetComponent<SpriteRenderer>().color = Color.red;
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        enemyTurretVisual.GetComponent<SpriteRenderer>().color = new Color(0f, 208f / 255f, 255f, 1f);
+        foreach (Transform child in enemyTurretVisual.transform)
+        {
+            child.GetComponent<SpriteRenderer>().color = new Color(147f / 255f, 147f / 255f, 147f / 255f, 1f);
+        }
+    }
+
     public void HitByObject(int damageDone)
     {
         hitpoints -= damageDone;
 
-        enemyTurretVisual.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 0f, (0.25f) + ((0.75f / totalHitpoints) * hitpoints));
-
-        foreach (Transform child in enemyTurretVisual.transform)
-        {
-            child.GetComponent<SpriteRenderer>().color = new Color(147f / 255f, 147f / 255f, 147f / 255f, (0.25f) + ((0.75f / totalHitpoints) * hitpoints));
-        }
+        StartCoroutine(HitEffect());
 
         if (hitpoints <= 0 && !hasSpawnedPowerup)
         {
@@ -77,6 +87,10 @@ public class EnemyTurretScript : MonoBehaviour
             }
 
             ScoreManager.Instance.IncrementScore(gameObject.tag);
+
+            GameObject explosion = Instantiate(deathExplosion, transform.position, transform.rotation);
+            explosion.transform.localScale = new Vector3(2f, 2f, 1);
+
             Destroy(gameObject);
         }
     }

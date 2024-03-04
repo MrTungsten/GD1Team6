@@ -31,7 +31,6 @@ public class EnemyPlaneScript : MonoBehaviour
     private float bulletCooldown = 1f;
     private float bulletSpeed = 4f;
     private bool hasSpawnedPowerup = false;
-    private float totalHitpoints = 0f;
 
     private void Start()
     {
@@ -53,7 +52,6 @@ public class EnemyPlaneScript : MonoBehaviour
             pathingScript.SetRotationSpeed(0);
         }
 
-        totalHitpoints = hitpoints;
     }
 
     private void Update()
@@ -102,9 +100,9 @@ public class EnemyPlaneScript : MonoBehaviour
 
     private IEnumerator HitEffect()
     {
-        enemyPlaneVisual.GetComponent<SpriteRenderer>().color = new Color(255f, 0f, 0f, 255f);
+        enemyPlaneVisual.GetComponent<SpriteRenderer>().color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        enemyPlaneVisual.GetComponent<SpriteRenderer>().color = new Color(255f, 255f, 255f, 255f);
+        enemyPlaneVisual.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     private void FireAtPlayer()
@@ -115,20 +113,20 @@ public class EnemyPlaneScript : MonoBehaviour
             Vector3 dir = player.transform.position - transform.position;
             float angle = Mathf.Atan2(-dir.y, -dir.x) * Mathf.Rad2Deg;
             planeAimer2.transform.rotation = Quaternion.Euler(0, 0, angle + 90);
-            bulletCooldown = 2f;
+            bulletCooldown = Random.Range(1f, 2f);
 
             if (timer > bulletCooldown)
             {
                 GameObject spawnedBullet = Instantiate(bulletPrefab, planeAimer2.transform.position, planeAimer2.transform.rotation);
                 spawnedBullet.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
                 timer = 0f;
+                bulletCooldown = Random.Range(1f, 2f);
             }
             else
             {
                 timer += Time.deltaTime;
             }
         }
-
         else if (shotType == ShotType.triple)
         {
 
@@ -136,12 +134,13 @@ public class EnemyPlaneScript : MonoBehaviour
             planeAimer1.transform.rotation = Quaternion.Euler(0, 0, 170f);
             planeAimer3.transform.rotation = Quaternion.Euler(0, 0, 190f);
 
-            bulletCooldown = 5f;
+            bulletCooldown = Random.Range(3f, 6f);
 
             if (timer > bulletCooldown)
             {
                 StartCoroutine(TripleShotBurst());
                 timer = 0f;
+                bulletCooldown = Random.Range(3f, 6f);
             }
             else
             {
@@ -151,12 +150,13 @@ public class EnemyPlaneScript : MonoBehaviour
         else if (shotType == ShotType.cross)
         {
 
-            bulletCooldown = 7.5f;
+            bulletCooldown = Random.Range(5f, 10f);
 
             if (timer > bulletCooldown)
             {
                 StartCoroutine(CrossShotBurst());
                 timer = 0f;
+                bulletCooldown = Random.Range(5f, 10f);
             }
             else
             {

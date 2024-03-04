@@ -9,6 +9,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private GameObject[] waypoints;
     [SerializeField] private GameObject enemyDiverVisual;
+    [SerializeField] private GameObject deathExplosion;
     private GameObject player;
     private GameManagerScript gameManagerScript;
     private PowerupSpawnerScript powerupSpawnerScript;
@@ -21,7 +22,6 @@ public class EnemyDiverPlaneScript : MonoBehaviour
     private int waypointCount = -1;
     private bool isReturning = false;
     private int hitpoints = 15;
-    private float totalHitpoints = 0f;
     private bool hasSpawnedPowerup = false;
 
     private void Start()
@@ -34,8 +34,6 @@ public class EnemyDiverPlaneScript : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
 
         dashingCooldown = Random.Range(4, 7);
-
-        totalHitpoints = hitpoints;
         
     }
 
@@ -121,8 +119,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
     {
         hitpoints -= damageDone;
 
-        enemyDiverVisual.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, (0.3f) + ((0.7f / totalHitpoints) * hitpoints));
-
+        StartCoroutine(HitEffect());
 
         if (hitpoints <= 0 && !hasSpawnedPowerup)
         {
@@ -141,8 +138,17 @@ public class EnemyDiverPlaneScript : MonoBehaviour
 
             ScoreManager.Instance.IncrementScore(gameObject.tag);
 
+            Instantiate(deathExplosion, transform.position, transform.rotation);
+
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator HitEffect()
+    {
+        enemyDiverVisual.GetComponent<SpriteRenderer>().color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        enemyDiverVisual.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
 }

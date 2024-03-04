@@ -62,7 +62,9 @@ public class ScoreManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No score value defined for " + gameObjectType);
+            currentScore += 150;
+            totalScore += 150;
+            CheckAndUpdateHighScore(); // Update the high score
         }
     }
 

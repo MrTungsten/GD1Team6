@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03a3c07c157dd84ba3ff5b822dc2439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  payload: {fileID: 0}
+  payload: {fileID: 8186861115877366436}
   explosionBubble: {fileID: 1344635987758805928}
   explosionSound: {fileID: 8300000, guid: 81a8a06931f9c824bbab2509c6a20d14, type: 3}
 --- !u!1 &8186861115877366436

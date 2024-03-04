@@ -34,8 +34,27 @@ public class PlayerStatsManager : MonoBehaviour
 
     public void AddStats(int healthToAdd, int bombCountToAdd, int laserCountToAdd)
     {
+
+        int[] initialPlayerStats = new int[] { playerStats[0], playerStats[1], playerStats[2] };
+
         player = GameObject.FindGameObjectWithTag("Player");
         playerStats = new int[] { playerStats[0] + healthToAdd, playerStats[1] + bombCountToAdd, playerStats[2] + laserCountToAdd };
+
+        if (playerStats[0] > 12)
+        {
+            playerStats[0] = initialPlayerStats[0];
+        }
+
+        if (playerStats[1] > 7)
+        {
+            playerStats[1] = initialPlayerStats[1];
+        }
+
+        if (playerStats[2] > 5)
+        {
+            playerStats[2] = initialPlayerStats[2];
+        }
+
         SetStats();
         Debug.Log("Added Stats!");
     }

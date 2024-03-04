@@ -7,14 +7,16 @@ public class BezierCurveFollow : MonoBehaviour
 
     [SerializeField] private Transform[] routes;
     [SerializeField] private float speedModifier = 0.25f;
+    [SerializeField] private float endToStartDelay = 2f;
     private int routeToGo = 0;
     private float tParam = 0;
     private Vector2 gameObjectPosition;
     private bool coroutineAllowed = true;
+    private bool startFollow = false;
 
     private void Update()
     {
-        if (coroutineAllowed)
+        if (coroutineAllowed && startFollow)
         {
             StartCoroutine(GoByTheRoute(routeToGo));
         }
@@ -38,7 +40,12 @@ public class BezierCurveFollow : MonoBehaviour
                 3 * (1 - tParam) * Mathf.Pow(tParam, 2) * p2 +
                 Mathf.Pow(tParam, 3) * p3;
 
+            float angle = Mathf.Atan2(gameObjectPosition.y - transform.position.y, gameObjectPosition.x - transform.position.x) * Mathf.Rad2Deg;
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle + 90));
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 250 * Time.deltaTime);
+
             transform.position = gameObjectPosition;
+
             yield return new WaitForEndOfFrame();
         }
 
@@ -48,11 +55,27 @@ public class BezierCurveFollow : MonoBehaviour
 
         if (routeToGo > routes.Length - 1)
         {
-            routeToGo = 0;
+            StartCoroutine(EndToStartDelay());
         }
+        else
+        {
+            coroutineAllowed = true;
+        }
+    }
+
+    private IEnumerator EndToStartDelay()
+    {
+        transform.gameObject.GetComponent<EnemyPlaneScript>().enabled = false;
+        yield return new WaitForSeconds(endToStartDelay);
+        transform.gameObject.GetComponent<EnemyPlaneScript>().enabled = true;
 
         coroutineAllowed = true;
+        routeToGo = 0;
+    }
 
+    public void StartFollow()
+    {
+        startFollow = true;
     }
 
 }

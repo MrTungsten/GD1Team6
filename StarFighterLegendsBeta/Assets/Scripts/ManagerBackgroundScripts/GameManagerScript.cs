@@ -93,6 +93,9 @@ public class GameManagerScript : MonoBehaviour
         {
             if (levelTransTimer <= 0 && victory)
             {
+                if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
+                    ScoreManager.Instance.IncrementScore("");
+
                 NextLevel();
             }
             else if (levelTransTimer <= 0 && !victory)

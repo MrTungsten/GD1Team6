@@ -8,12 +8,12 @@ public class EnemyTankScript : MonoBehaviour
     [SerializeField] private GameObject tankAimer;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject enemyTankVisual;
+    [SerializeField] private GameObject deathExplosion;
     private PowerupSpawnerScript powerupSpawnerScript;
     private GameManagerScript gameManagerScript;
     private PathingScript pathingScript;
     private GameObject player;
     private float hitpoints = 7f;
-    private float totalHitpoints = 0f;
     private float timer = 0f;
     private float bulletCooldown = 3f;
     private float bulletSpeed = 5f;
@@ -36,8 +36,6 @@ public class EnemyTankScript : MonoBehaviour
         }
 
         powerupSpawnerScript = GameObject.FindAnyObjectByType<PowerupSpawnerScript>();
-
-        totalHitpoints = hitpoints;
     }
 
     private void Update()
@@ -52,7 +50,7 @@ public class EnemyTankScript : MonoBehaviour
     {
         hitpoints -= damageDone;
 
-        enemyTankVisual.GetComponent<SpriteRenderer>().color = new Color(0.84f, 0f, 1f, (0.75f) + ((0.25f / totalHitpoints) * hitpoints));
+        StartCoroutine(HitEffect());
 
         if (hitpoints <= 0 && !hasSpawnedPowerup)
         {
@@ -71,9 +69,20 @@ public class EnemyTankScript : MonoBehaviour
 
             ScoreManager.Instance.IncrementScore(gameObject.tag);
 
+            GameObject explosion = Instantiate(deathExplosion, transform.position, transform.rotation);
+            explosion.transform.localScale = new Vector3(1.5f, 1.5f, 1);
+
             Destroy(gameObject);
         }
     }
+
+    private IEnumerator HitEffect()
+    {
+        enemyTankVisual.GetComponent<SpriteRenderer>().color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        enemyTankVisual.GetComponent<SpriteRenderer>().color = new Color(214f / 255f, 0f, 1f, 1f);
+    }
+
     private void FireAtPlayer()
     {
         Vector3 dir = player.transform.position - transform.position;
