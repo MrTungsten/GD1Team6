@@ -6,7 +6,7 @@ public class BezierCurveFollow : MonoBehaviour
 {
 
     [SerializeField] private Transform[] routes;
-    [SerializeField] private float speedModifier = 0.25f;
+    /*[SerializeField]*/ private float speedModifier = 0.4f;
     [SerializeField] private float endToStartDelay = 2f;
     private int routeToGo = 0;
     private float tParam = 0;
