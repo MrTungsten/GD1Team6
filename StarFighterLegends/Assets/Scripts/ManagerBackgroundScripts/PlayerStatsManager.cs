@@ -7,15 +7,20 @@ public class PlayerStatsManager : MonoBehaviour
 
     private GameObject player;
     private static int[] playerStats = null;
-    private int[] defaultStats = new int[] { 7, 1, 1 };
+    private int[] defaultStats = new int[] { 10, 1, 1 };
 
     public static PlayerStatsManager Instance { get; private set; }
 
     private void Awake()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+
         CreateSingleton();
 
-        player = GameObject.FindGameObjectWithTag("Player");
+        if (playerStats == null)
+        {
+            ResetStats();
+        }
     }
 
     private void CreateSingleton()

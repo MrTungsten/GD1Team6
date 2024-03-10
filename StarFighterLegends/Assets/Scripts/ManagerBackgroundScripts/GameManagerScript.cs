@@ -22,10 +22,13 @@ public class GameManagerScript : MonoBehaviour
     private int initialTotalScore = 0;
     private float escapeTimer = 0;
     private float levelTransTimer = 6f;
+    private float playerLifeTime = 0f;
+    private float scoreTimeLimit = 0f;
+    private int sceneIndex = 0;
 
     private void Start()
     {
-        Destroy(GameObject.Find("ThemeMusic"));
+        sceneIndex = SceneManager.GetActiveScene().buildIndex - 2;
 
         if (SceneUtility.GetScenePathByBuildIndex(2) == SceneManager.GetActiveScene().path)
         {
@@ -35,7 +38,27 @@ public class GameManagerScript : MonoBehaviour
         }
         else
         {
-            PlayerStatsManager.Instance.AddStats(2, 1, 1);
+            if ((SceneManager.GetActiveScene().buildIndex + 2) % 2 == 0)
+            {
+                PlayerStatsManager.Instance.AddStats(0, 1, 1);
+            }
+        }
+
+        if (sceneIndex <= 3)
+        {
+            scoreTimeLimit = 15f;
+        }
+        else if (sceneIndex <= 5)
+        {
+            scoreTimeLimit = 30f;
+        }
+        else if (sceneIndex <= 8)
+        {
+            scoreTimeLimit = 45f;
+        }
+        else
+        {
+            scoreTimeLimit = 60f;
         }
 
         ScoreManager.Instance.ResetCurrentScore();
@@ -50,6 +73,8 @@ public class GameManagerScript : MonoBehaviour
 
     private void Update()
     {
+
+        playerLifeTime += Time.deltaTime;
 
         ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
 
@@ -91,11 +116,27 @@ public class GameManagerScript : MonoBehaviour
 
         if (isGameOver)
         {
-            if (levelTransTimer <= 0 && victory)
+
+            if (levelTransTimer == 6f)
             {
                 if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
-                    ScoreManager.Instance.IncrementScore("");
+                {
+                    ScoreManager.Instance.IncrementScore(150);
+                    ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
+                }
 
+                Mathf.Round(playerLifeTime);
+
+                if (playerLifeTime < scoreTimeLimit)
+                {
+                    ScoreManager.Instance.IncrementScore((int)((scoreTimeLimit - playerLifeTime) / 5) * 5);
+                    ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
+
+                }
+            }
+
+            if (levelTransTimer <= 0 && victory)
+            {
                 NextLevel();
             }
             else if (levelTransTimer <= 0 && !victory)

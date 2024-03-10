@@ -5,9 +5,20 @@ using UnityEngine;
 public class ThemeMusicScript : MonoBehaviour
 {
 
+    private static ThemeMusicScript Instance;
+
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(gameObject);
     }
 
 }

@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro; // Add this line for TextMeshPro
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -60,12 +59,13 @@ public class ScoreManager : MonoBehaviour
             totalScore += scoreValues[gameObjectType];
             CheckAndUpdateHighScore(); // Update the high score
         }
-        else
-        {
-            currentScore += 150;
-            totalScore += 150;
-            CheckAndUpdateHighScore(); // Update the high score
-        }
+    }
+
+    public void IncrementScore(int scoreToAdd)
+    {
+        currentScore += scoreToAdd;
+        totalScore += scoreToAdd;
+        CheckAndUpdateHighScore(); // Update the high score
     }
 
     // Method to increment the score when the player picks up the score powerup
@@ -211,7 +211,15 @@ public class ScoreManager : MonoBehaviour
     private int GetHighestScore()
     {
         SortHighScoreList();
-        return highScores.highScoreEntryList[0].score;
+        if (highScores.highScoreEntryList.Count != 0)
+        {
+            return highScores.highScoreEntryList[0].score;
+        }
+        else
+        {
+            return 0;
+        }
+        
     }
 
     private class HighScores

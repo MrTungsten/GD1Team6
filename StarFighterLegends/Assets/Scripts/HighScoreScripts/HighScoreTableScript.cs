@@ -61,6 +61,11 @@ public class HighScoreTableScript : MonoBehaviour
 
         SortHighScoreList();
 
+        if (ScoreManager.Instance.GetTotalScore() == 0)
+        {
+            return false;
+        }
+
         if (highScores.highScoreEntryList.Count >= 10)
         {
             if (ScoreManager.Instance.GetTotalScore() > highScores.highScoreEntryList[9].score)

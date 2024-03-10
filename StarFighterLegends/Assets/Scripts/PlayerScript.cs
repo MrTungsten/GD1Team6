@@ -103,7 +103,7 @@ public class PlayerScript : MonoBehaviour
                 Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(-0.15f, 0, 0), transform.rotation);
                 Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(0.15f, 0, 0), transform.rotation);
                 bulletTimer = 0f;
-                AudioSource.PlayClipAtPoint(laserFire, playerBulletSpawner.transform.position);
+                AudioSource.PlayClipAtPoint(laserFire, playerBulletSpawner.transform.position, 0.25f);
             } 
         }
         else
@@ -284,12 +284,4 @@ public class PlayerScript : MonoBehaviour
         return new int[] { (int)hitpoints, bombCount, laserCount };
     }
 
-}
-
-public class DestroyOnExit : StateMachineBehaviour
-{
-    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        Destroy(animator.gameObject, stateInfo.length);
-    }
 }
