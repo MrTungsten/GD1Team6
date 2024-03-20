@@ -25,6 +25,7 @@ public class GameManagerScript : MonoBehaviour
     private float playerLifeTime = 0f;
     private float scoreTimeLimit = 0f;
     private int sceneIndex = 0;
+    private bool hasIncreasedScore = false;
 
     private void Start()
     {
@@ -44,21 +45,13 @@ public class GameManagerScript : MonoBehaviour
             }
         }
 
-        if (sceneIndex <= 3)
+        if (sceneIndex <= 5)
         {
-            scoreTimeLimit = 15f;
-        }
-        else if (sceneIndex <= 5)
-        {
-            scoreTimeLimit = 30f;
-        }
-        else if (sceneIndex <= 8)
-        {
-            scoreTimeLimit = 45f;
+            scoreTimeLimit = 60f;
         }
         else
         {
-            scoreTimeLimit = 60f;
+            scoreTimeLimit = 120f;
         }
 
         ScoreManager.Instance.ResetCurrentScore();
@@ -100,7 +93,7 @@ public class GameManagerScript : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Escape))
         {
-            if (escapeTimer > 6f)
+            if (escapeTimer > 3f)
             {
                 MainMenu();
             }
@@ -117,22 +110,21 @@ public class GameManagerScript : MonoBehaviour
         if (isGameOver)
         {
 
-            if (levelTransTimer == 6f)
+            if (!hasIncreasedScore)
             {
                 if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
                 {
-                    ScoreManager.Instance.IncrementScore(150);
+                    ScoreManager.Instance.IncrementScore(250);
                     ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
                 }
-
-                Mathf.Round(playerLifeTime);
 
                 if (playerLifeTime < scoreTimeLimit)
                 {
                     ScoreManager.Instance.IncrementScore((int)((scoreTimeLimit - playerLifeTime) / 5) * 5);
                     ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
-
                 }
+
+                hasIncreasedScore = true;
             }
 
             if (levelTransTimer <= 0 && victory)

@@ -25,7 +25,7 @@ public class MainMenuScript : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Escape))
         {
-            if (escapeTimer > 6f)
+            if (escapeTimer > 3f)
             {
                 Application.Quit();
                 Debug.Log("Quit Game");
