@@ -149,6 +149,7 @@ public class PlayerScript : MonoBehaviour
 
         if (isLaserOn)
         {
+            hasImmunity = true;
 
             List<Collider2D> results = new List<Collider2D>();
             int numOfCollisions = Physics2D.OverlapCollider(laserCollider, new ContactFilter2D().NoFilter(), results);
@@ -259,6 +260,7 @@ public class PlayerScript : MonoBehaviour
         laser.gameObject.SetActive(true);
         laserCollider.enabled = true;
         yield return new WaitForSeconds(laserLifeTime);
+        hasImmunity = false;
         isLaserOn = false;
         laser.gameObject.SetActive(false);
         laserCollider.enabled = false;
