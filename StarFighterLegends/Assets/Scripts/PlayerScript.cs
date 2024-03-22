@@ -259,11 +259,13 @@ public class PlayerScript : MonoBehaviour
         isLaserOn = true;
         laser.gameObject.SetActive(true);
         laserCollider.enabled = true;
+        playerAnimator.SetBool("LaserIsOn", true);
         yield return new WaitForSeconds(laserLifeTime);
         hasImmunity = false;
         isLaserOn = false;
         laser.gameObject.SetActive(false);
         laserCollider.enabled = false;
+        playerAnimator.SetBool("LaserIsOn", false);
     }
 
     public void SetStats(int _health, int _bombCount, int _laserCount)
