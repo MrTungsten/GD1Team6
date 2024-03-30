@@ -14,7 +14,7 @@ public class EnemyTurretScript : MonoBehaviour
     private float rotateSpeed = 125f;
     private float rotateAmount = 0f;
     private float rotationMultiplier = 20f;
-    private float hitpoints = 50f;
+    private float hitpoints = 75f;
     private bool hasSpawnedPowerup = false;
     private float firingSpeed = 0.3f;
     private float firingStartDelay = 2f;
@@ -65,7 +65,7 @@ public class EnemyTurretScript : MonoBehaviour
         }
     }
 
-    public void HitByObject(int damageDone)
+    public void HitByObject(float damageDone)
     {
         hitpoints -= damageDone;
 

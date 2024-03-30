@@ -338,10 +338,9 @@ MonoBehaviour:
   planeAimer1: {fileID: 1272503760603786885}
   planeAimer2: {fileID: 1539980903406361834}
   planeAimer3: {fileID: 2537801361050838045}
-  bulletPrefab: {fileID: 1105445300606073453, guid: 736e791af79da5a4e9a4c09c93b5b3db, type: 3}
+  bulletPrefab: {fileID: 1105445300606073453, guid: 285c5dc0c098f1c44b450276fc008bce, type: 3}
   autoMove: 1
   shotType: 0
   speed: 5
-  hitpoints: 5
   enemyPlaneVisual: {fileID: 5294306186211946163}
   deathExplosion: {fileID: 4491430257218769968, guid: 8108f18ea04e802458681d9949e613bd, type: 3}

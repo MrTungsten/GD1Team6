@@ -18,19 +18,19 @@ public class EnemyPlaneScript : MonoBehaviour
     [SerializeField] private bool autoMove = true;
     [SerializeField] private ShotType shotType = ShotType.normal;
     [SerializeField] private float speed = 3f;
-    [SerializeField] private float hitpoints = 5f;
     [SerializeField] private GameObject enemyPlaneVisual;
     [SerializeField] private GameObject deathExplosion;
     private PowerupSpawnerScript powerupSpawnerScript;
     private GameManagerScript gameManagerScript;
     private PathingScript pathingScript;
     private GameObject player;
-    private float xBoundary = 6.35f;
+    private float xBoundary = 9.25f;
     private float moveDir = 1f;
     private float timer = 0f;
     private float bulletCooldown = 1f;
     private float bulletSpeed = 4f;
     private bool hasSpawnedPowerup = false;
+    private float hitpoints = 5f;
 
     private void Start()
     {
@@ -52,6 +52,21 @@ public class EnemyPlaneScript : MonoBehaviour
             pathingScript.SetRotationSpeed(0);
         }
 
+        switch (shotType)
+        {
+            case ShotType.normal:
+                hitpoints = 5f;
+                break;
+
+            case ShotType.triple:
+                hitpoints = 10f;
+                break;
+
+            case ShotType.cross:
+                hitpoints = 15f;
+                break;
+        }
+
     }
 
     private void Update()
@@ -69,7 +84,7 @@ public class EnemyPlaneScript : MonoBehaviour
 
     }
 
-    public void HitByObject(int damageDone)
+    public void HitByObject(float damageDone)
     {
         hitpoints -= damageDone;
 

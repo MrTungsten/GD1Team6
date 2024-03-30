@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerBulletScript : MonoBehaviour
 {
 
+    private float damageMultiplier = 1;
     private float bulletSpeed = 25f;
-    private float yBulletBoundary = 10f;
+    private float yBulletBoundary = 10.25f;
 
     private void Update()
     {
@@ -22,24 +23,34 @@ public class PlayerBulletScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("EnemyPlane"))
         {
-            collision.gameObject.GetComponent<EnemyPlaneScript>().HitByObject(1);
+            collision.gameObject.GetComponent<EnemyPlaneScript>().HitByObject(1 * damageMultiplier);
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag("EnemyTank"))
         {
-            collision.gameObject.GetComponent<EnemyTankScript>().HitByObject(1);
+            collision.gameObject.GetComponent<EnemyTankScript>().HitByObject(1 * damageMultiplier);
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag("EnemyTurret"))
         {
-            collision.gameObject.GetComponent<EnemyTurretScript>().HitByObject(1);
+            collision.gameObject.GetComponent<EnemyTurretScript>().HitByObject(1.5f * damageMultiplier);
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag("EnemyDiver"))
         {
-            collision.gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(1);
+            collision.gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(0.5f * damageMultiplier);
             Destroy(gameObject);
         }
+        else if (collision.gameObject.CompareTag("EnemySine"))
+        {
+            collision.gameObject.GetComponent<EnemySinePlaneScript>().HitByObject(1f * damageMultiplier);
+            Destroy(gameObject);
+        }
+    }
+
+    public void SetDamageMultiplier(float _damageMultiplier)
+    {
+        damageMultiplier = _damageMultiplier;
     }
 
 }

@@ -19,10 +19,10 @@ public class PlayerScript : MonoBehaviour
     private GameManagerScript gameManagerScript;
     private Collider2D laserCollider = null;
     private float moveSpeed = 8f;
-    private float xBoundary = 6.35f;
-    private float yBoundary = 6.7f;
+    private float xBoundary = 9.25f;
+    private float yBoundary = 9.5f;
     private float bulletTimer = 0f;
-    private float bulletCooldown = .25f;
+    private float bulletCooldown = .1f;
     private float bombTimer = 0f;
     private float bombCooldown = 0.5f;
     private float laserTimer = 0f;
@@ -35,6 +35,7 @@ public class PlayerScript : MonoBehaviour
     private float laserLifeTime = 4f;
     private float laserDamageTimer = 0.5f;
     private float laserDamageCooldown = 0.5f;
+    private float damageMultiplier = 1;
 
     private void Start()
     {
@@ -100,10 +101,12 @@ public class PlayerScript : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.LeftControl))
             {
-                Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(-0.15f, 0, 0), transform.rotation);
-                Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(0.15f, 0, 0), transform.rotation);
+                GameObject playerBullet1 = Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(-0.15f, 0, 0), transform.rotation);
+                GameObject playerBullet2 = Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(0.15f, 0, 0), transform.rotation);
+                playerBullet1.GetComponent<PlayerBulletScript>().SetDamageMultiplier(damageMultiplier);
+                playerBullet2.GetComponent<PlayerBulletScript>().SetDamageMultiplier(damageMultiplier);
                 bulletTimer = 0f;
-                AudioSource.PlayClipAtPoint(laserFire, playerBulletSpawner.transform.position, 0.25f);
+                AudioSource.PlayClipAtPoint(laserFire, playerBulletSpawner.transform.position, 0.15f);
             } 
         }
         else
@@ -175,6 +178,10 @@ public class PlayerScript : MonoBehaviour
                         else if (results[i].gameObject.CompareTag("EnemyDiver"))
                         {
                             results[i].gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(5);
+                        }
+                        else if (results[i].gameObject.CompareTag("EnemySine"))
+                        {
+                            results[i].gameObject.GetComponent<EnemySinePlaneScript>().HitByObject(5);
                         }
                         laserDamageTimer = 0f;
                     }

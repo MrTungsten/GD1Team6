@@ -29,9 +29,10 @@ public class ScoreManager : MonoBehaviour
         // Initialize the score values for different GameObject types
         scoreValues = new Dictionary<string, int>();
         scoreValues["EnemyDiver"] = 15;
-        scoreValues["EnemyPlane"] = 5;
-        scoreValues["EnemyTurret"] = 20;
+        scoreValues["EnemyPlane"] = 10;
+        scoreValues["EnemyTurret"] = 50;
         scoreValues["EnemyTank"] = 10;
+        scoreValues["EnemySine"] = 15;
 
         highScore = GetHighestScore();
     }

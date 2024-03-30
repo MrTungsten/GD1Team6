@@ -14,14 +14,14 @@ public class EnemyDiverPlaneScript : MonoBehaviour
     private GameManagerScript gameManagerScript;
     private PowerupSpawnerScript powerupSpawnerScript;
     private bool isDashing = false;
-    private float dashingPower = 70f;
+    private float dashingPower = 15f;
     private float dashTime = 1.5f;
     private float returnSpeed = 5f;
     private float dashingCooldown = 5f;
     private float timer = 0f;
     private int waypointCount = -1;
     private bool isReturning = false;
-    private int hitpoints = 15;
+    private float hitpoints = 40;
     private bool hasSpawnedPowerup = false;
 
     private void Start()
@@ -46,7 +46,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
             {
                 StartCoroutine(Dash());
                 timer = 0f;
-                dashingCooldown = Random.Range(4, 7);
+                dashingCooldown = Random.Range(3, 5);
             }
             else
             {
@@ -96,6 +96,8 @@ public class EnemyDiverPlaneScript : MonoBehaviour
 
         rb.AddForce(direction * dashingPower);
 
+        rb.AddForce(transform.up * dashingPower, ForceMode2D.Impulse);
+
         yield return new WaitForSeconds(dashTime);
 
         rb.velocity = Vector3.zero;
@@ -111,11 +113,14 @@ public class EnemyDiverPlaneScript : MonoBehaviour
         }
 
         isDashing = false;
+
+        transform.position = new Vector3(0f, 10f, 0f);
+
         isReturning = true;
 
     }
 
-    public void HitByObject(int damageDone)
+    public void HitByObject(float damageDone)
     {
         hitpoints -= damageDone;
 

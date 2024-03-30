@@ -46,7 +46,7 @@ public class EnemyTankScript : MonoBehaviour
         }
     }
 
-    public void HitByObject(int damageDone)
+    public void HitByObject(float damageDone)
     {
         hitpoints -= damageDone;
 

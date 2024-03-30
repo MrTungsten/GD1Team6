@@ -10,12 +10,12 @@ public class BombPowerScript : MonoBehaviour
     [SerializeField] private AudioClip explosionSound;
     private Rigidbody2D payloadRb;
     private CircleCollider2D explosionCircleCollider;
-    private float launchForce = 7.5f;
-    private float payloadLifetime = 2;
+    private float launchForce = 10f;
+    private float payloadLifetime = 2f;
     private float explosionLifetime = 3f;
-    private float expansionSize = 10f;
+    private float expansionSize = 12.5f;
     private float timer = 0f;
-    private float explosionCheckTime = 0.5f;
+    private float explosionCheckTime = 0.4f;
 
     private void Start()
     {
@@ -55,7 +55,7 @@ public class BombPowerScript : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
+        
         yield return new WaitForSeconds(explosionLifetime);
 
         Destroy(this.gameObject);
@@ -88,8 +88,16 @@ public class BombPowerScript : MonoBehaviour
                         }
                         else if (results[i].gameObject.CompareTag("EnemyDiver"))
                         {
-                            results[i].gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(2);
+                            results[i].gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(5);
                         }
+                        else if (results[i].gameObject.CompareTag("EnemySine"))
+                        {
+                            results[i].gameObject.GetComponent<EnemySinePlaneScript>().HitByObject(5);
+                        }
+                    }
+                    else if (results[i].gameObject.CompareTag("EnemyBullet"))
+                    {
+                        Destroy(results[i].gameObject);
                     }
                 }
 

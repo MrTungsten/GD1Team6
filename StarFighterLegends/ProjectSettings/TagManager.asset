@@ -10,6 +10,8 @@ TagManager:
   - EnemyDiver
   - Powerup
   - Bomb
+  - EnemyBullet
+  - EnemySine
   layers:
   - Default
   - TransparentFX

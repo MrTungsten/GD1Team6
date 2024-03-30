@@ -5,13 +5,17 @@ using UnityEngine;
 public class EnemyBulletScript : MonoBehaviour
 {
 
-    private float bulletSpeed;
+    [SerializeField] private bool autoMove = true;
+    private float bulletSpeed = 5f;
     private float xBulletBoundary = 15f;
     private float yBulletBoundary = 15f;
 
     private void Update()
     {
-        transform.position += transform.up * bulletSpeed * Time.deltaTime;
+        if (autoMove)
+        {
+            transform.position += transform.up * bulletSpeed * Time.deltaTime;
+        }
 
         if (transform.position.x < -xBulletBoundary || transform.position.x > xBulletBoundary)
         {
@@ -27,6 +31,11 @@ public class EnemyBulletScript : MonoBehaviour
     public void SetSpeed(float speed)
     {
         bulletSpeed = speed;
+    }
+
+    public void SetAutoMove(bool shouldAutoMove)
+    {
+        autoMove = shouldAutoMove;
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
