@@ -14,7 +14,7 @@ public class SinusoidalPath : MonoBehaviour
     {
         position += transform.position;
 
-        if (moveSpeed == null)
+        if (moveSpeed == 0)
         {
             SetSettings(1, 4f, 5f, 1f);
         }

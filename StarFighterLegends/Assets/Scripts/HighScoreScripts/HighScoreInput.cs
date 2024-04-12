@@ -10,7 +10,14 @@ public class HighScoreInput : MonoBehaviour
     private GameObject table;
     private Transform playerInputBox;
     private Transform playerNameInput;
-    private List<Button> listOfAlphas = new List<Button>();
+    private char playerFirstInitial;
+    private char playerSecondInitial;
+    private char playerThirdInitial;
+    private char[] listOfAlphabet = new char[]
+    {
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' 
+    };
+    private char currentlySelectedChar = 'A';
     private string playerName = "";
     private bool submitted = false;
 
@@ -28,11 +35,6 @@ public class HighScoreInput : MonoBehaviour
         if (highScoreTableScript.ReturnValidHighScore())
         {
             table.SetActive(false);
-
-            foreach (RectTransform children in GameObject.Find("HighScoreButtons").transform)
-            {
-                listOfAlphas.Add(children.GetComponent<Button>());
-            }
 
             foreach (Button button in listOfAlphas)
             {
@@ -70,13 +72,7 @@ public class HighScoreInput : MonoBehaviour
     {
         if (!(playerName.Length >= 3))
         {
-            playerName += button.GetComponentInChildren<TextMeshProUGUI>().text;
             playerInputBox.GetComponent<TextMeshProUGUI>().text = playerName;
-
-            if (playerName.Length >= 3)
-            {
-                submitted = true;
-            }
         }
         else
         {

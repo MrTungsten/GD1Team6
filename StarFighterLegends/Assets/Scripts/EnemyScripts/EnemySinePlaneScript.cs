@@ -9,14 +9,14 @@ public class EnemySinePlaneScript : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject enemyPlaneVisual;
     [SerializeField] private GameObject deathExplosion;
-    [SerializeField] private float speed = 3f;
     private GameManagerScript gameManagerScript;
     private PowerupSpawnerScript powerupSpawnerScript;
     private GameObject player;
     private float timer = 0f;
     private float bulletCooldown = 4f;
+    private float bulletSpeed = 4f;
     private bool isShooting = false;
-    private int amountOfBullets = 10;
+    private int amountOfBullets = 35;
     private bool hasSpawnedPowerup = false;
     private float hitpoints = 20f;
 
@@ -62,16 +62,16 @@ public class EnemySinePlaneScript : MonoBehaviour
     {
         isShooting = true;
 
-        for (int i = 0; i < 35; i++)
+        for (int i = 0; i < amountOfBullets; i++)
         {
             GameObject spawnedBullet1 = Instantiate(bulletPrefab, planeAimer1.transform.position, planeAimer1.transform.rotation);
             GameObject spawnedBullet2 = Instantiate(bulletPrefab, planeAimer1.transform.position, planeAimer1.transform.rotation);
             spawnedBullet1.GetComponent<SinusoidalPath>().enabled = true;
             spawnedBullet1.GetComponent<EnemyBulletScript>().SetAutoMove(false);
-            spawnedBullet1.GetComponent<SinusoidalPath>().SetSettings(1, 4f, 4.5f, 1f);
+            spawnedBullet1.GetComponent<SinusoidalPath>().SetSettings(1, bulletSpeed, 4.5f, 1f);
             spawnedBullet2.GetComponent<SinusoidalPath>().enabled = true;
             spawnedBullet2.GetComponent<EnemyBulletScript>().SetAutoMove(false);
-            spawnedBullet2.GetComponent<SinusoidalPath>().SetSettings(-1, 4f, 4.5f, 1f);
+            spawnedBullet2.GetComponent<SinusoidalPath>().SetSettings(-1, bulletSpeed, 4.5f, 1f);
             yield return new WaitForSeconds(0.06f);
         }
 

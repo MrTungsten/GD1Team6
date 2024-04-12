@@ -58,13 +58,17 @@ public class HighScoreTableScript : MonoBehaviour
 
     public bool ReturnValidHighScore()
     {
-
-        SortHighScoreList();
+        if (ScoreManager.Instance == null)
+        {
+            return false;
+        }
 
         if (ScoreManager.Instance.GetTotalScore() == 0)
         {
             return false;
         }
+
+        SortHighScoreList();
 
         if (highScores.highScoreEntryList.Count >= 10)
         {
