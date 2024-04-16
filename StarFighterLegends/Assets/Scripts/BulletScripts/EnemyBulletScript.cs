@@ -5,6 +5,12 @@ using UnityEngine;
 public class EnemyBulletScript : MonoBehaviour
 {
 
+    public enum BulletMovement
+    {
+        Normal,
+        Delayed
+    }
+
     [SerializeField] private bool autoMove = true;
     private float bulletSpeed = 5f;
     private float xBulletBoundary = 15f;

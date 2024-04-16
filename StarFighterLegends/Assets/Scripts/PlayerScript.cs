@@ -32,9 +32,9 @@ public class PlayerScript : MonoBehaviour
     private int bombCount;
     private int laserCount;
     private bool isLaserOn = false;
-    private float laserLifeTime = 4f;
-    private float laserDamageTimer = 0.5f;
-    private float laserDamageCooldown = 0.5f;
+    private float laserLifeTime = 2f;
+    private float laserDamageTimer = 0.25f;
+    private float laserDamageCooldown = 0.25f;
     private float damageMultiplier = 1;
 
     private void Start()
@@ -173,15 +173,15 @@ public class PlayerScript : MonoBehaviour
                         }
                         else if (results[i].gameObject.CompareTag("EnemyTurret"))
                         {
-                            results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(4);
+                            results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(6);
                         }
                         else if (results[i].gameObject.CompareTag("EnemyDiver"))
                         {
-                            results[i].gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(5);
+                            results[i].gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(6);
                         }
                         else if (results[i].gameObject.CompareTag("EnemySine"))
                         {
-                            results[i].gameObject.GetComponent<EnemySinePlaneScript>().HitByObject(5);
+                            results[i].gameObject.GetComponent<EnemySinePlaneScript>().HitByObject(4);
                         }
                         laserDamageTimer = 0f;
                     }

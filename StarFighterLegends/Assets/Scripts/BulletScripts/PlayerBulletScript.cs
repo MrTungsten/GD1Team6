@@ -38,7 +38,7 @@ public class PlayerBulletScript : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("EnemyDiver"))
         {
-            collision.gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(0.5f * damageMultiplier);
+            collision.gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(1f * damageMultiplier);
             Destroy(gameObject);
         }
         else if (collision.gameObject.CompareTag("EnemySine"))

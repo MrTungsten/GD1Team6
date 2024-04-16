@@ -6,7 +6,7 @@ public class SinusoidalPath : MonoBehaviour
 {
 
     private Vector3 position;
-    float moveSpeed, frequency, magnitude;
+    private float moveSpeed, frequency, magnitude;
 	private float moveDirection = 1f;
     private float timer = 0f;
 

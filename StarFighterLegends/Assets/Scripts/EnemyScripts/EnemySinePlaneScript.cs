@@ -16,7 +16,7 @@ public class EnemySinePlaneScript : MonoBehaviour
     private float bulletCooldown = 4f;
     private float bulletSpeed = 4f;
     private bool isShooting = false;
-    private int amountOfBullets = 35;
+    private int amountOfBullets = 30;
     private bool hasSpawnedPowerup = false;
     private float hitpoints = 20f;
 

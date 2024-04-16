@@ -16,8 +16,8 @@ public class EnemyTurretScript : MonoBehaviour
     private float rotationMultiplier = 20f;
     private float hitpoints = 75f;
     private bool hasSpawnedPowerup = false;
-    private float firingSpeed = 0.3f;
-    private float firingStartDelay = 2f;
+    private float firingSpeed = 0.4f;
+    private float firingStartDelay = 1f;
 
     private void Start()
     {

@@ -14,14 +14,14 @@ public class EnemyDiverPlaneScript : MonoBehaviour
     private GameManagerScript gameManagerScript;
     private PowerupSpawnerScript powerupSpawnerScript;
     private bool isDashing = false;
-    private float dashingPower = 15f;
+    private float dashingPower = 13f;
     private float dashTime = 1.5f;
     private float returnSpeed = 5f;
     private float dashingCooldown = 5f;
     private float timer = 0f;
     private int waypointCount = -1;
     private bool isReturning = false;
-    private float hitpoints = 40;
+    private float hitpoints = 35f;
     private bool hasSpawnedPowerup = false;
 
     private void Start()
