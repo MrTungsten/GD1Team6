@@ -33,6 +33,7 @@ public class ScoreManager : MonoBehaviour
         scoreValues["EnemyTurret"] = 50;
         scoreValues["EnemyTank"] = 10;
         scoreValues["EnemySine"] = 15;
+        scoreValues["EnemyDelayed"] = 20;
 
         highScore = GetHighestScore();
     }

@@ -12,15 +12,34 @@ public class EnemyBulletScript : MonoBehaviour
     }
 
     [SerializeField] private bool autoMove = true;
+    [SerializeField] private BulletMovement bulletMovement = BulletMovement.Normal;
+    [SerializeField] private AnimationCurve delayedBulletAnimationCurve;
+    private Rigidbody2D bulletRb;
     private float bulletSpeed = 5f;
-    private float xBulletBoundary = 15f;
-    private float yBulletBoundary = 15f;
+    private float xBulletBoundary = 30f;
+    private float yBulletBoundary = 30f;
+    private float bulletLifetime = 0f;
+
+    private void Start()
+    {
+        bulletRb = GetComponent<Rigidbody2D>();
+    }
 
     private void Update()
     {
         if (autoMove)
         {
-            transform.position += transform.up * bulletSpeed * Time.deltaTime;
+            if (bulletMovement == BulletMovement.Normal)
+            {
+                transform.position += transform.up * bulletSpeed * Time.deltaTime;
+            }
+            
+            if (bulletMovement == BulletMovement.Delayed)
+            {
+                bulletLifetime += Time.deltaTime;
+                bulletSpeed = delayedBulletAnimationCurve.Evaluate(bulletLifetime);
+                transform.position += transform.up * bulletSpeed * Time.deltaTime;
+            }
         }
 
         if (transform.position.x < -xBulletBoundary || transform.position.x > xBulletBoundary)

@@ -183,6 +183,10 @@ public class PlayerScript : MonoBehaviour
                         {
                             results[i].gameObject.GetComponent<EnemySinePlaneScript>().HitByObject(4);
                         }
+                        else if (results[i].gameObject.CompareTag("EnemyDelayed"))
+                        {
+                            results[i].gameObject.GetComponent<EnemyDelayedScript>().HitByObject(5);
+                        }
                         laserDamageTimer = 0f;
                     }
                     else

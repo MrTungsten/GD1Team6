@@ -2,23 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyTurretScript : MonoBehaviour
+public class EnemyDelayedScript : MonoBehaviour
 {
-
     [SerializeField] private GameObject bullets;
     [SerializeField] private GameObject[] spawners;
-    [SerializeField] private GameObject enemyTurretVisual;
+    [SerializeField] private GameObject enemyDelayedPlaneVisual;
     [SerializeField] private GameObject deathExplosion;
     private PowerupSpawnerScript powerupSpawnerScript;
-    private float bulletSpeed = 2.5f;
-    private float rotateSpeed = 125f;
+    private float hitpoints = 50f;
+    private float rotateSpeed = 50f;
     private float rotateAmount = 0f;
     private float rotationMultiplier = 20f;
-    private float hitpoints = 75f;
     private bool hasSpawnedPowerup = false;
-    private float firingSpeed = 0.4f;
-    private float firingStartDelay = 1f;
-    private float spawnerRadius = 0.75f;
+    private float firingShotDelay = 0.05f;
+    private float shotTimer = 0f;
+    private float shotCooldown = 5f;
+    private float spawnerRadius = 1f;
 
     private void Start()
     {
@@ -26,9 +25,10 @@ public class EnemyTurretScript : MonoBehaviour
         {
             spawners[i].transform.position = transform.position + new Vector3(Mathf.Cos((360f / spawners.Length) * (i + 1) * Mathf.Deg2Rad), Mathf.Sin((360f / spawners.Length) * (i + 1) * Mathf.Deg2Rad), 0) * spawnerRadius;
             spawners[i].transform.rotation = Quaternion.Euler(0, 0, (360f / spawners.Length) * (i + 1));
+            Debug.Log((360f / spawners.Length) * (i + 1));
         }
-
-        StartCoroutine(TurretHailFire());
+        
+        shotTimer = shotCooldown;
 
         powerupSpawnerScript = GameObject.FindAnyObjectByType<PowerupSpawnerScript>();
     }
@@ -37,39 +37,34 @@ public class EnemyTurretScript : MonoBehaviour
     {
         rotateAmount += rotationMultiplier * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, 10 * rotateAmount), rotateSpeed * Time.deltaTime);
+
+        if (shotTimer > shotCooldown)
+        {
+            StartCoroutine(EnemyDelayedPlaneShot());
+            shotTimer = 0f;
+        }
+        else
+        {
+            shotTimer += Time.deltaTime;
+        }
     }
 
-    private IEnumerator TurretHailFire()
+    private IEnumerator EnemyDelayedPlaneShot()
     {
-        yield return new WaitForSeconds(firingStartDelay);
-
-        while (true)
+        for (int i = 0; i < spawners.Length; i++)
         {
-            for (int i = 0; i < spawners.Length; i++)
-            {
-                GameObject spawnedBullet = Instantiate(bullets, spawners[i].transform.position, spawners[i].transform.rotation);
-                spawnedBullet.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
-            }
-
-            yield return new WaitForSeconds(firingSpeed);
+            Instantiate(bullets, spawners[i].transform.position, spawners[i].transform.rotation);
+            yield return new WaitForSeconds(firingShotDelay);
         }
     }
 
     private IEnumerator HitEffect()
     {
-        enemyTurretVisual.GetComponent<SpriteRenderer>().color = Color.red;
-        foreach (Transform child in enemyTurretVisual.transform)
-        {
-            child.GetComponent<SpriteRenderer>().color = Color.red;
-        }
+        enemyDelayedPlaneVisual.GetComponent<SpriteRenderer>().color = Color.red;
 
         yield return new WaitForSeconds(0.1f);
 
-        enemyTurretVisual.GetComponent<SpriteRenderer>().color = new Color(0f, 208f / 255f, 255f, 1f);
-        foreach (Transform child in enemyTurretVisual.transform)
-        {
-            child.GetComponent<SpriteRenderer>().color = new Color(147f / 255f, 147f / 255f, 147f / 255f, 1f);
-        }
+        enemyDelayedPlaneVisual.GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 0f, 1f);
     }
 
     public void HitByObject(float damageDone)
@@ -101,5 +96,4 @@ public class EnemyTurretScript : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
 }

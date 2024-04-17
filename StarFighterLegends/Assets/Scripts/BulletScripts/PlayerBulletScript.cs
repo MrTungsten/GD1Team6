@@ -46,6 +46,11 @@ public class PlayerBulletScript : MonoBehaviour
             collision.gameObject.GetComponent<EnemySinePlaneScript>().HitByObject(1f * damageMultiplier);
             Destroy(gameObject);
         }
+        else if (collision.gameObject.CompareTag("EnemyDelayed"))
+        {
+            collision.gameObject.GetComponent<EnemyDelayedScript>().HitByObject(1f * damageMultiplier);
+            Destroy(gameObject);
+        }
     }
 
     public void SetDamageMultiplier(float _damageMultiplier)

@@ -94,6 +94,10 @@ public class BombPowerScript : MonoBehaviour
                         {
                             results[i].gameObject.GetComponent<EnemySinePlaneScript>().HitByObject(5);
                         }
+                        else if (results[i].gameObject.CompareTag("EnemyDelayed"))
+                        {
+                            results[i].gameObject.GetComponent<EnemyDelayedScript>().HitByObject(5);
+                        }
                     }
                     else if (results[i].gameObject.CompareTag("EnemyBullet"))
                     {

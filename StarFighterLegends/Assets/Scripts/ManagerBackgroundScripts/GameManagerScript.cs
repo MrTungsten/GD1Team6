@@ -21,7 +21,7 @@ public class GameManagerScript : MonoBehaviour
     private bool victory = false;
     private int initialTotalScore = 0;
     private float escapeTimer = 0;
-    private float levelTransTimer = 4f;
+    private float levelTransTimer = 6f;
     private float playerLifeTime = 0f;
     private float scoreTimeLimit = 0f;
     private int sceneIndex = 0;
@@ -76,6 +76,7 @@ public class GameManagerScript : MonoBehaviour
         enemies = enemies.Concat(GameObject.FindGameObjectsWithTag("EnemyTurret")).ToArray();
         enemies = enemies.Concat(GameObject.FindGameObjectsWithTag("EnemyDiver")).ToArray();
         enemies = enemies.Concat(GameObject.FindGameObjectsWithTag("EnemySine")).ToArray();
+        enemies = enemies.Concat(GameObject.FindGameObjectsWithTag("EnemyDelayed")).ToArray();
 
         int numOfEnemies = enemies.Length;
 
@@ -138,14 +139,7 @@ public class GameManagerScript : MonoBehaviour
             }
             else
             {
-                if (levelTransTimer >= 3)
-                    countdownText.text = "Continuing in 3";
-                else if (levelTransTimer >= 2)
-                    countdownText.text = "Continuing in 2";
-                else if (levelTransTimer >= 1)
-                    countdownText.text = "Continuing in 1";
-                else
-                    countdownText.text = "Continuing in 0";
+                countdownText.text = $"Continuing in {Mathf.Floor(levelTransTimer)}";
 
                 levelTransTimer -= Time.deltaTime;
             }
