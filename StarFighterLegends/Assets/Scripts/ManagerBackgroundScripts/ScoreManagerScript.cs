@@ -73,8 +73,8 @@ public class ScoreManager : MonoBehaviour
     // Method to increment the score when the player picks up the score powerup
     public void ScorePowerup()
     {
-        currentScore += 25;
-        totalScore += 25;
+        currentScore += 100;
+        totalScore += 100;
         CheckAndUpdateHighScore(); // Update the high score
     }
 

@@ -16,6 +16,7 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI totalScoreText;
     [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private TextMeshProUGUI scoreTimeBonusText;
 
     private bool isGameOver = false;
     private bool victory = false;
@@ -24,6 +25,7 @@ public class GameManagerScript : MonoBehaviour
     private float levelTransTimer = 6f;
     private float playerLifeTime = 0f;
     private float scoreTimeLimit = 0f;
+    private int scoreTimeBonus = 0;
     private int sceneIndex = 0;
     private bool hasIncreasedScore = false;
 
@@ -122,7 +124,9 @@ public class GameManagerScript : MonoBehaviour
 
                 if (playerLifeTime < scoreTimeLimit)
                 {
-                    ScoreManager.Instance.IncrementScore((int)((scoreTimeLimit - playerLifeTime) / 5) * 5);
+                    scoreTimeBonus = ((int)((scoreTimeLimit - playerLifeTime) / 5)) * 5;
+                    ScoreManager.Instance.IncrementScore(scoreTimeBonus);
+                    scoreTimeBonusText.text = $"Time Score: {scoreTimeBonus}";
                     ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
                 }
 
