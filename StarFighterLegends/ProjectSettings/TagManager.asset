@@ -13,6 +13,8 @@ TagManager:
   - EnemyBullet
   - EnemySine
   - EnemyDelayed
+  - hitbox
+  - audio
   layers:
   - Default
   - TransparentFX

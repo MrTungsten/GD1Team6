@@ -470,6 +470,7 @@ MonoBehaviour:
   totalScoreText: {fileID: 918381372}
   highScoreText: {fileID: 600719519}
   countdownText: {fileID: 70859307}
+  scoreTimeBonusText: {fileID: 0}
 --- !u!4 &97081241
 Transform:
   m_ObjectHideFlags: 0

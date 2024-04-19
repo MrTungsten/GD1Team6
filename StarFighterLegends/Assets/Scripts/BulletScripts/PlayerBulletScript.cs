@@ -11,7 +11,7 @@ public class PlayerBulletScript : MonoBehaviour
 
     private void Update()
     {
-        transform.position += transform.up * Time.deltaTime * bulletSpeed;
+        transform.position += transform.up * Time.unscaledDeltaTime * bulletSpeed;
 
         if (transform.position.y > yBulletBoundary)
         {

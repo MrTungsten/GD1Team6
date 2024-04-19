@@ -103,7 +103,7 @@ public class GameManagerScript : MonoBehaviour
             }
             else
             {
-                escapeTimer += Time.deltaTime;
+                escapeTimer += Time.unscaledDeltaTime;
             }
         }
         else

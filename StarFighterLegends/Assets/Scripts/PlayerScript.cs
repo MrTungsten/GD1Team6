@@ -16,8 +16,10 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hitpointCountText;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private GameObject deathExplosion;
+    [SerializeField] private GameObject slowTimeEffect;
     private GameManagerScript gameManagerScript;
     private Collider2D laserCollider = null;
+    private AudioSource playerAudioSource;
     private float moveSpeed = 8f;
     private float xBoundary = 9.25f;
     private float yBoundary = 9.5f;
@@ -36,6 +38,13 @@ public class PlayerScript : MonoBehaviour
     private float laserDamageTimer = 0.25f;
     private float laserDamageCooldown = 0.25f;
     private float damageMultiplier = 1;
+    private float activeSlowDuration = 5f;
+    private float slowTimeTimer = 0f;
+    private float slowTimeCooldown = 5f;
+    private bool slowTimeActive = false;
+    private bool makeTrail = false;
+    private float makeTrailTimer = 0f;
+    private float makeTrailCooldown = 0.05f;
 
     private void Start()
     {
@@ -47,6 +56,9 @@ public class PlayerScript : MonoBehaviour
         bulletTimer = bulletCooldown;
         bombTimer = bombCooldown;
         laserTimer = laserCooldown;
+        slowTimeTimer = slowTimeCooldown;
+
+        playerAudioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -106,12 +118,12 @@ public class PlayerScript : MonoBehaviour
                 playerBullet1.GetComponent<PlayerBulletScript>().SetDamageMultiplier(damageMultiplier);
                 playerBullet2.GetComponent<PlayerBulletScript>().SetDamageMultiplier(damageMultiplier);
                 bulletTimer = 0f;
-                AudioSource.PlayClipAtPoint(laserFire, playerBulletSpawner.transform.position, 0.15f);
+                AudioSource.PlayClipAtPoint(laserFire, playerBulletSpawner.transform.position, 0.35f);
             } 
         }
         else
         {
-            bulletTimer += Time.deltaTime;
+            bulletTimer += Time.unscaledDeltaTime;
         }
 
         if (bombTimer >= bombCooldown)
@@ -129,7 +141,7 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
-            bombTimer += Time.deltaTime;
+            bombTimer += Time.unscaledDeltaTime;
         }
 
         if (laserTimer >= laserCooldown)
@@ -147,7 +159,7 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
-            laserTimer += Time.deltaTime;
+            laserTimer += Time.unscaledDeltaTime;
         }
 
         if (isLaserOn)
@@ -191,7 +203,7 @@ public class PlayerScript : MonoBehaviour
                     }
                     else
                     {
-                        laserDamageTimer += Time.deltaTime;
+                        laserDamageTimer += Time.unscaledDeltaTime;
                     }
                 }
                 else
@@ -203,6 +215,57 @@ public class PlayerScript : MonoBehaviour
                 }
             }
         }
+
+        if (!slowTimeActive)
+        {
+            if (slowTimeTimer > slowTimeCooldown)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    StartCoroutine(SlowTimeEffect());
+                    slowTimeTimer = 0f;
+                }
+            }
+            else
+            {
+                slowTimeTimer += Time.deltaTime;
+            }
+        }
+
+        if (makeTrail)
+        {
+            if (makeTrailTimer > makeTrailCooldown)
+            {
+                GameObject currentFrame = Instantiate(slowTimeEffect, transform.position, Quaternion.Euler(0, 0, -90));
+                Sprite currentSprite = transform.Find("PlayerVisual").GetComponent<SpriteRenderer>().sprite;
+                currentFrame.GetComponent<SpriteRenderer>().sprite = currentSprite;
+                
+                Destroy(currentFrame, 1f);
+                makeTrailTimer = 0f;
+            }
+            else
+            {
+                makeTrailTimer += Time.unscaledDeltaTime;
+            }
+        }
+
+    }
+
+    private IEnumerator SlowTimeEffect()
+    {
+        slowTimeActive = true;
+        Time.timeScale = 0.25f;
+        moveSpeed = (moveSpeed * (1 / Time.timeScale)) * 0.5f;
+        Debug.Log( (1 / Time.timeScale) );
+        playerAudioSource.Play();
+        makeTrail = true;
+
+        yield return new WaitForSecondsRealtime(activeSlowDuration);
+
+        slowTimeActive = false;
+        Time.timeScale = 1f;
+        moveSpeed = 8f;
+        makeTrail = false;
 
     }
 

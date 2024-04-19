@@ -25,7 +25,6 @@ public class EnemyDelayedScript : MonoBehaviour
         {
             spawners[i].transform.position = transform.position + new Vector3(Mathf.Cos((360f / spawners.Length) * (i + 1) * Mathf.Deg2Rad), Mathf.Sin((360f / spawners.Length) * (i + 1) * Mathf.Deg2Rad), 0) * spawnerRadius;
             spawners[i].transform.rotation = Quaternion.Euler(0, 0, (360f / spawners.Length) * (i + 1));
-            Debug.Log((360f / spawners.Length) * (i + 1));
         }
         
         shotTimer = shotCooldown;

@@ -52,7 +52,7 @@ public class BombPowerScript : MonoBehaviour
             float currentRadius = Mathf.Lerp(originalRadius, originalRadius * expansionSize, elapsedTime / (explosionLifetime / 4));
             transform.localScale = new Vector3(1, 1, 0) * currentRadius;
 
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
         
@@ -109,7 +109,7 @@ public class BombPowerScript : MonoBehaviour
             }
             else
             {
-                timer += Time.deltaTime;
+                timer += Time.unscaledDeltaTime;
             }
         }
     }
