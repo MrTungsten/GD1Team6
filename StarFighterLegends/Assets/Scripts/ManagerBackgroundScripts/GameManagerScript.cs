@@ -17,7 +17,6 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] private TextMeshProUGUI countdownText;
     [SerializeField] private TextMeshProUGUI scoreTimeBonusText;
-
     private bool isGameOver = false;
     private bool victory = false;
     private int initialTotalScore = 0;

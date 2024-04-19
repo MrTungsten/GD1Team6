@@ -8,10 +8,10 @@ public class BombPowerScript : MonoBehaviour
     [SerializeField] private GameObject payload;
     [SerializeField] private GameObject explosionBubble;
     [SerializeField] private AudioClip explosionSound;
-    private Rigidbody2D payloadRb;
+    [SerializeField] private AnimationCurve payloadSpeed;
     private CircleCollider2D explosionCircleCollider;
-    private float launchForce = 10f;
-    private float payloadLifetime = 2f;
+    private float payloadLifetime = 0f;
+    private float payloadDuration = 2f;
     private float explosionLifetime = 3f;
     private float expansionSize = 12.5f;
     private float timer = 0f;
@@ -19,8 +19,6 @@ public class BombPowerScript : MonoBehaviour
 
     private void Start()
     {
-        payloadRb = GetComponent<Rigidbody2D>();
-        payloadRb.AddForce(transform.up * launchForce, ForceMode2D.Impulse);
 
         explosionCircleCollider = GetComponent<CircleCollider2D>();
         explosionCircleCollider.enabled = false;
@@ -35,10 +33,9 @@ public class BombPowerScript : MonoBehaviour
     private IEnumerator BombMechanism()
     {
         payload.SetActive(true);
-        yield return new WaitForSeconds(payloadLifetime);
+        yield return new WaitForSecondsRealtime(payloadDuration);
         payload.SetActive(false);
 
-        payloadRb.velocity = Vector3.zero;
         explosionBubble.SetActive(true);
         explosionCircleCollider.enabled = true;
 
@@ -56,13 +53,20 @@ public class BombPowerScript : MonoBehaviour
             yield return null;
         }
         
-        yield return new WaitForSeconds(explosionLifetime);
+        yield return new WaitForSecondsRealtime(explosionLifetime);
 
         Destroy(this.gameObject);
     }
 
     private void Update()
     {
+
+        if (payload.active)
+        {
+            payloadLifetime += Time.unscaledDeltaTime;
+            transform.position += transform.up * payloadSpeed.Evaluate(payloadLifetime) * Time.unscaledDeltaTime;
+        }
+
         if (explosionCircleCollider.isActiveAndEnabled)
         {
             if (timer > explosionCheckTime)

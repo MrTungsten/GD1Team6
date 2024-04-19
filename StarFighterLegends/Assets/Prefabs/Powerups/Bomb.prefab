@@ -113,6 +113,39 @@ MonoBehaviour:
   payload: {fileID: 8186861115877366436}
   explosionBubble: {fileID: 4732872404887564550}
   explosionSound: {fileID: 8300000, guid: 81a8a06931f9c824bbab2509c6a20d14, type: 3}
+  payloadSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 8
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.2482291
+      value: 3.6683786
+      inSlope: -6.26193
+      outSlope: -6.26193
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.45009917
+    - serializedVersion: 3
+      time: 2
+      value: 0.25
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.040157497
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4732872404887564550
 GameObject:
   m_ObjectHideFlags: 0

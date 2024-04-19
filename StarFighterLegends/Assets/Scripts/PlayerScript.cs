@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private GameObject deathExplosion;
     [SerializeField] private GameObject slowTimeEffect;
+    [SerializeField] private Image filledCooldownBox;
+    [SerializeField] private TextMeshProUGUI cooldownReadyText;
     private GameManagerScript gameManagerScript;
     private Collider2D laserCollider = null;
     private AudioSource playerAudioSource;
@@ -216,7 +219,7 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-        if (!slowTimeActive)
+        if (!slowTimeActive && !gameManagerScript.IsGameOver())
         {
             if (slowTimeTimer > slowTimeCooldown)
             {
@@ -224,11 +227,18 @@ public class PlayerScript : MonoBehaviour
                 {
                     StartCoroutine(SlowTimeEffect());
                     slowTimeTimer = 0f;
+                    cooldownReadyText.enabled = false;
+                    filledCooldownBox.fillAmount = 0f;
+                }
+                else
+                {
+                    cooldownReadyText.enabled = true;
                 }
             }
             else
             {
                 slowTimeTimer += Time.deltaTime;
+                filledCooldownBox.fillAmount = slowTimeTimer / slowTimeCooldown;
             }
         }
 
@@ -334,7 +344,7 @@ public class PlayerScript : MonoBehaviour
         laser.gameObject.SetActive(true);
         laserCollider.enabled = true;
         playerAnimator.SetBool("LaserIsOn", true);
-        yield return new WaitForSeconds(laserLifeTime);
+        yield return new WaitForSecondsRealtime(laserLifeTime);
         hasImmunity = false;
         isLaserOn = false;
         laser.gameObject.SetActive(false);
