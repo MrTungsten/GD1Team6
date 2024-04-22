@@ -23,6 +23,7 @@ public class PlayerScript : MonoBehaviour
     private GameManagerScript gameManagerScript;
     private Collider2D laserCollider = null;
     private AudioSource playerAudioSource;
+    private Coroutine slowTimeCoroutine;
     private float moveSpeed = 8f;
     private float xBoundary = 9.25f;
     private float yBoundary = 9.5f;
@@ -37,13 +38,15 @@ public class PlayerScript : MonoBehaviour
     private int bombCount;
     private int laserCount;
     private bool isLaserOn = false;
-    private float laserLifeTime = 2f;
+    private float laserLifeTime = 3f;
     private float laserDamageTimer = 0.25f;
     private float laserDamageCooldown = 0.25f;
     private float damageMultiplier = 1;
-    private float activeSlowDuration = 5f;
+    private float timeStopScale = 0f;
+    private float activeSlowTimer = 0f;
+    private float activeSlowDuration = 3f;
     private float slowTimeTimer = 0f;
-    private float slowTimeCooldown = 5f;
+    private float slowTimeCooldown = 10f;
     private bool slowTimeActive = false;
     private bool makeTrail = false;
     private float makeTrailTimer = 0f;
@@ -92,7 +95,7 @@ public class PlayerScript : MonoBehaviour
         inputVector = inputVector.normalized;
 
         Vector3 moveDir = new Vector3(inputVector.x, inputVector.y, 0);
-        transform.position += moveDir * Time.deltaTime * moveSpeed;
+        transform.position += moveDir * Time.unscaledDeltaTime * moveSpeed;
 
         if (transform.position.x > xBoundary)
         {
@@ -172,76 +175,94 @@ public class PlayerScript : MonoBehaviour
             List<Collider2D> results = new List<Collider2D>();
             int numOfCollisions = Physics2D.OverlapCollider(laserCollider, new ContactFilter2D().NoFilter(), results);
 
-            for (int i = 0; i < numOfCollisions; i++)
+            if (laserDamageTimer >= laserDamageCooldown)
             {
-                if (results[i].gameObject.layer == 7)
+                for (int i = 0; i < numOfCollisions; i++)
                 {
-                    if (laserDamageTimer >= laserDamageCooldown)
+                    if (results[i].gameObject.CompareTag("EnemyPlane"))
                     {
-                        if (results[i].gameObject.CompareTag("EnemyPlane"))
-                        {
-                            results[i].gameObject.GetComponent<EnemyPlaneScript>().HitByObject(2);
-                        }
-                        else if (results[i].gameObject.CompareTag("EnemyTank"))
-                        {
-                            results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject(3);
-                        }
-                        else if (results[i].gameObject.CompareTag("EnemyTurret"))
-                        {
-                            results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(6);
-                        }
-                        else if (results[i].gameObject.CompareTag("EnemyDiver"))
-                        {
-                            results[i].gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(6);
-                        }
-                        else if (results[i].gameObject.CompareTag("EnemySine"))
-                        {
-                            results[i].gameObject.GetComponent<EnemySinePlaneScript>().HitByObject(4);
-                        }
-                        else if (results[i].gameObject.CompareTag("EnemyDelayed"))
-                        {
-                            results[i].gameObject.GetComponent<EnemyDelayedScript>().HitByObject(5);
-                        }
-                        laserDamageTimer = 0f;
+                        results[i].gameObject.GetComponent<EnemyPlaneScript>().HitByObject(2);
                     }
-                    else
+                    else if (results[i].gameObject.CompareTag("EnemyTank"))
                     {
-                        laserDamageTimer += Time.unscaledDeltaTime;
+                        results[i].gameObject.GetComponent<EnemyTankScript>().HitByObject(3);
+                    }
+                    else if (results[i].gameObject.CompareTag("EnemyTurret"))
+                    {
+                        results[i].gameObject.GetComponent<EnemyTurretScript>().HitByObject(6);
+                    }
+                    else if (results[i].gameObject.CompareTag("EnemyDiver"))
+                    {
+                        results[i].gameObject.GetComponent<EnemyDiverPlaneScript>().HitByObject(6);
+                    }
+                    else if (results[i].gameObject.CompareTag("EnemySine"))
+                    {
+                        results[i].gameObject.GetComponent<EnemySinePlaneScript>().HitByObject(4);
+                    }
+                    else if (results[i].gameObject.CompareTag("EnemyDelayed"))
+                    {
+                        results[i].gameObject.GetComponent<EnemyDelayedScript>().HitByObject(5);
                     }
                 }
-                else
+
+                laserDamageTimer = 0f;
+            }
+            else
+            {
+                laserDamageTimer += Time.unscaledDeltaTime;
+            }
+
+            for (int i = 0; i < numOfCollisions; i++)
+            {
+                if (results[i].gameObject.CompareTag("EnemyBullet"))
                 {
-                    if (!results[i].gameObject.CompareTag("Powerup") && !results[i].gameObject.CompareTag("Bomb"))
-                    {
-                        Destroy(results[i].gameObject);
-                    }
+                    Destroy(results[i].gameObject);
                 }
             }
         }
 
-        if (!slowTimeActive && !gameManagerScript.IsGameOver())
+        if (!gameManagerScript.IsGameOver())
         {
-            if (slowTimeTimer > slowTimeCooldown)
+            if (!slowTimeActive)
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (slowTimeTimer > slowTimeCooldown)
                 {
-                    StartCoroutine(SlowTimeEffect());
-                    slowTimeTimer = 0f;
-                    cooldownReadyText.enabled = false;
-                    filledCooldownBox.fillAmount = 0f;
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        activeSlowTimer = activeSlowDuration;
+                        slowTimeCoroutine = StartCoroutine(SlowTimeEffect());
+                        cooldownReadyText.enabled = false;
+                        slowTimeTimer = 0f;
+                    }
+                    else
+                    {
+                        cooldownReadyText.enabled = true;
+                    }
                 }
                 else
                 {
-                    cooldownReadyText.enabled = true;
+                    slowTimeTimer += Time.deltaTime;
+                    filledCooldownBox.fillAmount = slowTimeTimer / slowTimeCooldown;
                 }
             }
             else
             {
-                slowTimeTimer += Time.deltaTime;
-                filledCooldownBox.fillAmount = slowTimeTimer / slowTimeCooldown;
+                activeSlowTimer -= Time.unscaledDeltaTime;
+                filledCooldownBox.fillAmount = activeSlowTimer / activeSlowDuration;
             }
         }
-
+        else
+        {
+            if (slowTimeActive)
+            {
+                StopCoroutine(slowTimeCoroutine);
+                slowTimeActive = false;
+                Time.timeScale = 1f;
+                moveSpeed /= 0.75f;
+                makeTrail = false;
+            }
+        }
+        
         if (makeTrail)
         {
             if (makeTrailTimer > makeTrailCooldown)
@@ -264,9 +285,8 @@ public class PlayerScript : MonoBehaviour
     private IEnumerator SlowTimeEffect()
     {
         slowTimeActive = true;
-        Time.timeScale = 0.25f;
-        moveSpeed = (moveSpeed * (1 / Time.timeScale)) * 0.5f;
-        Debug.Log( (1 / Time.timeScale) );
+        Time.timeScale = timeStopScale;
+        moveSpeed *= 0.75f;
         playerAudioSource.Play();
         makeTrail = true;
 
@@ -274,7 +294,7 @@ public class PlayerScript : MonoBehaviour
 
         slowTimeActive = false;
         Time.timeScale = 1f;
-        moveSpeed = 8f;
+        moveSpeed /= 0.75f;
         makeTrail = false;
 
     }

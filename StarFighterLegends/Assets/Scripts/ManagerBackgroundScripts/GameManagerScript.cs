@@ -117,7 +117,8 @@ public class GameManagerScript : MonoBehaviour
             {
                 if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
                 {
-                    ScoreManager.Instance.IncrementScore(250);
+                    ScoreManager.Instance.IncrementScore(500);
+                    ScoreManager.Instance.IncrementScore(PlayerStatsManager.Instance.GetStats()[0] * 50);
                     ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
                 }
 
@@ -125,7 +126,7 @@ public class GameManagerScript : MonoBehaviour
                 {
                     scoreTimeBonus = ((int)((scoreTimeLimit - playerLifeTime) / 5)) * 5;
                     ScoreManager.Instance.IncrementScore(scoreTimeBonus);
-                    scoreTimeBonusText.text = $"Time Score: {scoreTimeBonus}";
+                    scoreTimeBonusText.text = $"Time Bonus: {scoreTimeBonus}";
                     ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
                 }
 

@@ -11,7 +11,7 @@ public class BombPowerScript : MonoBehaviour
     [SerializeField] private AnimationCurve payloadSpeed;
     private CircleCollider2D explosionCircleCollider;
     private float payloadLifetime = 0f;
-    private float payloadDuration = 2f;
+    private float payloadDuration = 1.75f;
     private float explosionLifetime = 3f;
     private float expansionSize = 12.5f;
     private float timer = 0f;
@@ -34,6 +34,12 @@ public class BombPowerScript : MonoBehaviour
     {
         payload.SetActive(true);
         yield return new WaitForSecondsRealtime(payloadDuration);
+        
+        while (Time.timeScale < 1f)
+        {
+            yield return null;
+        }
+
         payload.SetActive(false);
 
         explosionBubble.SetActive(true);
@@ -49,11 +55,11 @@ public class BombPowerScript : MonoBehaviour
             float currentRadius = Mathf.Lerp(originalRadius, originalRadius * expansionSize, elapsedTime / (explosionLifetime / 4));
             transform.localScale = new Vector3(1, 1, 0) * currentRadius;
 
-            elapsedTime += Time.unscaledDeltaTime;
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
         
-        yield return new WaitForSecondsRealtime(explosionLifetime);
+        yield return new WaitForSeconds(explosionLifetime);
 
         Destroy(this.gameObject);
     }
@@ -113,7 +119,7 @@ public class BombPowerScript : MonoBehaviour
             }
             else
             {
-                timer += Time.unscaledDeltaTime;
+                timer += Time.deltaTime;
             }
         }
     }

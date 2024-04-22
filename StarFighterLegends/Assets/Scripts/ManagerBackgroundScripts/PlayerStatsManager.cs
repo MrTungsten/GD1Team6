@@ -64,6 +64,14 @@ public class PlayerStatsManager : MonoBehaviour
         Debug.Log("Added Stats!");
     }
 
+    public int[] GetStats()
+    {
+        if (playerStats != null)
+            return playerStats;
+        else
+            return defaultStats;
+    }
+
     public void ChangeStats()
     {
         player = GameObject.FindGameObjectWithTag("Player");

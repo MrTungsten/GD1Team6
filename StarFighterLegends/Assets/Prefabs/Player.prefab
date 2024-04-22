@@ -381,7 +381,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 0ddd291c7317d2244997650c2bd07321, type: 2}
   m_CullingMode: 2
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -413,6 +413,8 @@ MonoBehaviour:
   playerAnimator: {fileID: 4884491499052532643}
   deathExplosion: {fileID: 4491430257218769968, guid: 8108f18ea04e802458681d9949e613bd, type: 3}
   slowTimeEffect: {fileID: 2354089895122474696, guid: 2643cb8b20d364fe5b34602f75f3f2fb, type: 3}
+  filledCooldownBox: {fileID: 0}
+  cooldownReadyText: {fileID: 0}
 --- !u!82 &8455890151683798449
 AudioSource:
   m_ObjectHideFlags: 0
