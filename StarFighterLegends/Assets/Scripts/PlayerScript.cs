@@ -11,7 +11,6 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private GameObject playerBulletSpawner;
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private GameObject laser;
-    [SerializeField] private AudioClip laserFire;
     [SerializeField] private TextMeshProUGUI bombCountText;
     [SerializeField] private TextMeshProUGUI laserCountText;
     [SerializeField] private TextMeshProUGUI hitpointCountText;
@@ -20,9 +19,13 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private GameObject slowTimeEffect;
     [SerializeField] private Image filledCooldownBox;
     [SerializeField] private TextMeshProUGUI cooldownReadyText;
+    [SerializeField] private GameObject slowTimeScreen;
+    [SerializeField] private AudioClip bulletFireClip;
+    [SerializeField] private AudioClip slowTimeClip;
     private GameManagerScript gameManagerScript;
     private Collider2D laserCollider = null;
-    private AudioSource playerAudioSource;
+    private AudioSource playerBulletAudioSource;
+    private AudioSource playerSlowTimeAudioSource;
     private Coroutine slowTimeCoroutine;
     private float moveSpeed = 8f;
     private float xBoundary = 9.25f;
@@ -44,7 +47,7 @@ public class PlayerScript : MonoBehaviour
     private float damageMultiplier = 1;
     private float timeStopScale = 0f;
     private float activeSlowTimer = 0f;
-    private float activeSlowDuration = 3f;
+    private float activeSlowDuration = 5f;
     private float slowTimeTimer = 0f;
     private float slowTimeCooldown = 10f;
     private bool slowTimeActive = false;
@@ -54,6 +57,9 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
+
+        Time.timeScale = 1f;
+
         gameManagerScript = FindAnyObjectByType<GameManagerScript>();
 
         laserCollider = laser.GetComponent<Collider2D>();
@@ -64,12 +70,21 @@ public class PlayerScript : MonoBehaviour
         laserTimer = laserCooldown;
         slowTimeTimer = slowTimeCooldown;
 
-        playerAudioSource = GetComponent<AudioSource>();
+        playerBulletAudioSource = gameObject.AddComponent<AudioSource>();
+        playerSlowTimeAudioSource = gameObject.AddComponent<AudioSource>();
+
+        playerBulletAudioSource.clip = bulletFireClip;
+        playerBulletAudioSource.volume = 0.05f;
+        playerBulletAudioSource.pitch = 1.15f;
+        playerBulletAudioSource.playOnAwake = false;
+
+        playerSlowTimeAudioSource.clip = slowTimeClip;
+        playerSlowTimeAudioSource.playOnAwake = false;
+
     }
 
     private void Update()
     {
-
         Vector2 inputVector = new Vector2 (0, 0);
 
         if (Input.GetKey(KeyCode.UpArrow))
@@ -117,14 +132,14 @@ public class PlayerScript : MonoBehaviour
 
         if (bulletTimer >= bulletCooldown)
         {
-            if (Input.GetKey(KeyCode.LeftControl))
+            if (Input.GetKey(KeyCode.LeftControl) && !isLaserOn)
             {
                 GameObject playerBullet1 = Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(-0.15f, 0, 0), transform.rotation);
                 GameObject playerBullet2 = Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(0.15f, 0, 0), transform.rotation);
                 playerBullet1.GetComponent<PlayerBulletScript>().SetDamageMultiplier(damageMultiplier);
                 playerBullet2.GetComponent<PlayerBulletScript>().SetDamageMultiplier(damageMultiplier);
                 bulletTimer = 0f;
-                AudioSource.PlayClipAtPoint(laserFire, playerBulletSpawner.transform.position, 0.35f);
+                playerBulletAudioSource.Play();
             } 
         }
         else
@@ -279,7 +294,6 @@ public class PlayerScript : MonoBehaviour
                 makeTrailTimer += Time.unscaledDeltaTime;
             }
         }
-
     }
 
     private IEnumerator SlowTimeEffect()
@@ -287,8 +301,9 @@ public class PlayerScript : MonoBehaviour
         slowTimeActive = true;
         Time.timeScale = timeStopScale;
         moveSpeed *= 0.75f;
-        playerAudioSource.Play();
+        playerSlowTimeAudioSource.Play();
         makeTrail = true;
+        GameObject screenLayover = Instantiate(slowTimeScreen, Vector3.zero, transform.rotation);
 
         yield return new WaitForSecondsRealtime(activeSlowDuration);
 
@@ -296,7 +311,7 @@ public class PlayerScript : MonoBehaviour
         Time.timeScale = 1f;
         moveSpeed /= 0.75f;
         makeTrail = false;
-
+        screenLayover.GetComponent<Animator>().SetBool("SlowTimeIsOver", true);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -352,7 +367,7 @@ public class PlayerScript : MonoBehaviour
         }
         if (powerupName == "Score")
         {
-            ScoreManager.Instance.ScorePowerup();
+            ScoreManagerScript.Instance.ScorePowerup();
         }
 
         UpdateStats();

@@ -93,7 +93,7 @@ public class EnemyTurretScript : MonoBehaviour
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Score");
             }
 
-            ScoreManager.Instance.IncrementScore(gameObject.tag);
+            ScoreManagerScript.Instance.IncrementScore(gameObject.tag);
 
             GameObject explosion = Instantiate(deathExplosion, transform.position, transform.rotation);
             explosion.transform.localScale = new Vector3(2f, 2f, 1);

@@ -224,7 +224,7 @@ public class HighScoreInput : MonoBehaviour
     private void ActivateHighScoreTable()
     {
         table.SetActive(true);
-        highScoreTableScript.AddHighScoreEntry(ScoreManager.Instance.GetTotalScore(), playerName);
+        highScoreTableScript.AddHighScoreEntry(ScoreManagerScript.Instance.GetTotalScore(), playerName);
         highScoreTableScript.SetIsViewing();
         gameObject.SetActive(false);
     }

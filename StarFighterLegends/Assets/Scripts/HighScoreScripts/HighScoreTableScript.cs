@@ -20,7 +20,7 @@ public class HighScoreTableScript : MonoBehaviour
 
     private void Awake()
     {
-        instructionText = transform.Find("Table").transform.Find("InstructionsText").GetComponent<TextMeshProUGUI>();
+        instructionText = transform.Find("Table").transform.Find("Text").transform.Find("InstructionsText").GetComponent<TextMeshProUGUI>();
         instructionText.enabled = false;
 
         tableTransform = transform.Find("Table").transform;
@@ -58,12 +58,12 @@ public class HighScoreTableScript : MonoBehaviour
 
     public bool ReturnValidHighScore()
     {
-        if (ScoreManager.Instance == null)
+        if (ScoreManagerScript.Instance == null)
         {
             return false;
         }
 
-        if (ScoreManager.Instance.GetTotalScore() == 0)
+        if (ScoreManagerScript.Instance.GetTotalScore() == 0)
         {
             return false;
         }
@@ -72,7 +72,7 @@ public class HighScoreTableScript : MonoBehaviour
 
         if (highScores.highScoreEntryList.Count >= 10)
         {
-            if (ScoreManager.Instance.GetTotalScore() > highScores.highScoreEntryList[9].score)
+            if (ScoreManagerScript.Instance.GetTotalScore() > highScores.highScoreEntryList[9].score)
             {
                 return true;
             }

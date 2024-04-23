@@ -34,7 +34,7 @@ public class GameManagerScript : MonoBehaviour
 
         if (SceneUtility.GetScenePathByBuildIndex(2) == SceneManager.GetActiveScene().path)
         {
-            ScoreManager.Instance.ResetTotalScore();
+            ScoreManagerScript.Instance.ResetTotalScore();
 
             PlayerStatsManager.Instance.ResetStats();
         }
@@ -55,12 +55,12 @@ public class GameManagerScript : MonoBehaviour
             scoreTimeLimit = 120f;
         }
 
-        ScoreManager.Instance.ResetCurrentScore();
-        ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
+        ScoreManagerScript.Instance.ResetCurrentScore();
+        ScoreManagerScript.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
 
         PlayerStatsManager.Instance.SetStats();
 
-        initialTotalScore = ScoreManager.Instance.GetTotalScore();
+        initialTotalScore = ScoreManagerScript.Instance.GetTotalScore();
 
         levelText.text = string.Format("Level\n{0}/{1}", SceneManager.GetActiveScene().buildIndex - 1, SceneManager.sceneCountInBuildSettings - 3);
     }
@@ -68,9 +68,9 @@ public class GameManagerScript : MonoBehaviour
     private void Update()
     {
 
-        playerLifeTime += Time.deltaTime;
+        playerLifeTime += Time.unscaledDeltaTime;
 
-        ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
+        ScoreManagerScript.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("EnemyPlane").ToArray();
         enemies = enemies.Concat(GameObject.FindGameObjectsWithTag("EnemyTank")).ToArray();
@@ -117,17 +117,17 @@ public class GameManagerScript : MonoBehaviour
             {
                 if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
                 {
-                    ScoreManager.Instance.IncrementScore(500);
-                    ScoreManager.Instance.IncrementScore(PlayerStatsManager.Instance.GetStats()[0] * 50);
-                    ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
+                    ScoreManagerScript.Instance.IncrementScore(500);
+                    ScoreManagerScript.Instance.IncrementScore(PlayerStatsManager.Instance.GetStats()[0] * 50);
+                    ScoreManagerScript.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
                 }
 
                 if (playerLifeTime < scoreTimeLimit)
                 {
                     scoreTimeBonus = ((int)((scoreTimeLimit - playerLifeTime) / 5)) * 5;
-                    ScoreManager.Instance.IncrementScore(scoreTimeBonus);
+                    ScoreManagerScript.Instance.IncrementScore(scoreTimeBonus);
                     scoreTimeBonusText.text = $"Time Bonus: {scoreTimeBonus}";
-                    ScoreManager.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
+                    ScoreManagerScript.Instance.UpdateScoreText(scoreText, totalScoreText, highScoreText);
                 }
 
                 hasIncreasedScore = true;
@@ -192,7 +192,7 @@ public class GameManagerScript : MonoBehaviour
 
     public void Restart()
     {
-        ScoreManager.Instance.ResetSceneScore(initialTotalScore);
+        ScoreManagerScript.Instance.ResetSceneScore(initialTotalScore);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

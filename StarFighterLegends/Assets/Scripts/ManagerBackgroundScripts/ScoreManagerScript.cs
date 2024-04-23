@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro; // Add this line for TextMeshPro
 using System.Collections.Generic;
 
-public class ScoreManager : MonoBehaviour
+public class ScoreManagerScript : MonoBehaviour
 {
 
     // Dictionary to store score values for different GameObject types
@@ -16,8 +16,8 @@ public class ScoreManager : MonoBehaviour
 
     private int highScore = 0;
 
-    // Singleton pattern to ensure only one instance of ScoreManager exists
-    public static ScoreManager Instance { get; private set; }
+    // Singleton pattern to ensure only one instance of ScoreManagerScript exists
+    public static ScoreManagerScript Instance { get; private set; }
 
     private HighScores highScores = new HighScores();
 

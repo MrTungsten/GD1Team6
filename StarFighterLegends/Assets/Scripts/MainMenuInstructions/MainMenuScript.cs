@@ -48,9 +48,9 @@ public class MainMenuScript : MonoBehaviour
 
     public void PlayGame()
     {
-        if (ScoreManager.Instance != null)
+        if (ScoreManagerScript.Instance != null)
         {
-            Destroy(ScoreManager.Instance.gameObject);
+            Destroy(ScoreManagerScript.Instance.gameObject);
         }
 
         if (PlayerStatsManager.Instance != null)

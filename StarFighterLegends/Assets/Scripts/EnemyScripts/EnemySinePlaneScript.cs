@@ -99,7 +99,7 @@ public class EnemySinePlaneScript : MonoBehaviour
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Score");
             }
 
-            ScoreManager.Instance.IncrementScore(gameObject.tag);
+            ScoreManagerScript.Instance.IncrementScore(gameObject.tag);
 
             Instantiate(deathExplosion, transform.position, transform.rotation);
 

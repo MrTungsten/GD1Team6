@@ -1399,21 +1399,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3870775897646241087, guid: e568cef0b3df3c747895d430ec9db7e5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 9.8
-      objectReference: {fileID: 0}
     - target: {fileID: 4002736119572746103, guid: e568cef0b3df3c747895d430ec9db7e5, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4492233251390106301, guid: e568cef0b3df3c747895d430ec9db7e5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -3.869
-      objectReference: {fileID: 0}
-    - target: {fileID: 5216307450262485935, guid: e568cef0b3df3c747895d430ec9db7e5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -3.903
       objectReference: {fileID: 0}
     - target: {fileID: 6360440428868629037, guid: e568cef0b3df3c747895d430ec9db7e5, type: 3}
       propertyPath: bombCountText
