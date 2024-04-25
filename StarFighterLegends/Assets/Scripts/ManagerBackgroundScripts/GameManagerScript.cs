@@ -64,7 +64,7 @@ public class GameManagerScript : MonoBehaviour
 
         initialTotalScore = ScoreManagerScript.Instance.GetTotalScore();
 
-        levelText.text = string.Format("Level\n{0}/{1}", SceneManager.GetActiveScene().buildIndex - 2, SceneManager.sceneCountInBuildSettings - 3);
+        levelText.text = string.Format("Level\n{0}/{1}", SceneManager.GetActiveScene().buildIndex - 2, SceneManager.sceneCountInBuildSettings - 4);
     }
 
     private void Update()
@@ -117,7 +117,7 @@ public class GameManagerScript : MonoBehaviour
 
             if (!hasIncreasedScore)
             {
-                if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
+                if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 2)
                 {
                     ScoreManagerScript.Instance.IncrementScore(500);
                     ScoreManagerScript.Instance.IncrementScore(PlayerStatsManager.Instance.GetStats()[0] * 50);
