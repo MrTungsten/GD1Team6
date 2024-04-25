@@ -24,7 +24,7 @@ public class EnemyPlaneScript : MonoBehaviour
     private GameManagerScript gameManagerScript;
     private PathingScript pathingScript;
     private GameObject player;
-    private float xBoundary = 9.25f;
+    private float xBoundary = 14f;
     private float moveDir = 1f;
     private float timer = 0f;
     private float bulletCooldown = 1f;
@@ -96,7 +96,7 @@ public class EnemyPlaneScript : MonoBehaviour
 
             int randomNum = Random.Range(1, 101);
 
-            if (randomNum <= 10)
+            if (randomNum <= 5)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
             }
@@ -109,6 +109,7 @@ public class EnemyPlaneScript : MonoBehaviour
 
             Instantiate(deathExplosion, transform.position, transform.rotation);
 
+            ScreenShakeScript.Instance.Shake(0.5f, 0.3f);
             Destroy(gameObject);
         }
     }
@@ -125,9 +126,10 @@ public class EnemyPlaneScript : MonoBehaviour
         if (shotType == ShotType.normal)
         {
 
-            Vector3 dir = player.transform.position - transform.position;
+            Vector3 dir = (player.transform.position - transform.position).normalized;
             float angle = Mathf.Atan2(-dir.y, -dir.x) * Mathf.Rad2Deg;
             planeAimer2.transform.rotation = Quaternion.Euler(0, 0, angle + 90);
+
             bulletCooldown = Random.Range(1f, 2f);
 
             if (timer > bulletCooldown)
@@ -197,6 +199,7 @@ public class EnemyPlaneScript : MonoBehaviour
     private IEnumerator CrossShotBurst()
     {
         Vector3 dir = player.transform.position - transform.position;
+        dir.Normalize();
         for (int i = 0; i < 5; i++)
         {   
             float angle = Mathf.Atan2(-dir.y, -dir.x) * Mathf.Rad2Deg;

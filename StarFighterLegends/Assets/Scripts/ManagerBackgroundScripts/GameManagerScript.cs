@@ -32,7 +32,7 @@ public class GameManagerScript : MonoBehaviour
     {
         sceneIndex = SceneManager.GetActiveScene().buildIndex - 2;
 
-        if (SceneUtility.GetScenePathByBuildIndex(2) == SceneManager.GetActiveScene().path)
+        if (SceneUtility.GetScenePathByBuildIndex(3) == SceneManager.GetActiveScene().path)
         {
             ScoreManagerScript.Instance.ResetTotalScore();
 
@@ -40,19 +40,21 @@ public class GameManagerScript : MonoBehaviour
         }
         else
         {
+            /*
             if ((SceneManager.GetActiveScene().buildIndex + 2) % 2 == 0)
             {
                 PlayerStatsManager.Instance.AddStats(0, 1, 1);
             }
+            */
         }
 
         if (sceneIndex <= 5)
         {
-            scoreTimeLimit = 60f;
+            scoreTimeLimit = 120f;
         }
         else
         {
-            scoreTimeLimit = 120f;
+            scoreTimeLimit = 240f;
         }
 
         ScoreManagerScript.Instance.ResetCurrentScore();
@@ -62,7 +64,7 @@ public class GameManagerScript : MonoBehaviour
 
         initialTotalScore = ScoreManagerScript.Instance.GetTotalScore();
 
-        levelText.text = string.Format("Level\n{0}/{1}", SceneManager.GetActiveScene().buildIndex - 1, SceneManager.sceneCountInBuildSettings - 3);
+        levelText.text = string.Format("Level\n{0}/{1}", SceneManager.GetActiveScene().buildIndex - 2, SceneManager.sceneCountInBuildSettings - 3);
     }
 
     private void Update()
@@ -199,7 +201,7 @@ public class GameManagerScript : MonoBehaviour
 
     public void MainMenu()
     {
-        SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(0));
+        SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(1));
     }
 
 }

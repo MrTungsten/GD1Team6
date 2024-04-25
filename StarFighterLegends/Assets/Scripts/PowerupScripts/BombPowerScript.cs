@@ -13,7 +13,7 @@ public class BombPowerScript : MonoBehaviour
     private float payloadLifetime = 0f;
     private float payloadDuration = 1.75f;
     private float explosionLifetime = 3f;
-    private float expansionSize = 12.5f;
+    private float expansionSize = 17.5f;
     private float timer = 0f;
     private float explosionCheckTime = 0.4f;
 

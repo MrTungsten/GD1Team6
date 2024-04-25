@@ -24,26 +24,29 @@ public class PowerupScript : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
+        List<Collider2D> objectsHit = new List<Collider2D>();
+        int collision = Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D().NoFilter(), objectsHit);
+
+        foreach (Collider2D collider in objectsHit)
         {
-            switch (powerupType)
+            if (collider.gameObject.CompareTag("Player"))
             {
-                case PowerupType.bomb:
-                    collision.gameObject.GetComponent<PlayerScript>().GainedPowerup("Bomb");
-                    break;
-                case PowerupType.laser:
-                    collision.gameObject.GetComponent<PlayerScript>().GainedPowerup("Laser");
-                    break;
-                case PowerupType.score:
-                    collision.gameObject.GetComponent<PlayerScript>().GainedPowerup("Score");
-                    break;
-            }
+                switch (powerupType)
+                {
+                    case PowerupType.bomb:
+                        collider.gameObject.GetComponent<PlayerScript>().GainedPowerup("Bomb");
+                        break;
+                    case PowerupType.laser:
+                        collider.gameObject.GetComponent<PlayerScript>().GainedPowerup("Laser");
+                        break;
+                    case PowerupType.score:
+                        collider.gameObject.GetComponent<PlayerScript>().GainedPowerup("Score");
+                        break;
+                }
 
-            Destroy(gameObject);
+                Destroy(gameObject);
+            }
         }
     }
 

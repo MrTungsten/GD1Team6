@@ -6,7 +6,7 @@ public class BackgroundScript : MonoBehaviour
 {
 
     private float scrollSpeed = 1f;
-    private float resetYPosition = -80f;
+    private float resetYPosition = -119.8f;
     private Vector3 startPosition = new Vector3(0, 0, 0);
 
     private void Start()

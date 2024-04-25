@@ -16,8 +16,8 @@ public class EnemyBulletScript : MonoBehaviour
     [SerializeField] private AnimationCurve delayedBulletAnimationCurve;
     private Rigidbody2D bulletRb;
     private float bulletSpeed = 5f;
-    private float xBulletBoundary = 30f;
-    private float yBulletBoundary = 30f;
+    private float xBulletBoundary = 50f;
+    private float yBulletBoundary = 50f;
     private float bulletLifetime = 0f;
 
     private void Start()
@@ -51,6 +51,14 @@ public class EnemyBulletScript : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        List<Collider2D> results = new List<Collider2D>();
+        int numOfCollisions = Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D().NoFilter(), results);
+        foreach(Collider2D coll in results)
+        if (coll.gameObject.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void SetSpeed(float speed)
@@ -61,14 +69,6 @@ public class EnemyBulletScript : MonoBehaviour
     public void SetAutoMove(bool shouldAutoMove)
     {
         autoMove = shouldAutoMove;
-    }
-
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Destroy(gameObject);
-        }
     }
 
 }

@@ -40,7 +40,7 @@ public class HighScoreTableScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftControl) && (timer >= delayTime))
         {
-            SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(0));
+            SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(1));
         }
         else
         {

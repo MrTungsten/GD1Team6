@@ -90,11 +90,15 @@ public class EnemySinePlaneScript : MonoBehaviour
 
             int randomNum = Random.Range(1, 101);
 
-            if (randomNum <= 20)
+            if (randomNum <= 3)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
             }
-            else if (randomNum <= 50)
+            else if (randomNum <= 20)
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
+            }
+            else if (randomNum <= 30)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Score");
             }
@@ -103,6 +107,7 @@ public class EnemySinePlaneScript : MonoBehaviour
 
             Instantiate(deathExplosion, transform.position, transform.rotation);
 
+            ScreenShakeScript.Instance.Shake(0.5f, 0.3f);
             Destroy(gameObject);
         }
     }

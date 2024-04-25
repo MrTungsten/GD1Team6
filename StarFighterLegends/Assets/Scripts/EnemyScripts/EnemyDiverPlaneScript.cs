@@ -7,12 +7,13 @@ public class EnemyDiverPlaneScript : MonoBehaviour
 {
 
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private GameObject[] waypoints;
+    [SerializeField] private GameObject setOfWaypoints;
     [SerializeField] private GameObject enemyDiverVisual;
     [SerializeField] private GameObject deathExplosion;
     private GameObject player;
     private GameManagerScript gameManagerScript;
     private PowerupSpawnerScript powerupSpawnerScript;
+    private Transform[] waypoints;
     private bool isDashing = false;
     private float dashingPower = 13f;
     private float dashTime = 1.5f;
@@ -26,6 +27,14 @@ public class EnemyDiverPlaneScript : MonoBehaviour
 
     private void Start()
     {
+
+        waypoints = setOfWaypoints.GetComponentsInChildren<Transform>();
+        Transform[] waypoints2 = waypoints;
+        waypoints = new Transform[waypoints2.Length - 1];
+        for (int i = 1; i < waypoints2.Length; i++)
+        {
+            waypoints[i - 1] = waypoints2[i];
+        }
 
         gameManagerScript = GameObject.FindAnyObjectByType<GameManagerScript>();
 
@@ -103,18 +112,11 @@ public class EnemyDiverPlaneScript : MonoBehaviour
         rb.velocity = Vector3.zero;
 
         
-        if (waypointCount == (waypoints.Length - 1))
-        {
-            waypointCount = 0;
-        }
-        else
-        {
-            waypointCount++;
-        }
+        waypointCount = Random.Range(0, waypoints.Length);
 
         isDashing = false;
 
-        transform.position = new Vector3(0f, 10f, 0f);
+        transform.position = new Vector3(0f, 15f, 0f);
 
         isReturning = true;
 
@@ -134,7 +136,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
 
             if (randomNum <= 10)
             {
-                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
             }
             else if (randomNum <= 30)
             {
@@ -145,6 +147,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
 
             Instantiate(deathExplosion, transform.position, transform.rotation);
 
+            ScreenShakeScript.Instance.Shake(0.5f, 0.3f);
             Destroy(gameObject);
         }
     }

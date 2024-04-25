@@ -37,6 +37,7 @@ public class PlayerStatsManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    /*
     public void AddStats(int healthToAdd, int bombCountToAdd, int laserCountToAdd)
     {
 
@@ -63,6 +64,7 @@ public class PlayerStatsManager : MonoBehaviour
         SetStats();
         Debug.Log("Added Stats!");
     }
+    */
 
     public int[] GetStats()
     {

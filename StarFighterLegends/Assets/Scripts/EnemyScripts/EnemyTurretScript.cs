@@ -84,11 +84,15 @@ public class EnemyTurretScript : MonoBehaviour
 
             int randomNum = Random.Range(1, 101);
 
-            if (randomNum <= 20)
+            if (randomNum <= 5)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Laser");
             }
-            else
+            else if (randomNum <= 15)
+            {
+                powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Bomb");
+            }
+            else if (randomNum <= 50)
             {
                 powerupSpawnerScript.GetComponent<PowerupSpawnerScript>().SpawnPowerup(transform, "Score");
             }
@@ -98,6 +102,7 @@ public class EnemyTurretScript : MonoBehaviour
             GameObject explosion = Instantiate(deathExplosion, transform.position, transform.rotation);
             explosion.transform.localScale = new Vector3(2f, 2f, 1);
 
+            ScreenShakeScript.Instance.Shake(0.75f, 0.5f);
             Destroy(gameObject);
         }
     }

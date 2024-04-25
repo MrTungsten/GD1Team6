@@ -7,7 +7,7 @@ public class PlayerBulletScript : MonoBehaviour
 
     private float damageMultiplier = 1;
     private float bulletSpeed = 25f;
-    private float yBulletBoundary = 10.25f;
+    private float yBulletBoundary = 15f;
 
     private void Update()
     {

@@ -10,7 +10,7 @@ public class InstructionScreenScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(2));
+            SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(3));
         }
     }
 

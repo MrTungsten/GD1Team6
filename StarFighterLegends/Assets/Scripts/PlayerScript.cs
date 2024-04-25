@@ -28,8 +28,8 @@ public class PlayerScript : MonoBehaviour
     private AudioSource playerSlowTimeAudioSource;
     private Coroutine slowTimeCoroutine;
     private float moveSpeed = 8f;
-    private float xBoundary = 9.25f;
-    private float yBoundary = 9.5f;
+    private float xBoundary = 14f;
+    private float yBoundary = 13.85f;
     private float bulletTimer = 0f;
     private float bulletCooldown = .1f;
     private float bombTimer = 0f;
@@ -41,11 +41,11 @@ public class PlayerScript : MonoBehaviour
     private int bombCount;
     private int laserCount;
     private bool isLaserOn = false;
-    private float laserLifeTime = 3f;
+    private float laserLifeTime = 2.5f;
     private float laserDamageTimer = 0.25f;
     private float laserDamageCooldown = 0.25f;
     private float damageMultiplier = 1;
-    private float timeStopScale = 0f;
+    private float timeStopScale = 0.15f;
     private float activeSlowTimer = 0f;
     private float activeSlowDuration = 5f;
     private float slowTimeTimer = 0f;
@@ -68,7 +68,9 @@ public class PlayerScript : MonoBehaviour
         bulletTimer = bulletCooldown;
         bombTimer = bombCooldown;
         laserTimer = laserCooldown;
-        slowTimeTimer = slowTimeCooldown;
+
+        slowTimeTimer = 0f;
+        cooldownReadyText.enabled = false;
 
         playerBulletAudioSource = gameObject.AddComponent<AudioSource>();
         playerSlowTimeAudioSource = gameObject.AddComponent<AudioSource>();
@@ -79,6 +81,7 @@ public class PlayerScript : MonoBehaviour
         playerBulletAudioSource.playOnAwake = false;
 
         playerSlowTimeAudioSource.clip = slowTimeClip;
+        playerSlowTimeAudioSource.volume = 0.5f;
         playerSlowTimeAudioSource.playOnAwake = false;
 
     }
@@ -128,6 +131,13 @@ public class PlayerScript : MonoBehaviour
         else if (transform.position.y < -yBoundary)
         {
             transform.position = new Vector3(transform.position.x, -yBoundary, 0);
+        }
+
+        List<Collider2D> objectsHit = new List<Collider2D>();
+        int collision = Physics2D.OverlapCollider(GetComponent<Collider2D>(), new ContactFilter2D().NoFilter(), objectsHit);
+        foreach (Collider2D collider in objectsHit)
+        {
+            HitByObject(collider);
         }
 
         if (bulletTimer >= bulletCooldown)
@@ -314,16 +324,6 @@ public class PlayerScript : MonoBehaviour
         screenLayover.GetComponent<Animator>().SetBool("SlowTimeIsOver", true);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        HitByObject(collision);
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        HitByObject(collision);
-    }
-
     private void HitByObject(Collider2D collision)
     {
         if (!hasImmunity && !collision.gameObject.CompareTag("Powerup") && !collision.gameObject.CompareTag("Bomb") && !gameManagerScript.IsGameOver())
@@ -337,7 +337,9 @@ public class PlayerScript : MonoBehaviour
             if (hitpoints <= 0)
             {
                 Debug.Log("Player has lost!");
-                Instantiate(deathExplosion, transform.position, transform.rotation);
+                ScreenShakeScript.Instance.Shake(1.25f, 0.75f);
+                GameObject deathAnim = Instantiate(deathExplosion, transform.position, transform.rotation);
+                deathAnim.GetComponent<AudioSource>().volume = 0.4f;
                 gameManagerScript.GameOver();
                 Destroy(gameObject, this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
             }
