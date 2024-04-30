@@ -90,22 +90,22 @@ public class PlayerScript : MonoBehaviour
     {
         Vector2 inputVector = new Vector2 (0, 0);
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.W))
         {
             inputVector.y = 1f;
         }
 
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.S))
         {
             inputVector.y = -1f;
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A))
         {
             inputVector.x = -1f;
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
             inputVector.x = 1f;
         }
@@ -142,7 +142,7 @@ public class PlayerScript : MonoBehaviour
 
         if (bulletTimer >= bulletCooldown)
         {
-            if (Input.GetKey(KeyCode.LeftControl) && !isLaserOn)
+            if (Input.GetKey(KeyCode.J) && !isLaserOn)
             {
                 GameObject playerBullet1 = Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(-0.15f, 0, 0), transform.rotation);
                 GameObject playerBullet2 = Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(0.15f, 0, 0), transform.rotation);
@@ -159,7 +159,7 @@ public class PlayerScript : MonoBehaviour
 
         if (bombTimer >= bombCooldown)
         {
-            if (Input.GetKeyDown(KeyCode.LeftAlt) && !gameManagerScript.IsGameOver())
+            if (Input.GetKeyDown(KeyCode.L) && !gameManagerScript.IsGameOver())
             {
                 if (bombCount > 0)
                 {
@@ -177,7 +177,7 @@ public class PlayerScript : MonoBehaviour
 
         if (laserTimer >= laserCooldown)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift) && !gameManagerScript.IsGameOver())
+            if (Input.GetKeyDown(KeyCode.K) && !gameManagerScript.IsGameOver())
             {
                 if (laserCount > 0 && isLaserOn != true)
                 {
