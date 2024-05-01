@@ -23,6 +23,7 @@ public class EnemyBulletScript : MonoBehaviour
     private void Start()
     {
         bulletRb = GetComponent<Rigidbody2D>();
+        bulletRb.velocity = Vector3.zero;
     }
 
     private void Update()

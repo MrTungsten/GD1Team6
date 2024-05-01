@@ -48,8 +48,8 @@ public class PlayerScript : MonoBehaviour
     private float timeStopScale = 0.15f;
     private float activeSlowTimer = 0f;
     private float activeSlowDuration = 5f;
-    private float slowTimeTimer = 0f;
-    private float slowTimeCooldown = 10f;
+    private float slowTimeTimer = 10f;
+    private float slowTimeCooldown = 20f;
     private bool slowTimeActive = false;
     private bool makeTrail = false;
     private float makeTrailTimer = 0f;
@@ -69,7 +69,7 @@ public class PlayerScript : MonoBehaviour
         bombTimer = bombCooldown;
         laserTimer = laserCooldown;
 
-        slowTimeTimer = 0f;
+        slowTimeTimer = 10f;
         cooldownReadyText.enabled = false;
 
         playerBulletAudioSource = gameObject.AddComponent<AudioSource>();
@@ -337,7 +337,7 @@ public class PlayerScript : MonoBehaviour
             if (hitpoints <= 0)
             {
                 Debug.Log("Player has lost!");
-                ScreenShakeScript.Instance.Shake(1.25f, 0.75f);
+                ScreenShakeScript.Instance.Shake(1f, 0.5f);
                 GameObject deathAnim = Instantiate(deathExplosion, transform.position, transform.rotation);
                 deathAnim.GetComponent<AudioSource>().volume = 0.4f;
                 gameManagerScript.GameOver();

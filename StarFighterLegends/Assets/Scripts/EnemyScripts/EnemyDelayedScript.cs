@@ -96,7 +96,7 @@ public class EnemyDelayedScript : MonoBehaviour
             GameObject explosion = Instantiate(deathExplosion, transform.position, transform.rotation);
             explosion.transform.localScale = new Vector3(2f, 2f, 1);
 
-            ScreenShakeScript.Instance.Shake(0.75f, 0.5f);
+            ScreenShakeScript.Instance.Shake(0.5f, 0.3f);
             Destroy(gameObject);
         }
     }
