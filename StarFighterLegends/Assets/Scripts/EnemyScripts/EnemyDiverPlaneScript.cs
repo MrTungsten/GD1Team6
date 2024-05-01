@@ -147,7 +147,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
 
             Instantiate(deathExplosion, transform.position, transform.rotation);
 
-            ScreenShakeScript.Instance.Shake(0.5f, 0.3f);
+            ScreenShakeScript.Instance.Shake(0.3f, 0.2f);
             Destroy(gameObject);
         }
     }

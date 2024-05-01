@@ -31,6 +31,7 @@ public class EnemyPlaneScript : MonoBehaviour
     private float bulletSpeed = 4f;
     private bool hasSpawnedPowerup = false;
     private float hitpoints = 5f;
+    private bool currentlyFiring = false;
 
     private void Start()
     {
@@ -56,14 +57,15 @@ public class EnemyPlaneScript : MonoBehaviour
         {
             case ShotType.normal:
                 hitpoints = 5f;
+                bulletSpeed = 5f;
                 break;
-
             case ShotType.triple:
                 hitpoints = 10f;
                 break;
-
             case ShotType.cross:
                 hitpoints = 15f;
+                speed = 1f;
+                bulletSpeed = 6f;
                 break;
         }
 
@@ -109,7 +111,7 @@ public class EnemyPlaneScript : MonoBehaviour
 
             Instantiate(deathExplosion, transform.position, transform.rotation);
 
-            ScreenShakeScript.Instance.Shake(0.5f, 0.3f);
+            ScreenShakeScript.Instance.Shake(0.3f, 0.2f);
             Destroy(gameObject);
         }
     }
@@ -123,12 +125,10 @@ public class EnemyPlaneScript : MonoBehaviour
 
     private void FireAtPlayer()
     {
+
         if (shotType == ShotType.normal)
         {
-
-            Vector3 dir = (player.transform.position - transform.position).normalized;
-            float angle = Mathf.Atan2(-dir.y, -dir.x) * Mathf.Rad2Deg;
-            planeAimer2.transform.rotation = Quaternion.Euler(0, 0, angle + 90);
+            planeAimer2.transform.up = player.transform.position - planeAimer2.transform.position;
 
             bulletCooldown = Random.Range(1f, 2f);
 
@@ -158,6 +158,7 @@ public class EnemyPlaneScript : MonoBehaviour
                 StartCoroutine(TripleShotBurst());
                 timer = 0f;
                 bulletCooldown = Random.Range(3f, 6f);
+                currentlyFiring = true;
             }
             else
             {
@@ -169,16 +170,21 @@ public class EnemyPlaneScript : MonoBehaviour
 
             bulletCooldown = Random.Range(5f, 10f);
 
-            if (timer > bulletCooldown)
+            if (!currentlyFiring)
             {
-                StartCoroutine(CrossShotBurst());
-                timer = 0f;
-                bulletCooldown = Random.Range(5f, 10f);
+                if (timer > bulletCooldown)
+                {
+                    StartCoroutine(CrossShotBurst());
+                    timer = 0f;
+                    bulletCooldown = Random.Range(5f, 10f);
+                    currentlyFiring = true;
+                }
+                else
+                {
+                    timer += Time.deltaTime;
+                }
             }
-            else
-            {
-                timer += Time.deltaTime;
-            }
+            
         }
     }
 
@@ -194,23 +200,28 @@ public class EnemyPlaneScript : MonoBehaviour
             spawnedBullet3.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
             yield return new WaitForSeconds(0.2f);
         }
+
+        currentlyFiring = false;
     }
 
     private IEnumerator CrossShotBurst()
     {
-        Vector3 dir = player.transform.position - transform.position;
-        dir.Normalize();
-        for (int i = 0; i < 5; i++)
+
+        planeAimer1.transform.up = player.transform.position - planeAimer1.transform.position;
+        planeAimer3.transform.up = player.transform.position - planeAimer3.transform.position;
+        planeAimer1.transform.Rotate(new Vector3(10, 0, 0), Space.Self);
+        planeAimer3.transform.Rotate(new Vector3(-10, 0, 0), Space.Self);
+
+        for (int i = 0; i < 8; i++)
         {   
-            float angle = Mathf.Atan2(-dir.y, -dir.x) * Mathf.Rad2Deg;
-            planeAimer1.transform.rotation = Quaternion.Euler(0, 0, angle + 100f);
-            planeAimer3.transform.rotation = Quaternion.Euler(0, 0, angle + 90f);
             GameObject spawnedBullet1 = Instantiate(bulletPrefab, planeAimer1.transform.position, planeAimer1.transform.rotation);
             GameObject spawnedBullet3 = Instantiate(bulletPrefab, planeAimer3.transform.position, planeAimer3.transform.rotation);
             spawnedBullet1.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
             spawnedBullet3.GetComponent<EnemyBulletScript>().SetSpeed(bulletSpeed);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.15f);
         }
+
+        currentlyFiring = false;
     }
 
     private void MoveBackAndForth()

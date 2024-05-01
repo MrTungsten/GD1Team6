@@ -167,8 +167,8 @@ PolygonCollider2D:
       - {x: -0.6579857, y: -3.1035304}
       - {x: -0.63842565, y: -2.3344362}
       - {x: -0.3284753, y: -2.1723351}
-      - {x: -0.31661674, y: 9.681104}
-      - {x: 0.25809497, y: 9.67853}
+      - {x: -0.28137448, y: 7.5007806}
+      - {x: 0.22285269, y: 7.4982076}
       - {x: 0.22302222, y: -2.1681142}
       - {x: 0.5562054, y: -2.3573008}
   m_UseDelaunayMesh: 0
@@ -284,7 +284,7 @@ Transform:
   m_GameObject: {fileID: 4002736119572746103}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -5, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.6, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3870775897646241087}
