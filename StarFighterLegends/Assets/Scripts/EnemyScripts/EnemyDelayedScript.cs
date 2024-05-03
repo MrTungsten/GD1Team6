@@ -9,6 +9,7 @@ public class EnemyDelayedScript : MonoBehaviour
     [SerializeField] private GameObject enemyDelayedPlaneVisual;
     [SerializeField] private GameObject deathExplosion;
     private PowerupSpawnerScript powerupSpawnerScript;
+    private GameManagerScript gameManagerScript;
     private float hitpoints = 50f;
     private float rotateSpeed = 50f;
     private float rotateAmount = 0f;
@@ -30,6 +31,7 @@ public class EnemyDelayedScript : MonoBehaviour
         shotTimer = shotCooldown;
 
         powerupSpawnerScript = GameObject.FindAnyObjectByType<PowerupSpawnerScript>();
+        gameManagerScript = GameObject.FindAnyObjectByType<GameManagerScript>();
     }
 
     private void Update()
@@ -37,14 +39,17 @@ public class EnemyDelayedScript : MonoBehaviour
         rotateAmount += rotationMultiplier * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, 10 * rotateAmount), rotateSpeed * Time.deltaTime);
 
-        if (shotTimer > shotCooldown)
+        if (gameManagerScript.IsGameActive())
         {
-            StartCoroutine(EnemyDelayedPlaneShot());
-            shotTimer = 0f;
-        }
-        else
-        {
-            shotTimer += Time.deltaTime;
+            if (shotTimer > shotCooldown)
+            {
+                StartCoroutine(EnemyDelayedPlaneShot());
+                shotTimer = 0f;
+            }
+            else
+            {
+                shotTimer += Time.deltaTime;
+            }
         }
     }
 

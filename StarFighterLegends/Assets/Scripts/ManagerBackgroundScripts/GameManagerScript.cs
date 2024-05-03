@@ -17,7 +17,8 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] private TextMeshProUGUI countdownText;
     [SerializeField] private TextMeshProUGUI scoreTimeBonusText;
-    private bool isGameOver = false;
+    private GameObject player;
+    private bool isGameActive = true;
     private bool victory = false;
     private int initialTotalScore = 0;
     private float escapeTimer = 0;
@@ -27,9 +28,13 @@ public class GameManagerScript : MonoBehaviour
     private int scoreTimeBonus = 0;
     private int sceneIndex = 0;
     private bool hasIncreasedScore = false;
+    public bool isPlayingAnimation = false;
 
     private void Start()
     {
+
+        player = GameObject.Find("Player");
+
         sceneIndex = SceneManager.GetActiveScene().buildIndex - 2;
 
         if (SceneUtility.GetScenePathByBuildIndex(3) == SceneManager.GetActiveScene().path)
@@ -37,15 +42,6 @@ public class GameManagerScript : MonoBehaviour
             ScoreManagerScript.Instance.ResetTotalScore();
 
             PlayerStatsManager.Instance.ResetStats();
-        }
-        else
-        {
-            /*
-            if ((SceneManager.GetActiveScene().buildIndex + 2) % 2 == 0)
-            {
-                PlayerStatsManager.Instance.AddStats(0, 1, 1);
-            }
-            */
         }
 
         if (sceneIndex <= 5)
@@ -83,11 +79,11 @@ public class GameManagerScript : MonoBehaviour
 
         int numOfEnemies = enemies.Length;
 
-        if (numOfEnemies == 0 && !isGameOver)
+        if (numOfEnemies == 0 && isGameActive)
         {
             Debug.Log("The player has won!");
             victory = true;
-            isGameOver = true;
+            isGameActive = false;
             GameOver();
         }
 
@@ -112,7 +108,7 @@ public class GameManagerScript : MonoBehaviour
             escapeTimer = 0f;
         }
 
-        if (isGameOver)
+        if (!isGameActive)
         {
 
             if (!hasIncreasedScore)
@@ -135,9 +131,10 @@ public class GameManagerScript : MonoBehaviour
                 hasIncreasedScore = true;
             }
 
-            if (levelTransTimer <= 0 && victory)
+            if (levelTransTimer <= 0 && victory && !isPlayingAnimation)
             {
-                NextLevel();
+                StartCoroutine(player.GetComponent<PlayerScript>().OutroAnimation());
+                gameOverScreen.SetActive(false);
             }
             else if (levelTransTimer <= 0 && !victory)
             {
@@ -154,7 +151,7 @@ public class GameManagerScript : MonoBehaviour
 
     public void GameOver()
     {
-        isGameOver = true;
+        isGameActive = false;
 
         gameOverScreen.SetActive(true);
 
@@ -168,6 +165,16 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
+    public void GameActive()
+    {
+        isGameActive = true;
+    }
+
+    public void GameInactive()
+    {
+        isGameActive = false;
+    }
+
     private void GameOverWin()
     {
         gameOverScreenWin.SetActive(true);
@@ -178,17 +185,15 @@ public class GameManagerScript : MonoBehaviour
         gameOverScreenLoss.SetActive(true);
     }
 
-    public bool IsGameOver()
+    public bool IsGameActive()
     {
-        return isGameOver;
+        return isGameActive;
     }
 
     public void NextLevel()
     {
         PlayerStatsManager.Instance.ChangeStats();
-
         int sceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-
         SceneManager.LoadScene(SceneUtility.GetScenePathByBuildIndex(sceneIndex));
     }
 

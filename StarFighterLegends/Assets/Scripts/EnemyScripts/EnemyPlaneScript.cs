@@ -79,7 +79,7 @@ public class EnemyPlaneScript : MonoBehaviour
             MoveBackAndForth();
         }
         
-        if (!gameManagerScript.IsGameOver())
+        if (gameManagerScript.IsGameActive())
         {
             FireAtPlayer();
         }

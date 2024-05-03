@@ -33,7 +33,7 @@ public class EnemySinePlaneScript : MonoBehaviour
 
     private void Update()
     {
-        if (!gameManagerScript.IsGameOver())
+        if (gameManagerScript.IsGameActive())
         {
             FireAtPlayer();
         }

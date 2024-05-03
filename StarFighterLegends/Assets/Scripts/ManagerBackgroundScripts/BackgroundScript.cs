@@ -16,7 +16,7 @@ public class BackgroundScript : MonoBehaviour
 
     private void Update()
     {
-        transform.position += new Vector3(0, -1, 0) * Time.deltaTime * scrollSpeed;
+        transform.position += new Vector3(0, -1, 0) * Time.unscaledDeltaTime * scrollSpeed;
 
         if (transform.position.y < resetYPosition )
         {
