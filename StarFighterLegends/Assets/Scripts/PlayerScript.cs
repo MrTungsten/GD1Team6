@@ -86,8 +86,8 @@ public class PlayerScript : MonoBehaviour
         playerSlowTimeAudioSource.clip = slowTimeClip;
         playerSlowTimeAudioSource.volume = 0.5f;
         playerSlowTimeAudioSource.playOnAwake = false;
-
-        StartCoroutine(IntroAnimation());
+        
+        IntroAnimation();
 
     }
 
@@ -439,25 +439,29 @@ public class PlayerScript : MonoBehaviour
         return new int[] { (int)hitpoints, bombCount, laserCount };
     }
 
-    public IEnumerator IntroAnimation()
+    public void IntroAnimation()
     {
+        transform.Find("PlayerVisual").gameObject.SetActive(false);
+        GameObject planeAnimObj = Instantiate(planeWarpDrive, new Vector3(0, -15, 0), transform.rotation);
         gameManagerScript.GameInactive();
         Time.timeScale = 0f;
-        transform.Find("PlayerVisual").gameObject.SetActive(false);
-        yield return new WaitForSecondsRealtime(2f);
+        planeAnimObj.GetComponent<Animator>().SetTrigger("Intro");
+    }
+
+    public void IntroEnd()
+    {
         gameManagerScript.GameActive();
         Time.timeScale = 1f;
         transform.Find("PlayerVisual").gameObject.SetActive(true);
     }
 
-    public IEnumerator OutroAnimation()
+    public void OutroAnimation()
     {
+        GameObject planeAnimObj = Instantiate(planeWarpDrive, new Vector3(0, -15, 0), transform.rotation);
         Time.timeScale = 0f;
         transform.Find("PlayerVisual").gameObject.SetActive(false);
-        Instantiate(planeWarpDrive, transform.position, transform.rotation);
+        planeAnimObj.GetComponent<Animator>().SetTrigger("Outro");
         gameManagerScript.isPlayingAnimation = true;
-        yield return new WaitForSecondsRealtime(1.5f);
-        gameManagerScript.NextLevel();
     }
 
 }

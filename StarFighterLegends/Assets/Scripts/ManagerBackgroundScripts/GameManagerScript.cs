@@ -22,7 +22,7 @@ public class GameManagerScript : MonoBehaviour
     private bool victory = false;
     private int initialTotalScore = 0;
     private float escapeTimer = 0;
-    private float levelTransTimer = 6f;
+    private float levelTransTimer = 4f;
     private float playerLifeTime = 0f;
     private float scoreTimeLimit = 0f;
     private int scoreTimeBonus = 0;
@@ -76,6 +76,11 @@ public class GameManagerScript : MonoBehaviour
         enemies = enemies.Concat(GameObject.FindGameObjectsWithTag("EnemyDiver")).ToArray();
         enemies = enemies.Concat(GameObject.FindGameObjectsWithTag("EnemySine")).ToArray();
         enemies = enemies.Concat(GameObject.FindGameObjectsWithTag("EnemyDelayed")).ToArray();
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            enemies = new GameObject[0];
+        }
 
         int numOfEnemies = enemies.Length;
 
@@ -133,7 +138,7 @@ public class GameManagerScript : MonoBehaviour
 
             if (levelTransTimer <= 0 && victory && !isPlayingAnimation)
             {
-                StartCoroutine(player.GetComponent<PlayerScript>().OutroAnimation());
+                player.GetComponent<PlayerScript>().OutroAnimation();
                 gameOverScreen.SetActive(false);
             }
             else if (levelTransTimer <= 0 && !victory)
