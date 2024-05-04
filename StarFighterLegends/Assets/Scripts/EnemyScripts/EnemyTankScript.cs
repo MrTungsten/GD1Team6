@@ -40,7 +40,7 @@ public class EnemyTankScript : MonoBehaviour
 
     private void Update()
     {
-        if (!gameManagerScript.IsGameOver())
+        if (gameManagerScript.IsGameActive())
         {
             FireAtPlayer();
         }

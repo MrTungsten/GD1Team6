@@ -10,6 +10,7 @@ public class EnemyTurretScript : MonoBehaviour
     [SerializeField] private GameObject enemyTurretVisual;
     [SerializeField] private GameObject deathExplosion;
     private PowerupSpawnerScript powerupSpawnerScript;
+    private GameManagerScript gameManagerScript;
     private float bulletSpeed = 2.5f;
     private float rotateSpeed = 125f;
     private float rotateAmount = 0f;
@@ -31,6 +32,7 @@ public class EnemyTurretScript : MonoBehaviour
         StartCoroutine(TurretHailFire());
 
         powerupSpawnerScript = GameObject.FindAnyObjectByType<PowerupSpawnerScript>();
+        gameManagerScript = GameObject.FindAnyObjectByType<GameManagerScript>();
     }
 
     private void Update()
@@ -43,7 +45,7 @@ public class EnemyTurretScript : MonoBehaviour
     {
         yield return new WaitForSeconds(firingStartDelay);
 
-        while (true)
+        while (gameManagerScript.IsGameActive())
         {
             for (int i = 0; i < spawners.Length; i++)
             {

@@ -22,6 +22,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private GameObject slowTimeScreen;
     [SerializeField] private AudioClip bulletFireClip;
     [SerializeField] private AudioClip slowTimeClip;
+    [SerializeField] private GameObject planeWarpDrive;
     private GameManagerScript gameManagerScript;
     private Collider2D laserCollider = null;
     private AudioSource playerBulletAudioSource;
@@ -57,8 +58,10 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
-
         Time.timeScale = 1f;
+
+        transform.position = new Vector3(0, -6, 0);
+        transform.rotation = Quaternion.Euler(0, 0, 0);
 
         gameManagerScript = FindAnyObjectByType<GameManagerScript>();
 
@@ -69,7 +72,7 @@ public class PlayerScript : MonoBehaviour
         bombTimer = bombCooldown;
         laserTimer = laserCooldown;
 
-        slowTimeTimer = 10f;
+        slowTimeTimer = 20f;
         cooldownReadyText.enabled = false;
 
         playerBulletAudioSource = gameObject.AddComponent<AudioSource>();
@@ -83,6 +86,8 @@ public class PlayerScript : MonoBehaviour
         playerSlowTimeAudioSource.clip = slowTimeClip;
         playerSlowTimeAudioSource.volume = 0.5f;
         playerSlowTimeAudioSource.playOnAwake = false;
+        
+        IntroAnimation();
 
     }
 
@@ -112,8 +117,11 @@ public class PlayerScript : MonoBehaviour
 
         inputVector = inputVector.normalized;
 
-        Vector3 moveDir = new Vector3(inputVector.x, inputVector.y, 0);
-        transform.position += moveDir * Time.unscaledDeltaTime * moveSpeed;
+        if (gameManagerScript.IsGameActive())
+        {
+            Vector3 moveDir = new Vector3(inputVector.x, inputVector.y, 0);
+            transform.position += moveDir * Time.unscaledDeltaTime * moveSpeed;
+        }
 
         if (transform.position.x > xBoundary)
         {
@@ -142,7 +150,7 @@ public class PlayerScript : MonoBehaviour
 
         if (bulletTimer >= bulletCooldown)
         {
-            if (Input.GetKey(KeyCode.LeftControl) && !isLaserOn)
+            if (Input.GetKey(KeyCode.LeftControl) && !isLaserOn && gameManagerScript.IsGameActive())
             {
                 GameObject playerBullet1 = Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(-0.15f, 0, 0), transform.rotation);
                 GameObject playerBullet2 = Instantiate(bulletPrefab, playerBulletSpawner.transform.position + new Vector3(0.15f, 0, 0), transform.rotation);
@@ -159,7 +167,7 @@ public class PlayerScript : MonoBehaviour
 
         if (bombTimer >= bombCooldown)
         {
-            if (Input.GetKeyDown(KeyCode.LeftAlt) && !gameManagerScript.IsGameOver())
+            if (Input.GetKeyDown(KeyCode.LeftAlt) && gameManagerScript.IsGameActive())
             {
                 if (bombCount > 0)
                 {
@@ -177,7 +185,7 @@ public class PlayerScript : MonoBehaviour
 
         if (laserTimer >= laserCooldown)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift) && !gameManagerScript.IsGameOver())
+            if (Input.GetKeyDown(KeyCode.LeftShift) && gameManagerScript.IsGameActive())
             {
                 if (laserCount > 0 && isLaserOn != true)
                 {
@@ -246,7 +254,7 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-        if (!gameManagerScript.IsGameOver())
+        if (gameManagerScript.IsGameActive())
         {
             if (!slowTimeActive)
             {
@@ -288,7 +296,7 @@ public class PlayerScript : MonoBehaviour
             }
         }
         
-        if (makeTrail)
+        if (makeTrail && gameManagerScript.IsGameActive())
         {
             if (makeTrailTimer > makeTrailCooldown)
             {
@@ -302,6 +310,19 @@ public class PlayerScript : MonoBehaviour
             else
             {
                 makeTrailTimer += Time.unscaledDeltaTime;
+            }
+        }
+
+        if (!gameManagerScript.IsGameActive())
+        {
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, -6, 0), 10f * Time.deltaTime);
+            Vector3 direction = new Vector3(0, -6, 0) - transform.position;
+            float angle = Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle + 90);
+            if (transform.position == new Vector3(0, -6, 0))
+            {
+                PullPowerups();
+                transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }
     }
@@ -326,7 +347,7 @@ public class PlayerScript : MonoBehaviour
 
     private void HitByObject(Collider2D collision)
     {
-        if (!hasImmunity && !collision.gameObject.CompareTag("Powerup") && !collision.gameObject.CompareTag("Bomb") && !gameManagerScript.IsGameOver())
+        if (!hasImmunity && !collision.gameObject.CompareTag("Powerup") && !collision.gameObject.CompareTag("Bomb") && gameManagerScript.IsGameActive())
         {
             hitpoints--;
 
@@ -375,6 +396,15 @@ public class PlayerScript : MonoBehaviour
         UpdateStats();
     }
 
+    private void PullPowerups()
+    {
+        GameObject[] powerups = GameObject.FindGameObjectsWithTag("Powerup");
+        foreach (GameObject powerup in powerups)
+        {
+            powerup.transform.position = Vector3.MoveTowards(powerup.transform.position, transform.position, 15f * Time.deltaTime); 
+        }
+    }
+
     private IEnumerator Laser()
     {
         isLaserOn = true;
@@ -407,6 +437,31 @@ public class PlayerScript : MonoBehaviour
     public int[] GetStats()
     {
         return new int[] { (int)hitpoints, bombCount, laserCount };
+    }
+
+    public void IntroAnimation()
+    {
+        transform.Find("PlayerVisual").gameObject.SetActive(false);
+        GameObject planeAnimObj = Instantiate(planeWarpDrive, new Vector3(0, -15, 0), transform.rotation);
+        gameManagerScript.GameInactive();
+        Time.timeScale = 0f;
+        planeAnimObj.GetComponent<Animator>().SetTrigger("Intro");
+    }
+
+    public void IntroEnd()
+    {
+        gameManagerScript.GameActive();
+        Time.timeScale = 1f;
+        transform.Find("PlayerVisual").gameObject.SetActive(true);
+    }
+
+    public void OutroAnimation()
+    {
+        GameObject planeAnimObj = Instantiate(planeWarpDrive, new Vector3(0, -15, 0), transform.rotation);
+        Time.timeScale = 0f;
+        transform.Find("PlayerVisual").gameObject.SetActive(false);
+        planeAnimObj.GetComponent<Animator>().SetTrigger("Outro");
+        gameManagerScript.isPlayingAnimation = true;
     }
 
 }

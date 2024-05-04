@@ -24,6 +24,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
     private bool isReturning = false;
     private float hitpoints = 35f;
     private bool hasSpawnedPowerup = false;
+    private float rotateSpeed = 1000f;
 
     private void Start()
     {
@@ -49,7 +50,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
     private void Update()
     {
 
-        if (!isDashing && !isReturning && !gameManagerScript.IsGameOver())
+        if (!isDashing && !isReturning && gameManagerScript.IsGameActive())
         {
             if (timer > dashingCooldown)
             {
@@ -61,7 +62,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
             {
                 Vector3 direction = player.transform.position - transform.position;
                 float angle = Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(0, 0, angle + 90);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, angle + 90), rotateSpeed * Time.deltaTime);
                 timer += Time.deltaTime;
             }
         }
@@ -82,7 +83,7 @@ public class EnemyDiverPlaneScript : MonoBehaviour
             }
         }
 
-        if (gameManagerScript.IsGameOver())
+        if (!gameManagerScript.IsGameActive())
         {
             StopAllCoroutines();
         }
