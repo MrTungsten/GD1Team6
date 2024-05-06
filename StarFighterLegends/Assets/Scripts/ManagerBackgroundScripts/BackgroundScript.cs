@@ -5,7 +5,7 @@ using UnityEngine;
 public class BackgroundScript : MonoBehaviour
 {
 
-    private float scrollSpeed = 1f;
+    private float scrollSpeed = 2f;
     private float resetYPosition = -119.8f;
     private Vector3 startPosition = new Vector3(0, 0, 0);
 
@@ -16,7 +16,7 @@ public class BackgroundScript : MonoBehaviour
 
     private void Update()
     {
-        transform.position += new Vector3(0, -1, 0) * Time.unscaledDeltaTime * scrollSpeed;
+        transform.position += new Vector3(0, -1, 0) * Time.deltaTime * scrollSpeed;
 
         if (transform.position.y < resetYPosition )
         {

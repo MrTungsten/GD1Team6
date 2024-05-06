@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
 
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private AudioClip bulletFireClip;
     [SerializeField] private GameObject playerBulletSpawner;
     [SerializeField] private GameObject bombPrefab;
     [SerializeField] private GameObject laser;
@@ -20,14 +22,18 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private Image filledCooldownBox;
     [SerializeField] private TextMeshProUGUI cooldownReadyText;
     [SerializeField] private GameObject slowTimeScreen;
-    [SerializeField] private AudioClip bulletFireClip;
     [SerializeField] private AudioClip slowTimeClip;
+    [SerializeField] private AudioMixerGroup slowTimeAudioMixer;
     [SerializeField] private GameObject planeWarpDrive;
+    [SerializeField] private AudioClip playerWarpDriveIntro;
+    [SerializeField] private AudioClip playerWarpDriveOutro;
     private GameManagerScript gameManagerScript;
     private Collider2D laserCollider = null;
     private AudioSource playerBulletAudioSource;
     private AudioSource playerSlowTimeAudioSource;
+    private AudioSource playerWarpDriveAudioSource;
     private Coroutine slowTimeCoroutine;
+    private GameObject screenLayover;
     private float moveSpeed = 8f;
     private float xBoundary = 14f;
     private float yBoundary = 13.85f;
@@ -55,6 +61,7 @@ public class PlayerScript : MonoBehaviour
     private bool makeTrail = false;
     private float makeTrailTimer = 0f;
     private float makeTrailCooldown = 0.05f;
+    private int[] pentatonicSemitones = new[] { 0, 2, 4, 7, 9 };
 
     private void Start()
     {
@@ -75,6 +82,7 @@ public class PlayerScript : MonoBehaviour
         slowTimeTimer = 20f;
         cooldownReadyText.enabled = false;
 
+        playerWarpDriveAudioSource = gameObject.AddComponent<AudioSource>();
         playerBulletAudioSource = gameObject.AddComponent<AudioSource>();
         playerSlowTimeAudioSource = gameObject.AddComponent<AudioSource>();
 
@@ -84,7 +92,7 @@ public class PlayerScript : MonoBehaviour
         playerBulletAudioSource.playOnAwake = false;
 
         playerSlowTimeAudioSource.clip = slowTimeClip;
-        playerSlowTimeAudioSource.volume = 0.5f;
+        playerSlowTimeAudioSource.outputAudioMixerGroup = slowTimeAudioMixer;
         playerSlowTimeAudioSource.playOnAwake = false;
         
         IntroAnimation();
@@ -157,7 +165,9 @@ public class PlayerScript : MonoBehaviour
                 playerBullet1.GetComponent<PlayerBulletScript>().SetDamageMultiplier(damageMultiplier);
                 playerBullet2.GetComponent<PlayerBulletScript>().SetDamageMultiplier(damageMultiplier);
                 bulletTimer = 0f;
+                playerBulletAudioSource.pitch *= Mathf.Pow(1.059463f, pentatonicSemitones[Random.Range(0, 5)]);
                 playerBulletAudioSource.Play();
+                playerBulletAudioSource.pitch = 1f;
             } 
         }
         else
@@ -289,10 +299,7 @@ public class PlayerScript : MonoBehaviour
             if (slowTimeActive)
             {
                 StopCoroutine(slowTimeCoroutine);
-                slowTimeActive = false;
-                Time.timeScale = 1f;
-                moveSpeed /= 0.75f;
-                makeTrail = false;
+                EndSlowTimeEffect();
             }
         }
         
@@ -334,10 +341,15 @@ public class PlayerScript : MonoBehaviour
         moveSpeed *= 0.75f;
         playerSlowTimeAudioSource.Play();
         makeTrail = true;
-        GameObject screenLayover = Instantiate(slowTimeScreen, Vector3.zero, transform.rotation);
+        screenLayover = Instantiate(slowTimeScreen, Vector3.zero, transform.rotation);
 
         yield return new WaitForSecondsRealtime(activeSlowDuration);
 
+        EndSlowTimeEffect();
+    }
+
+    private void EndSlowTimeEffect()
+    {
         slowTimeActive = false;
         Time.timeScale = 1f;
         moveSpeed /= 0.75f;
@@ -446,6 +458,10 @@ public class PlayerScript : MonoBehaviour
         gameManagerScript.GameInactive();
         Time.timeScale = 0f;
         planeAnimObj.GetComponent<Animator>().SetTrigger("Intro");
+
+        playerWarpDriveAudioSource.clip = playerWarpDriveIntro;
+        playerWarpDriveAudioSource.volume = 0.5f;
+        playerWarpDriveAudioSource.Play();
     }
 
     public void IntroEnd()
@@ -458,10 +474,18 @@ public class PlayerScript : MonoBehaviour
     public void OutroAnimation()
     {
         GameObject planeAnimObj = Instantiate(planeWarpDrive, new Vector3(0, -15, 0), transform.rotation);
+        if (screenLayover != null)
+        {
+            screenLayover.SetActive(false);
+        }
         Time.timeScale = 0f;
         transform.Find("PlayerVisual").gameObject.SetActive(false);
         planeAnimObj.GetComponent<Animator>().SetTrigger("Outro");
         gameManagerScript.isPlayingAnimation = true;
+
+        playerWarpDriveAudioSource.clip = playerWarpDriveOutro;
+        playerWarpDriveAudioSource.volume = 0.75f;
+        playerWarpDriveAudioSource.Play();
     }
 
 }

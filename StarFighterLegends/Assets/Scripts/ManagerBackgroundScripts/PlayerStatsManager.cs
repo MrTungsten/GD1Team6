@@ -7,7 +7,7 @@ public class PlayerStatsManager : MonoBehaviour
 
     private GameObject player;
     private static int[] playerStats = null;
-    private int[] defaultStats = new int[] { 10, 1, 1 };
+    private int[] defaultStats = new int[] { 20, 1, 2 };
 
     public static PlayerStatsManager Instance { get; private set; }
 

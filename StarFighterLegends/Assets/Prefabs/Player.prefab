@@ -402,6 +402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1105445300606073453, guid: c5acb8cafcd3cc24eabd4fe7bc8035a8, type: 3}
+  bulletFireClip: {fileID: 8300000, guid: 64136f7307f96c0449e036adb42d58ed, type: 3}
   playerBulletSpawner: {fileID: 6316198312247353781}
   bombPrefab: {fileID: 1437463217693388289, guid: 77af16e1bf1d56b4e98897e41a7f894d, type: 3}
   laser: {fileID: 408565341879932768}
@@ -414,9 +415,11 @@ MonoBehaviour:
   filledCooldownBox: {fileID: 0}
   cooldownReadyText: {fileID: 0}
   slowTimeScreen: {fileID: 7699942297432644764, guid: b34a6b4531f53ca4ca28a548803597e8, type: 3}
-  bulletFireClip: {fileID: 8300000, guid: 64136f7307f96c0449e036adb42d58ed, type: 3}
-  slowTimeClip: {fileID: 8300000, guid: c710e3a68628f9547a3337071e9f7d87, type: 3}
+  slowTimeClip: {fileID: 8300000, guid: e71c3debad339c346a4b2981dc87d650, type: 3}
+  slowTimeAudioMixer: {fileID: 24300002, guid: c96c6b748845ddc47b46a213efe93e18, type: 2}
   planeWarpDrive: {fileID: 4002736119572746103, guid: 5b17eea6776efa34e82eb252c41f1945, type: 3}
+  playerWarpDriveIntro: {fileID: 8300000, guid: 37ccccfcd932e9e40ab4c28901ec4109, type: 3}
+  playerWarpDriveOutro: {fileID: 8300000, guid: 8b3dfbe88f14fe6429e230ff2f966b47, type: 3}
 --- !u!1 &5178618542294273240
 GameObject:
   m_ObjectHideFlags: 0
